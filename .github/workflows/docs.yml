@@ -1,7 +1,7 @@
 name: Docs
 
 # Builds the MkDocs site from docs/ and publishes it to the gh-pages branch,
-# which GitHub Pages serves at https://squarebit-studios.github.io/usdRig_unreal/.
+# which GitHub Pages serves at https://usdcharacter.github.io/usdRig_unreal/.
 # Needs no engine: it runs on a free GitHub-hosted Ubuntu runner.
 
 on:

@@ -1,8 +1,8 @@
 site_name: RigExec for Unreal
 site_description: Pose and animate usdRig (RigExec) characters in Unreal Engine 5.8 with Control Rig and Sequencer
-site_url: https://squarebit-studios.github.io/usdRig_unreal/
-repo_url: https://github.com/squarebit-studios/usdRig_unreal
-repo_name: squarebit-studios/usdRig_unreal
+site_url: https://usdcharacter.github.io/usdRig_unreal/
+repo_url: https://github.com/usdCharacter/usdRig_unreal
+repo_name: usdCharacter/usdRig_unreal
 edit_uri: edit/main/docs/
 
 # Squarebit Subdivs is a separate product, used here only for local testing:
@@ -58,7 +58,7 @@ extra:
   generator: false
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/squarebit-studios/usdRig_unreal
+      link: https://github.com/usdCharacter/usdRig_unreal
     - icon: material/web
       link: https://www.squarebitstudios.com
 

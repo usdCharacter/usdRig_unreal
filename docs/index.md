@@ -189,6 +189,6 @@ Build the plugin and open the example biped in a couple of minutes.
 
 <div class="sb-actions" markdown>
 [Get started](building.md){ .md-button .md-button--primary }
-[View on GitHub :fontawesome-brands-github:](https://github.com/squarebit-studios/usdRig_unreal){ .md-button }
+[View on GitHub :fontawesome-brands-github:](https://github.com/usdCharacter/usdRig_unreal){ .md-button }
 </div>
 </div>
