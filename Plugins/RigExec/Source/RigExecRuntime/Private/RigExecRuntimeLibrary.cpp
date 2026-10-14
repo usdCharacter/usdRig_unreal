@@ -47,25 +47,18 @@ URigExecRuntimeLibrary::RigExecSelfTest(const FString& RigExecFile, const FStrin
 	{
 		return FString::Printf(TEXT("open failed: %s"), UTF8_TO_TCHAR(Error.c_str()));
 	}
-	const std::vector<double> Frames = Reader->GetFrameTimes();
-	if (Frames.empty() || !Reader->SetFrame(Frames.front(), &Error))
-	{
-		return FString::Printf(TEXT("no frame: %s"), UTF8_TO_TCHAR(Error.c_str()));
-	}
-	FString Report = FString::Printf(
-		TEXT("opened %d bytes in %.0f ms; frames %d; property chains %s\n"),
-		Bytes.Num(), OpenSeconds * 1000.0, int32(Frames.size()),
-		Reader->HasPropertyChains() ? TEXT("live") : TEXT("replayed"));
+	FString Report = FString::Printf(TEXT("opened %d bytes in %.0f ms; %d inputs\n"), Bytes.Num(),
+	                                 OpenSeconds * 1000.0, int32(Reader->GetInputCount()));
 
 	std::vector<std::vector<rigExec::RrVec3f>> First;
 	const std::string ChannelPath(TCHAR_TO_UTF8(*Channel));
 	for (int32 Index = 0; Index < Values.Num(); ++Index)
 	{
-		Reader->ClearAvars();
+		Reader->ResetInputs();
 		std::string Why;
-		if (!Reader->SetAvar(ChannelPath, double(Values[Index]), &Why))
+		if (!Reader->SetInput(ChannelPath, double(Values[Index]), &Why))
 		{
-			return Report + FString::Printf(TEXT("SetAvar refused: %s"), UTF8_TO_TCHAR(Why.c_str()));
+			return Report + FString::Printf(TEXT("SetInput refused: %s"), UTF8_TO_TCHAR(Why.c_str()));
 		}
 		const double Start = FPlatformTime::Seconds();
 		if (!Reader->Execute(&Error))
@@ -80,7 +73,7 @@ URigExecRuntimeLibrary::RigExecSelfTest(const FString& RigExecFile, const FStrin
 		{
 			for (const auto& Mesh : Points)
 			{
-				First.push_back(Mesh.points);
+				First.push_back(Mesh.points.Vector());
 			}
 		}
 		for (size_t M = 0; M < Points.size() && M < First.size(); ++M)

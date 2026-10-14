@@ -7,7 +7,7 @@ opening the project lands on a posable character.
 Runs inside the Unreal Editor (as a project startup script for one launch)
 with the project's own RigExecData beside it:
 
-    RigExecData/Biped.rigexec        rigExecBake --poseable
+    RigExecData/Biped.rigexec        rigExecBake
     RigExecData/Biped_controls.json  export_controls.py
 
 The rig's paths are stored relative to the project, and the stage is read

@@ -1,5 +1,6 @@
-// The RigExec binary runtime, vendored from usdRig: rigExecRuntime and
-// rigExecBinary are plain C++17 with no USD, prebuilt as static libraries
+// The RigExec binary runtime, vendored from usdRig: rigExecRuntime and what
+// it links (rigExecBinary, rigExecGraph, rigExecLzma) are plain C++17 and C
+// with no USD, prebuilt as static libraries
 // (MSVC, Release, /MD). Tools/update_rigexec_lib.py refreshes them and the
 // headers runtime.h reaches; SOURCE.txt names the usdRig commit.
 using System.IO;
@@ -17,6 +18,8 @@ public class RigExecLib : ModuleRules
 			string Lib = Path.Combine(ModuleDirectory, "lib", "Win64");
 			PublicAdditionalLibraries.Add(Path.Combine(Lib, "rigExecRuntime.lib"));
 			PublicAdditionalLibraries.Add(Path.Combine(Lib, "rigExecBinary.lib"));
+			PublicAdditionalLibraries.Add(Path.Combine(Lib, "rigExecGraph.lib"));
+			PublicAdditionalLibraries.Add(Path.Combine(Lib, "rigExecLzma.lib"));
 		}
 	}
 }

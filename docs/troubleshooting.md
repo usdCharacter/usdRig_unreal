@@ -34,12 +34,12 @@ the CPU.
 | Message | Cause and fix |
 | --- | --- |
 | `cannot read <file>` | `RigExecFile` or `ControlsFile` does not exist. Relative paths resolve against the **project** directory, not the working directory |
-| `cannot open the rig: unsupported .rigexec major version` | The file was baked with an older (or newer) container format than the vendored runtime reads (`RigExecBinaryVersion` in `include/rigExecBinary/container.h`). Re-bake: `prepare_biped.bat`, then `Examples\RigExecBiped\Setup_RigExecBiped.bat` |
+| `cannot open the rig: <format or version error>` | The file was baked with an older (or newer) `.rigexec` format than the vendored runtime reads. Re-bake: `prepare_biped.bat`, then `Examples\RigExecBiped\Setup_RigExecBiped.bat` |
 | `cannot open the rig: <reason>` | The runtime refused the `.rigexec`. Usually the bake is from a different usdRig than the vendored runtime (format version, unknown opcode). Re-bake with the same usdRig the runtime was copied from (see `SOURCE.txt`), or update the runtime (see [building.md](building.md#updating-it)) |
 | `cannot open <stage>` | `StageFile` is missing, or Unreal's USD cannot read it. The example expects `..\usdRig` beside this repository. Check `../../../usdRig/examples/biped/Biped_stack.usda` from the project folder |
 | `no mesh in <stage> matches the rig's points` | The stage's mesh paths are not the ones the rig was baked with. Use the same stage (and the same `--rig`) that `rigExecBake` used |
-| `<n> of <m> channels are not live` | Informational. Those channels were baked as constants. Bake with `--poseable` to make property-chain inputs live |
-| `property chains replayed` | The bake was not `--poseable`, so face sliders and other chain-driven avars will not move anything |
+| `<n> of <m> channels are not live` | Informational. The rig never reads those channels, so setting them moves nothing |
+| `<limb match> published no IK/FK values` | An IK/FK switch found no match values for the limb, usually because the `.rigexec` and the controls file come from different bakes. Re-run `prepare_biped.bat` and the setup |
 
 ## In the viewport
 

@@ -124,16 +124,17 @@ def _Range(attr, value):
 
 
 def _Limbs(stage, rigPath):
-    """Each IK/FK limb, with the offsets ikfkMatch measures at its rest
-    pose, so a host can match one half onto the other without the stage."""
-    evaluate = ikfkMatch.Evaluator(stage, rigPath)
+    """Each IK/FK limb, as its RigExecIkFkMatchConstraint describes it. The
+    rig computes the match itself (outputs:ikValues and outputs:fkValues,
+    which the runtime publishes every evaluation), so a host switches a limb
+    by writing those values to the incoming half's channels -- the ones in
+    "writable" -- and flipping the switch, as usdview's ikfkMatch.Plan does."""
     limbs = []
     for limb in ikfkMatch.FindLimbs(stage):
         if limb.rigRoot != rigPath:
             continue
-        rest = ikfkMatch.MeasureRest(limb, stage, evaluate,
-                                     Usd.TimeCode.Default())
         limbs.append({
+            "match": str(limb.match),
             "switch": str(limb.switchPath),
             "ikValue": limb.ikValue,
             "joints": [str(j) for j in limb.joints],
@@ -141,10 +142,14 @@ def _Limbs(stage, rigPath):
             "ikControl": str(limb.ikControl),
             "effector": str(limb.effector),
             "pole": str(limb.pole) if limb.pole is not None else "",
-            # control * joint^-1 per FK control; end joint * effector^-1.
-            "fkOffsets": [_Matrix(m) for m in rest.fk],
-            "effectorOffset": _Matrix(rest.effector),
-            "poleDistance": rest.poleDistance or 0.0,
+            # The channels the match's stretch, pin and twist inputs read.
+            "upperScale": str(limb.upperScale) if limb.upperScale is not None else "",
+            "lowerScale": str(limb.lowerScale) if limb.lowerScale is not None else "",
+            "pin": str(limb.pin) if limb.pin is not None else "",
+            "twist": str(limb.twist) if limb.twist is not None else "",
+            # The channel paths a switch may write: the rig writes or
+            # drives none of them.
+            "writable": sorted(str(p) for p in (limb.writable or ())),
         })
     return limbs
 

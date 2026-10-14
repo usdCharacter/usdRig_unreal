@@ -31,7 +31,7 @@ editor too.
 
 | Property | Type | |
 | --- | --- | --- |
-| `RigExecFile` | `FFilePath` | A poseable `.rigexec`. Relative paths are relative to the project directory |
+| `RigExecFile` | `FFilePath` | The `.rigexec` (`rigExecBake`). Relative paths are relative to the project directory |
 | `StageFile` | `FFilePath` | The USD stage the rig was baked from, read for mesh topology and materials |
 | `SurfaceMaterial` | `UMaterialInterface*` | Parent of each mesh material. It receives `Color`/`BaseColor`, `Roughness` and `Metallic` parameters. Empty means `/RigExec/M_RigExecSurface`, which also blends the vertex colour in by its alpha (the Touch Pose tint, see [Touch Pose](editor-workflow.md#touch-pose)) |
 | `ControlsFile` | `FFilePath` | The controls description (after `build_control_rig.py`). Optional: without it, nothing maps the Control Rig onto the rig |
@@ -143,7 +143,7 @@ private to the module. The hover picker's layout is saved per user in
 `LogRigExec` (in `RigExecComponent.cpp`). On a successful load it logs:
 
 ```
-loaded <file>: <n> meshes, <n> controls, <n> channels, property chains live|replayed
+loaded <file>: <n> meshes, <n> controls, <n> channels, <n> property chain values
 <n> of <m> channels are not live in <file>: <attr> on <control>, ...
 ```
 
@@ -155,13 +155,14 @@ The plugin uses this subset of it:
 
 | Call | Use |
 | --- | --- |
-| `static Open(bytes, size, &error)` | Opens a `.rigexec` image held in memory |
-| `GetFrameTimes()` / `SetFrame(t, &error)` | Selects the base frame |
-| `SetAvar(path, value, &error)` / `ClearAvars()` | Live inputs |
+| `static Open(bytes, size, &error)` | Opens a `.rigexec` image held in memory; the inputs start at their bake-time values |
+| `SetInput(path, value, &error)` / `ResetInputs()` | Live inputs (`<control>.avars:tx`, `<control>.avars:ikfk`, …) |
+| `SetTaskDispatch(dispatch, wait)` | Runs the rig's clusters in parallel (the component passes `UE::Tasks`) |
 | `Execute(&error)` | Evaluates |
-| `GetPoints()` | Per-mesh deformed points (`path` is `<mesh>.points`) |
-| `GetControlFrame(path, double[16])` | A control or joint's posed frame, asset space, row-vector |
-| `HasPropertyChains()` | Whether the bake was `--poseable` |
+| `GetPoints()` | Per-mesh deformed points (`path` is `<mesh>.points`), shared buffers |
+| `GetProviderFramePublications()` | Every control and joint's posed frame, asset space |
+| `GetIkFkMatches()` | Each limb's IK/FK match values, for `SwitchLimb` |
+| `GetPropertyValues()` | The property chains' published values |
 
-It also offers `SetExternalKernel` for plugin movers, joint matrices,
-diagnostics and counters. See the header comments.
+It also offers `GetSpaceMatches`, `SetExternalKernel` for plugin movers, joint
+matrices, diagnostics and counters. See the header comments.

@@ -34,7 +34,7 @@ public:
 	URigExecComponent();
 	virtual ~URigExecComponent() override;
 
-	/** The rig: a poseable .rigexec (rigExecBake --poseable). Relative paths
+	/** The rig: a .rigexec (rigExecBake), every input settable. Relative paths
 	 * here and below are relative to the project directory. */
 	UPROPERTY(EditAnywhere, Category = "RigExec")
 	FFilePath RigExecFile;
@@ -111,9 +111,9 @@ public:
 	 * switch this rig can match. */
 	bool IsLimbSwitch(const FString& SwitchPath) const;
 	/** Hands the limb switched by `SwitchPath` to its other half without
-	 * moving it: the incoming half's controls are put on the limb's
-	 * current joints (offsets measured at rest by export_controls.py),
-	 * then the switch flips. Writes through the Control Rig with undo, so
+	 * moving it: the incoming half's channels take the values the rig's
+	 * IK/FK match published for the limb's current pose, the Control Rig's
+	 * controls follow, then the switch flips -- usdview's ikfkMatch.Plan. Writes through the Control Rig with undo, so
 	 * call it inside a transaction. False when there is no such limb. */
 	UFUNCTION(BlueprintCallable, Category = "RigExec")
 	bool SwitchLimb(const FString& SwitchPath);
@@ -295,20 +295,24 @@ private:
 	/** Puts a control on an asset-space frame (its translation only, when
 	 * `bTranslateOnly`) and evaluates, so what hangs below follows. */
 	bool PutControl(const FString& Path, const FMatrix& Asset, bool bTranslateOnly);
+	/** One IK/FK limb, as its RigExecIkFkMatchConstraint describes it. The
+	 * rig computes the match (the runtime's GetIkFkMatches); a switch writes
+	 * those values to the incoming half's writable channels. */
 	struct FLimbMap
 	{
+		/** The match constraint's prim path, as the runtime publishes it. */
+		FString Match;
 		FString Switch;
 		double IkValue = 1.0;
-		TArray<FString> Joints;
 		TArray<FString> FkControls;
 		FString IkControl;
-		FString Effector;
 		FString Pole;
-		/** control * joint^-1 per FK control, asset space. */
-		TArray<FMatrix> FkOffsets;
-		/** end joint * effector^-1, asset space. */
-		FMatrix EffectorOffset = FMatrix::Identity;
-		double PoleDistance = 0.0;
+		/** The channels the match's stretch, pin and twist inputs read, or
+		 * empty. */
+		FString UpperScale, LowerScale, Pin, Twist;
+		/** The channel paths a switch may write: the rig writes or drives
+		 * none of them. */
+		TSet<FString> Writable;
 	};
 	TArray<FLimbMap> LimbMaps;
 	bool bPlaced = false;
@@ -322,6 +326,11 @@ private:
 	 * a raw pointer for the same reason as Reader. */
 	struct FRigExecTouch;
 	FRigExecTouch* Touch = nullptr;
+	/** The runtime's published control and joint frames, gathered at most
+	 * once per evaluation (AssetFrame), and the parallel dispatcher the
+	 * reader runs its clusters through. Raw for the same reason as Reader. */
+	struct FRigExecFrames;
+	FRigExecFrames* FrameCache = nullptr;
 	double LastPoseTime = 0.0;
 	/** Reads the regions off the open stage; after the meshes and controls. */
 	void LoadTouchRegions();

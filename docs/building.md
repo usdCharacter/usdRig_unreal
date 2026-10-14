@@ -50,14 +50,15 @@ If the project has its own C++ code you can instead copy `Plugins\RigExec`
 
 ```
 RigExecLib/
-├── RigExecLib.Build.cs     adds include/ as a system include path and links the two libs
+├── RigExecLib.Build.cs     adds include/ as a system include path and links the four libs
 ├── include/
-│   ├── rigExecRuntime/     runtime.h, runtimeMath.h, store.h, values.h
-│   ├── rigExecBinary/      the .rigexec section readers runtime.h reaches
-│   └── rigExecMath/        header-only kernels the runtime's headers include
+│   ├── rigExecRuntime/     runtime.h, runtimeMath.h, values.h
+│   └── rigExecBinary/      external.h, wireTypes.h (what runtime.h reaches)
 ├── lib/Win64/
-│   ├── rigExecRuntime.lib
-│   └── rigExecBinary.lib
+│   ├── rigExecRuntime.lib  the runtime
+│   ├── rigExecBinary.lib   the .rigexec format (FlatBuffers)
+│   ├── rigExecGraph.lib    the op graph the runtime plays
+│   └── rigExecLzma.lib     the format's compression
 └── SOURCE.txt              usdRig commit, uncommitted changes, the files copied
 ```
 

@@ -17,6 +17,7 @@
 #include "DynamicMesh/DynamicMeshAABBTree3.h"
 #include "DynamicMesh/MeshNormals.h"
 #include "HAL/PlatformTime.h"
+#include "Tasks/Task.h"
 #include "ProfilingDebugging/CpuProfilerTrace.h"
 #include "Materials/MaterialInstanceDynamic.h"
 #include "Misc/FileHelper.h"
@@ -304,10 +305,66 @@ URigExecComponent::URigExecComponent()
 	PrimaryComponentTick.TickGroup = TG_PostUpdateWork;
 	bTickInEditor = true;
 }
+namespace
+{
+/** Tasks a reader launched and has not joined yet. The reader may launch
+ * from any task, so the list is locked. */
+struct FRigExecDispatch
+{
+	FCriticalSection Lock;
+	TArray<UE::Tasks::FTask> Tasks;
+};
+
+// Hands a reader Unreal's task system: its independent clusters (and the
+// split halves of a large skin) then run in parallel. Results are
+// bit-identical to the serial run.
+void
+UseTaskSystem(rigExec::RigExecRuntimeReader& Reader, const TSharedRef<FRigExecDispatch, ESPMode::ThreadSafe>& Dispatch)
+{
+	Reader.SetTaskDispatch(
+		[Dispatch](std::function<void()> Work)
+		{
+			UE::Tasks::FTask Task = UE::Tasks::Launch(UE_SOURCE_LOCATION, [Work = MoveTemp(Work)]() { Work(); });
+			FScopeLock Lock(&Dispatch->Lock);
+			Dispatch->Tasks.Add(MoveTemp(Task));
+		},
+		[Dispatch]()
+		{
+			// A task may launch more before it ends: join until none are left.
+			for (;;)
+			{
+				TArray<UE::Tasks::FTask> Batch;
+				{
+					FScopeLock Lock(&Dispatch->Lock);
+					Batch = MoveTemp(Dispatch->Tasks);
+					Dispatch->Tasks.Reset();
+				}
+				if (Batch.IsEmpty())
+				{
+					return;
+				}
+				UE::Tasks::Wait(Batch);
+			}
+		});
+}
+} // namespace
+
+/** The provider frames the last Execute published, by path, gathered on the
+ * first AssetFrame after it; and the dispatcher that runs the reader's
+ * clusters on Unreal's task system. */
+struct URigExecComponent::FRigExecFrames
+{
+	std::vector<rigExec::RigExecRuntimeProviderFrames> Published;
+	TMap<FString, int32> Index;
+	bool bStale = true;
+	TSharedRef<FRigExecDispatch, ESPMode::ThreadSafe> Dispatch = MakeShared<FRigExecDispatch, ESPMode::ThreadSafe>();
+};
+
 URigExecComponent::~URigExecComponent()
 {
 	delete Reader;
 	delete Touch;
+	delete FrameCache;
 }
 
 bool
@@ -322,10 +379,15 @@ URigExecComponent::Load()
 	}
 	std::string Error;
 	delete Reader;
+	delete FrameCache;
+	FrameCache = new FRigExecFrames;
+	// The inputs open at their bake-time values: the rig as it was baked.
 	Reader = rigExec::RigExecRuntimeReader::Open(Bytes.GetData(), size_t(Bytes.Num()), &Error).release();
-	const std::vector<double> Frames = Reader ? Reader->GetFrameTimes() : std::vector<double>();
-	if (!Reader || Frames.empty() || !Reader->SetFrame(Frames.front(), &Error) ||
-	    !Reader->Execute(&Error))
+	if (Reader)
+	{
+		UseTaskSystem(*Reader, FrameCache->Dispatch);
+	}
+	if (!Reader || !Reader->Execute(&Error))
 	{
 		UE_LOG(LogRigExec, Error, TEXT("cannot open the rig: %s"), UTF8_TO_TCHAR(Error.c_str()));
 		delete Reader;
@@ -557,9 +619,9 @@ URigExecComponent::Load()
 	}
 	LoadTouchRegions();
 	SetUpRenderPath();
-	UE_LOG(LogRigExec, Log, TEXT("loaded %s: %d meshes, %d controls, %d channels, property chains %s"),
+	UE_LOG(LogRigExec, Log, TEXT("loaded %s: %d meshes, %d controls, %d channels, %d property chain values"),
 	       *RigExecFile.FilePath, Meshes.Num(), ControlMaps.Num(), ChannelMaps.Num(),
-	       Reader->HasPropertyChains() ? TEXT("live") : TEXT("replayed"));
+	       int32(Reader->GetPropertyValues().size()));
 	return Meshes.Num() > 0;
 #else
 	UE_LOG(LogRigExec, Error, TEXT("this build has no USD; the meshes cannot be read"));
@@ -575,7 +637,7 @@ URigExecComponent::SetChannel(const FString& Channel, float Value)
 		return false;
 	}
 	std::string Why;
-	if (!Reader->SetAvar(TCHAR_TO_UTF8(*Channel), double(Value), &Why))
+	if (!Reader->SetInput(TCHAR_TO_UTF8(*Channel), double(Value), &Why))
 	{
 		UE_LOG(LogRigExec, Warning, TEXT("%s: %s"), *Channel, UTF8_TO_TCHAR(Why.c_str()));
 		return false;
@@ -588,7 +650,7 @@ URigExecComponent::ClearChannels()
 {
 	if (Reader)
 	{
-		Reader->ClearAvars();
+		Reader->ResetInputs();
 	}
 	// Back to the described defaults, so the next pull resends what moved.
 	for (FControlMap& Map : ControlMaps)
@@ -615,6 +677,10 @@ URigExecComponent::Evaluate()
 	{
 		TRACE_CPUPROFILER_EVENT_SCOPE(RigExec_Execute);
 		bExecuted = Reader->Execute(&Error);
+	}
+	if (FrameCache)
+	{
+		FrameCache->bStale = true;
 	}
 	if (!bExecuted)
 	{
@@ -865,7 +931,7 @@ URigExecComponent::LoadControls()
 		ChannelMaps.RemoveAll(
 			[this, &Dropped](const FChannelMap& Map)
 			{
-				if (Reader->SetAvar(TCHAR_TO_UTF8(*Map.Path), Map.Value, nullptr))
+				if (Reader->SetInput(TCHAR_TO_UTF8(*Map.Path), Map.Value, nullptr))
 				{
 					return false;
 				}
@@ -874,7 +940,7 @@ URigExecComponent::LoadControls()
 				                                                            ESearchDir::FromEnd))));
 				return true;
 			});
-		Reader->ClearAvars();
+		Reader->ResetInputs();
 		if (Dropped.Num() > 0)
 		{
 			UE_LOG(LogRigExec, Log, TEXT("%d of %d channels are not live in %s: %s"), Dropped.Num(), Described,
@@ -902,7 +968,7 @@ URigExecComponent::LoadControls()
 			}
 		}
 	}
-	// The IK/FK limbs and their rest offsets, for matching.
+	// The IK/FK limbs, from their match constraints, for switching.
 	LimbMaps.Reset();
 	const TArray<TSharedPtr<FJsonValue>>* Limbs = nullptr;
 	if (Root->TryGetArrayField(TEXT("limbs"), Limbs))
@@ -915,32 +981,29 @@ URigExecComponent::LoadControls()
 			}
 			return Out;
 		};
-		auto Matrix = [](const TArray<TSharedPtr<FJsonValue>>& V) {
-			FMatrix M = FMatrix::Identity;
-			for (int32 I = 0; I < 16 && I < V.Num(); ++I)
-			{
-				M.M[I / 4][I % 4] = V[I]->AsNumber();
-			}
-			return M;
-		};
 		for (const TSharedPtr<FJsonValue>& Value : *Limbs)
 		{
 			const TSharedPtr<FJsonObject> L = Value->AsObject();
 			FLimbMap Limb;
+			L->TryGetStringField(TEXT("match"), Limb.Match);
 			Limb.Switch = L->GetStringField(TEXT("switch"));
 			Limb.IkValue = L->GetNumberField(TEXT("ikValue"));
-			Limb.Joints = Strings(L, TEXT("joints"));
 			Limb.FkControls = Strings(L, TEXT("fkControls"));
 			Limb.IkControl = L->GetStringField(TEXT("ikControl"));
-			Limb.Effector = L->GetStringField(TEXT("effector"));
 			Limb.Pole = L->GetStringField(TEXT("pole"));
-			for (const TSharedPtr<FJsonValue>& Offset : L->GetArrayField(TEXT("fkOffsets")))
+			L->TryGetStringField(TEXT("upperScale"), Limb.UpperScale);
+			L->TryGetStringField(TEXT("lowerScale"), Limb.LowerScale);
+			L->TryGetStringField(TEXT("pin"), Limb.Pin);
+			L->TryGetStringField(TEXT("twist"), Limb.Twist);
+			const TArray<TSharedPtr<FJsonValue>>* Writable = nullptr;
+			if (L->TryGetArrayField(TEXT("writable"), Writable))
 			{
-				Limb.FkOffsets.Add(Matrix(Offset->AsArray()));
+				for (const TSharedPtr<FJsonValue>& Path : *Writable)
+				{
+					Limb.Writable.Add(Path->AsString());
+				}
 			}
-			Limb.EffectorOffset = Matrix(L->GetArrayField(TEXT("effectorOffset")));
-			Limb.PoleDistance = L->GetNumberField(TEXT("poleDistance"));
-			if (Limb.Joints.Num() == 3 && Limb.FkControls.Num() == 3 && Limb.FkOffsets.Num() == 3)
+			if (!Limb.Match.IsEmpty() && Limb.FkControls.Num() == 3)
 			{
 				LimbMaps.Add(MoveTemp(Limb));
 			}
@@ -989,7 +1052,7 @@ URigExecComponent::PullControls()
 			return;
 		}
 		std::string Why;
-		if (Reader->SetAvar(TCHAR_TO_UTF8(*Path), Value, &Why))
+		if (Reader->SetInput(TCHAR_TO_UTF8(*Path), Value, &Why))
 		{
 			Held = Value;
 			++Changed;
@@ -1284,14 +1347,44 @@ URigExecComponent::PickerFilePath() const
 bool
 URigExecComponent::AssetFrame(const FString& Path, FMatrix& Out) const
 {
-	double F[16];
-	if (!Reader || !Reader->GetControlFrame(TCHAR_TO_UTF8(*Path), F))
+	if (!Reader || !FrameCache)
 	{
 		return false;
 	}
-	for (int32 I = 0; I < 16; ++I)
+	// The last Execute's frames, gathered once however many controls ask.
+	if (FrameCache->bStale)
 	{
-		Out.M[I / 4][I % 4] = F[I];
+		FrameCache->Published = Reader->GetProviderFramePublications();
+		if (FrameCache->Index.Num() != int32(FrameCache->Published.size()))
+		{
+			FrameCache->Index.Reset();
+			for (int32 I = 0; I < int32(FrameCache->Published.size()); ++I)
+			{
+				FrameCache->Index.Add(UTF8_TO_TCHAR(FrameCache->Published[size_t(I)].path.c_str()), I);
+			}
+		}
+		FrameCache->bStale = false;
+	}
+	const int32* Slot = FrameCache->Index.Find(Path);
+	if (!Slot || *Slot >= int32(FrameCache->Published.size()))
+	{
+		return false;
+	}
+	// The provider's final frame: origin and the three axis points. As a
+	// row-vector matrix: the three handle vectors, then the origin.
+	const rigExec::RrPointFrame& Frame = FrameCache->Published[size_t(*Slot)].final;
+	const rigExec::RrVec3d& Origin = Frame.points[0];
+	Out = FMatrix::Identity;
+	for (int32 R = 0; R < 3; ++R)
+	{
+		for (int32 K = 0; K < 3; ++K)
+		{
+			Out.M[R][K] = Frame.points[size_t(R + 1)][K] - Origin[K];
+		}
+	}
+	for (int32 K = 0; K < 3; ++K)
+	{
+		Out.M[3][K] = Origin[K];
 	}
 	return true;
 }
@@ -1476,76 +1569,121 @@ URigExecComponent::SwitchLimb(const FString& SwitchPath)
 	const FLimbMap* Limb = LimbMaps.FindByPredicate([&](const FLimbMap& L) { return L.Switch == SwitchPath; });
 	UControlRig* Rig = ControlRig ? ControlRig->GetControlRig() : nullptr;
 	const FName SwitchElement = FindChannelElement(SwitchPath);
-	if (!Limb || !Rig || SwitchElement.IsNone())
+	if (!Limb || !Rig || !Reader || SwitchElement.IsNone())
 	{
 		return false;
 	}
-	// Start from what the rig shows now.
+	// Start from what the rig shows now, evaluated: the match outputs are
+	// for the pose on screen.
 	PullControls();
-	const double FkValue = 1.0 - Limb->IkValue;
-	const double Now = Rig->GetControlValue(SwitchElement).Get<float>();
-	const bool bToIk = FMath::Abs(Now - Limb->IkValue) >= FMath::Abs(Now - FkValue);
-	FMatrix Joints[3];
-	for (int32 J = 0; J < 3; ++J)
+	Evaluate();
+	const bool bToIk = !IsLimbIk(SwitchPath);
+	const std::string MatchPath(TCHAR_TO_UTF8(*Limb->Match));
+	const std::vector<rigExec::RigExecRuntimeIkFkMatch> Matches = Reader->GetIkFkMatches();
+	const rigExec::RigExecRuntimeIkFkMatch* Match = nullptr;
+	for (const rigExec::RigExecRuntimeIkFkMatch& M : Matches)
 	{
-		if (!AssetFrame(Limb->Joints[J], Joints[J]))
+		if (M.path == MatchPath)
+		{
+			Match = &M;
+			break;
+		}
+	}
+	const std::vector<double>* Values = Match ? (bToIk ? &Match->ikValues : &Match->fkValues) : nullptr;
+	if (!Values || Values->size() != (bToIk ? 11u : 20u))
+	{
+		UE_LOG(LogRigExec, Warning, TEXT("%s published no %s values"), *Limb->Match, bToIk ? TEXT("IK") : TEXT("FK"));
+		return false;
+	}
+	for (const double V : *Values)
+	{
+		if (!FMath::IsFinite(V))
 		{
 			return false;
 		}
 	}
-	// Row vectors throughout, as ikfkMatch: a child's frame is local *
-	// parent. The inactive half moves nothing while it is inactive, so the
-	// joints read above stay the target while its controls are placed.
+	// {channel: value} for the incoming half, the writable channels only:
+	// ikfkMatch.Match. IK: the IK control's translate and rotate, the
+	// pole's translate, the two stretch scales. FK: each FK control's
+	// translate and rotate, the two stretch scales, pin and twist cleared.
+	static const TCHAR* const Avars[] = {TEXT("tx"), TEXT("ty"), TEXT("tz"), TEXT("rx"), TEXT("ry"), TEXT("rz")};
+	TArray<TPair<FString, double>> Writes;
+	auto Put = [&](const FString& Control, int32 First, int32 Count)
+	{
+		for (int32 I = 0; I < Count; ++I)
+		{
+			const FString Path = Control + TEXT(".avars:") + Avars[I];
+			if (Limb->Writable.Contains(Path))
+			{
+				Writes.Emplace(Path, (*Values)[size_t(First + I)]);
+			}
+		}
+	};
+	auto Channel = [&](const FString& Path, double V)
+	{
+		if (!Path.IsEmpty() && Limb->Writable.Contains(Path))
+		{
+			Writes.Emplace(Path, V);
+		}
+	};
+	TArray<FString> Incoming;
 	if (bToIk)
 	{
-		FMatrix Control, Effector;
-		if (!AssetFrame(Limb->IkControl, Control) || !AssetFrame(Limb->Effector, Effector))
-		{
-			return false;
-		}
-		// The effector rides the IK control (through a foot's roll stack,
-		// whose current values are kept): carry that relationship as is.
-		const FMatrix Carry = Effector * Control.Inverse();
-		const FMatrix Target = Carry.Inverse() * (Limb->EffectorOffset.Inverse() * Joints[2]);
-		PutControl(Limb->IkControl, Target, false);
-		FMatrix Pole;
-		if (!Limb->Pole.IsEmpty() && Limb->PoleDistance > 0.0 && AssetFrame(Limb->Pole, Pole))
-		{
-			// On the bend plane, on the side the middle joint bends toward;
-			// a limb too straight for a plane keeps the pole's direction.
-			const FVector Root = Joints[0].GetOrigin();
-			const FVector Middle = Joints[1].GetOrigin();
-			const FVector Line = Joints[2].GetOrigin() - Root;
-			FVector Where = Pole.GetOrigin();
-			if (Line.Size() > 1e-9)
-			{
-				const FVector Axis = Line.GetUnsafeNormal();
-				FVector Bend = (Middle - Root) - Axis * FVector::DotProduct(Middle - Root, Axis);
-				if (Bend.Size() <= 1e-4 * Line.Size())
-				{
-					Bend = Where - Middle;
-					Bend -= Axis * FVector::DotProduct(Bend, Axis);
-				}
-				if (Bend.Size() > 1e-9)
-				{
-					Where = Middle + Bend.GetUnsafeNormal() * Limb->PoleDistance;
-				}
-			}
-			FMatrix PoleTarget = Pole;
-			PoleTarget.SetOrigin(Where);
-			PutControl(Limb->Pole, PoleTarget, true);
-		}
+		Put(Limb->IkControl, 0, 6);
+		Put(Limb->Pole, 6, 3);
+		Channel(Limb->UpperScale, (*Values)[9]);
+		Channel(Limb->LowerScale, (*Values)[10]);
+		Incoming = {Limb->IkControl, Limb->Pole};
 	}
 	else
 	{
-		// Root to end, each control evaluated before the next is placed.
-		for (int32 J = 0; J < 3; ++J)
+		for (int32 C = 0; C < 3; ++C)
 		{
-			PutControl(Limb->FkControls[J], Limb->FkOffsets[J] * Joints[J], false);
+			Put(Limb->FkControls[C], C * 6, 6);
+		}
+		Channel(Limb->UpperScale, (*Values)[18]);
+		Channel(Limb->LowerScale, (*Values)[19]);
+		Channel(Limb->Pin, 0.0);
+		Channel(Limb->Twist, 0.0);
+		Incoming = Limb->FkControls;
+	}
+	// Pose the incoming half in the rig and read each control's frame back,
+	// then put the Control Rig's controls on those frames (root to end; a
+	// control placed before its child carries the child's frame along).
+	for (const TPair<FString, double>& Write : Writes)
+	{
+		Reader->SetInput(TCHAR_TO_UTF8(*Write.Key), Write.Value, nullptr);
+	}
+	Evaluate();
+	TArray<TPair<FString, FMatrix>> Targets;
+	for (const FString& Control : Incoming)
+	{
+		FMatrix Frame;
+		if (!Control.IsEmpty() && AssetFrame(Control, Frame))
+		{
+			Targets.Emplace(Control, Frame);
 		}
 	}
-	Rig->SetControlValue<float>(SwitchElement, float(bToIk ? Limb->IkValue : FkValue), true,
-	                            FRigControlModifiedContext(EControlRigSetKey::DoNotCare), true);
+	for (const TPair<FString, FMatrix>& Target : Targets)
+	{
+		PutControl(Target.Key, Target.Value, false);
+	}
+	// The channels that are not transforms: the Control Rig's animation
+	// channels, so they are keyed and kept.
+	const FRigControlModifiedContext Context(EControlRigSetKey::DoNotCare);
+	for (const TPair<FString, double>& Write : Writes)
+	{
+		if (Write.Key.Contains(TEXT(".avars:t")) || Write.Key.Contains(TEXT(".avars:r")))
+		{
+			continue;
+		}
+		const FName Element = FindChannelElement(Write.Key);
+		if (!Element.IsNone())
+		{
+			Rig->SetControlValue<float>(Element, float(Write.Value), true, Context, true);
+		}
+	}
+	Rig->SetControlValue<float>(SwitchElement, float(bToIk ? Limb->IkValue : 1.0 - Limb->IkValue), true, Context, true);
 	PullControls();
 	return true;
 }

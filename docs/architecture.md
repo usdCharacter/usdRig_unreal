@@ -9,13 +9,15 @@ usdRig evaluates rigs with OpenExec inside USD. Unreal has no OpenExec, and
 its USD build is not the one usdRig compiles against. The plugin therefore
 does not evaluate the USD rig. It evaluates a **baked program**:
 
-1. `rigExecBake --poseable` compiles the rig into a `.rigexec` file. This is a
-   binary image of the rig's step tables, poses, weights, geometry revisions
-   and (with `--poseable`) its property chains as programs.
-2. `RigExecRuntimeReader` (from usdRig's `libs/rigExecRuntime`) replays that
-   program in plain C++17, with no USD. It takes new avar values with
-   `SetAvar`, re-runs with `Execute`, and hands back deformed points and
-   control frames.
+1. `rigExecBake` compiles the rig into a `.rigexec` file: one FlatBuffer
+   holding the rig's static graph, with every attribute the rig reads as an
+   **input** at its value at the bake time.
+2. `RigExecRuntimeReader` (from usdRig's `libs/rigExecRuntime`) plays that
+   graph in plain C++17, with no USD. It takes new input values with
+   `SetInput`, re-runs with `Execute`, and hands back deformed points,
+   control and joint frames, and the rig's own IK/FK and space matches.
+   Its independent clusters run in parallel on Unreal's task system (see
+   [Parallel evaluation](#parallel-evaluation)).
 3. The plugin feeds Control Rig values in as avars and draws the points as
    `UDynamicMeshComponent`s.
 
@@ -174,7 +176,7 @@ Each tick, `PullControls()`:
    nearest the last sent values so angles unwrap continuously. It applies
    `avars:rotationSign` and divides translation by `avars:unitScaleFactor`.
 3. Sends each transform avar (`avars:tx` … `avars:sz`) that the control
-   carries, and each animation channel's value, through `SetAvar`. Only
+   carries, and each animation channel's value, through `SetInput`. Only
    values that changed by more than 1e-5 are sent.
 4. If anything changed, it calls `Evaluate()`. This runs `Execute` and writes
    the new points into each dynamic mesh. It recomputes normals from the
@@ -188,7 +190,8 @@ the hierarchy reads.
 ### Controls follow the rig
 
 After each evaluation the rig knows where every control actually is.
-`RigExecRuntimeReader::GetControlFrame` returns it, and IK, space switches
+The runtime publishes it (`GetProviderFramePublications`, gathered once per
+evaluation and looked up by path), and IK, space switches
 and constraints all move controls. `PlaceControls` rewrites each control's
 **offset** so that its gizmo lands on that frame:
 
@@ -235,9 +238,19 @@ describes each IK/FK limb for matching. See
 [rig-preparation.md](rig-preparation.md#the-controls-file) for the full
 format.
 
-At load, each channel is tried against the runtime with `SetAvar`. Any it
-refuses is dropped, and the dropped channels are logged in one line. A mode
-switch the bake read as a constant is an example.
+At load, each channel is tried against the runtime with `SetInput`. Any it
+refuses (an attribute the rig does not read) is dropped, and the dropped
+channels are logged in one line.
+
+## Parallel evaluation
+
+At load the component hands the reader a dispatcher
+(`RigExecRuntimeReader::SetTaskDispatch`) built on `UE::Tasks`: the
+runtime launches each cluster its DAG allows to run, and the large skins
+split into chunks, as tasks, and the component joins them. The results are
+bit-identical to a serial run. On the biped this takes an evaluation and
+mesh update from about 34 ms to about 5 ms, and a full pose with every gizmo
+placed from about 50 ms to about 15 ms.
 
 ## Coordinates and units
 
@@ -434,14 +447,17 @@ TouchPose plug-in (`usdRig/plugin/touchPose`) onto the dynamic meshes.
 
 ## IK/FK matching
 
-`SwitchLimb` hands a limb to its other half without moving it:
+`SwitchLimb` hands a limb to its other half without moving it, as usdview's
+`ikfkMatch.Plan` does. The rig computes the match itself: each limb's
+`RigExecIkFkMatchConstraint` publishes, every evaluation, the values that
+put each half on the limb's current joints (`GetIkFkMatches`: 11 for IK,
+20 for FK).
 
-- **To FK:** each FK control is put on `fkOffset × joint`, root to end,
-  evaluating after each one so children follow.
-- **To IK:** the IK control is placed so the effector lands on the end joint
-  (`effectorOffset⁻¹ × endJoint`). Any roll stack between the control and
-  the effector is carried as it is. The pole goes onto the bend plane, at the
-  rest distance, on the side the middle joint bends toward. A straight limb
-  keeps the pole's direction.
-- Then the switch channel flips. The offsets are measured at rest by
-  `export_controls.py`, using usdRig's own `ikfkMatch` model.
+- The incoming half's channels take those values, the writable ones only:
+  for IK, the IK control's translate and rotate, the pole's translate and the
+  two stretch scales; for FK, each FK control's translate and rotate and the
+  stretch scales, with pin and twist cleared.
+- The rig evaluates, and the Control Rig's controls are put on the frames the
+  rig now publishes for them, root to end. The stretch, pin and twist
+  channels are set on the Control Rig too, so they key and stay.
+- Then the switch channel flips.

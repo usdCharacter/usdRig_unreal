@@ -3,8 +3,8 @@ Refreshes the plugin's vendored RigExec runtime from a usdRig checkout.
 
     python Tools/update_rigexec_lib.py [<usdRig root>] [--force]
 
-The plugin links rigExecRuntime and rigExecBinary as static libraries
-(plain C++17, no USD). This copies them from <usdRig>/build, and copies the
+The plugin links rigExecRuntime and what it needs -- rigExecBinary,
+rigExecGraph and rigExecLzma -- as static libraries (plain C++17, no USD). This copies them from <usdRig>/build, and copies the
 headers runtime.h reaches through its includes from <usdRig>/libs, into
 Plugins/RigExec/Source/ThirdParty/RigExecLib. The previous copy is removed
 first so a header the runtime stopped using does not linger. SOURCE.txt
@@ -25,7 +25,7 @@ import sys
 _HERE = os.path.dirname(os.path.abspath(__file__))
 _REPO = os.path.dirname(_HERE)
 _DEST = os.path.join(_REPO, "Plugins", "RigExec", "Source", "ThirdParty", "RigExecLib")
-_LIBS = ("rigExecRuntime.lib", "rigExecBinary.lib")
+_LIBS = ("rigExecRuntime.lib", "rigExecBinary.lib", "rigExecGraph.lib", "rigExecLzma.lib")
 _ENTRY = "rigExecRuntime/runtime.h"
 
 
@@ -79,6 +79,8 @@ def main(argv):
     stale = set()
     for name in _LIBS:
         sub = os.path.splitext(name)[0]
+        if not os.path.isdir(os.path.join(libs, sub)):
+            continue  # built from third_party (rigExecLzma), not libs/
         built = os.path.getmtime(os.path.join(build, name))
         inputs = HeaderClosure(libs, *[sub + "/" + f for f in os.listdir(os.path.join(libs, sub))
                                        if f.endswith((".cpp", ".h"))])
@@ -100,7 +102,7 @@ def main(argv):
 
     commit = _Git(root, "rev-parse", "HEAD") or "unknown"
     dirty = _Git(root, "status", "--porcelain", "--", "libs/rigExecRuntime",
-                 "libs/rigExecBinary", "libs/rigExecMath")
+                 "libs/rigExecBinary", "libs/rigExecGraph", "libs/rigExecMath")
     with open(os.path.join(_DEST, "SOURCE.txt"), "w", encoding="utf-8", newline="\n") as f:
         f.write("usdRig commit: %s\n" % commit)
         if dirty:

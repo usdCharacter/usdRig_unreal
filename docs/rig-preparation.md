@@ -9,7 +9,7 @@ A character needs three files:
 
 | File | Made by | Read by |
 | --- | --- | --- |
-| `<Name>.rigexec` | `rigExecBake --poseable` | `URigExecComponent` (the binary runtime) |
+| `<Name>.rigexec` | `rigExecBake` | `URigExecComponent` (the binary runtime) |
 | `<Name>_controls.json` | `Scripts/export_controls.py`, then `build_control_rig.py` adds the element names | `build_control_rig.py`, `URigExecComponent` |
 | `<Name>_picker.json` | `Scripts/export_picker.py` | The RigExec Picker tab (optional) |
 
@@ -38,7 +38,7 @@ From a shell where usdRig's environment is set up
 (`call ..\usdRig\bin\_env.bat`):
 
 ```bat
-rigExecBake <stage.usda> --rig <rig prim> --frames 1 --poseable -o <Name>.rigexec
+rigExecBake <stage.usda> --rig <rig prim> --time 1 -o <Name>.rigexec
 "%PY%" Scripts\export_controls.py <stage.usda> <Name>_controls.json [<rig prim>]
 "%PY%" Scripts\export_picker.py   <stage.usda> <Name>_picker.json
 ```
@@ -46,15 +46,17 @@ rigExecBake <stage.usda> --rig <rig prim> --frames 1 --poseable -o <Name>.rigexe
 Keep the three files together. The picker is found by name from the
 controls file (`X_controls.json` → `X_picker.json`).
 
-### `rigExecBake --poseable`
+### `rigExecBake`
 
-- `--poseable` stores the rig's **property chains** as programs. Without
-  it, chains replay their recorded values, so a face slider that drives only
-  chains (and every intermediate avar) does nothing in Unreal. The load log
-  says `property chains live` or `property chains replayed`.
-- `--frames 1` is enough. Unreal poses from avars, not from baked frames. The
-  component selects the first baked frame as the base pose.
+- Every attribute the rig reads becomes an **input** of the `.rigexec`, at
+  its value at `--time` (default: the stage's start time). Unreal poses by
+  setting inputs, so face sliders, `ikfk`, `space` and every other avar are
+  live, and property chains run as the rig's own programs.
+- `--time 1` bakes the biped's rest pose. Unreal poses from inputs, not from
+  baked frames.
 - `--rig` picks the rig prim when the stage has more than one.
+- Bake with the same usdRig the plugin's runtime was copied from (see
+  `SOURCE.txt`): the format is versioned.
 
 ### `export_controls.py`
 
@@ -74,8 +76,10 @@ This walks the rig's controls and writes, for each one:
 - every other animatable avar on it (double/float/int/bool), such as
   `ikfk`, `space` or face sliders, with its default, slider range, hard
   clamp and labels
-- every IK/FK limb, with its joints, FK controls, IK control, effector, pole
-  and rest offsets, so the picker can match a switch
+- every IK/FK limb, from its match constraint: the switch, the FK controls,
+  IK control and pole, the stretch, pin and twist channels, and the channels
+  a switch may write. The rig computes the match itself, so nothing is
+  measured here
 
 It imports usdRig's usdview plug-in models (`gizmoMath`, `avarEditorModel`,
 `ikfkMatch`) from `<usdRig>/plugin/rigExecUsdview`. The usdRig root is
@@ -107,7 +111,7 @@ without a path renderer. It needs the Qt that usdview uses
   "assetToWorld": [16 numbers],          // asset placement, USD row-vector, row-major
   "controls": [
     {
-      "path": "/Biped/Rig/.../L_Arm",    // rig prim path (what SetAvar / GetControlFrame take)
+      "path": "/Biped/Rig/.../L_Arm",    // rig prim path (inputs are "<path>.avars:tx" and so on)
       "name": "L_Arm",
       "animator": true,                  // false: a rig helper
       "kind": "null",                    // present for helpers: drawn as a Control Rig null
@@ -140,14 +144,15 @@ without a path renderer. It needs the Qt that usdview uses
   ],
   "limbs": [
     {
+      "match": "/Biped/Rig/Movers/.../arm_l_match",   // the RigExecIkFkMatchConstraint
       "switch": "/.../L_Arm.avars:ikfk",
       "ikValue": 1.0,                    // the switch value meaning IK
       "joints": [root, middle, end],
       "fkControls": [3 paths],
       "ikControl": "...", "effector": "...", "pole": "...",
-      "fkOffsets": [[16], [16], [16]],   // control · joint⁻¹ per FK control, at rest
-      "effectorOffset": [16],            // end joint · effector⁻¹, at rest
-      "poleDistance": 42.0
+      "upperScale": "/.../L_Arm.avars:stretchTop",    // the match's inputs, or ""
+      "lowerScale": "...", "pin": "...", "twist": "...",
+      "writable": ["/.../L_ArmIK.avars:tx", ...]      // channels a switch may write
     }
   ]
 }
@@ -209,12 +214,10 @@ hands it to `RigExecRuntimeReader::Open`.
 
 ## What the runtime can and cannot pose
 
-- **Live:** transform avars on controls (`avars:tx` … `avars:sz`), and any
-  input a property chain reads when the bake is `--poseable` (face sliders,
-  `ikfk`, `space`, and so on).
-- **Refused, so dropped at load:** a property chain's own output, and
-  anything the bake folded into a constant. The component logs
-  `N of M channels are not live in <file>: …`.
+- **Live:** every attribute the rig reads: transform avars on controls
+  (`avars:tx` … `avars:sz`), face sliders, `ikfk`, `space`, and so on.
+- **Refused, so dropped at load:** a channel the rig never reads. The
+  component logs `N of M channels are not live in <file>: …`.
 - **Plugin movers** (revision opcode 16) need a kernel installed with
   `SetExternalKernel`. The plugin installs none, so those movers pass their
   points through, and the runtime names them in every `Execute`'s
