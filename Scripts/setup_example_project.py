@@ -1,7 +1,8 @@
 """
 Builds the RigExecBiped example project's content once: the Control Rig,
-a level with the character, a floor and lights, and a Level Sequence
-holding the character's Control Rig track. Everything is saved, so anyone
+a level with the character, a floor and lights, a Level Sequence
+holding the character's Control Rig track, and the game (setup_game.py):
+the baked character asset and a level to run around in. Everything is saved, so anyone
 opening the project lands on a posable character.
 
 Runs inside the Unreal Editor (as a project startup script for one launch)
@@ -25,6 +26,7 @@ import unreal
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import build_control_rig  # noqa: E402
+import setup_game  # noqa: E402
 import spawn_rig  # noqa: E402
 
 RIG = "RigExecData/Biped.rigexec"
@@ -146,7 +148,11 @@ def Setup():
     if not levels.save_current_level():
         raise RuntimeError("could not save %s" % LEVEL)
     unreal.SystemLibrary.execute_console_command(world, "DumpUnbuiltLightInteractions")
-    unreal.log("RigExec: example project ready (%s, %s)" % (LEVEL, SEQUENCE))
+
+    # The game: the character baked into one asset (no USD at runtime) and
+    # a level to run around in.
+    setup_game.Setup(RIG, STAGE, controls)
+    unreal.log("RigExec: example project ready (%s, %s, %s)" % (LEVEL, SEQUENCE, setup_game.LEVEL))
 
 
 _state = {"wait": 150, "busy": False}
