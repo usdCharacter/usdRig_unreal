@@ -5,6 +5,14 @@
 #include "Modules/ModuleManager.h"
 
 #include "ControlRig.h"
+#include "Misc/Paths.h"
+#include "RigExecCharacter.h"
+#include "RigExecComponent.h"
+#include "UObject/Package.h"
+#include "UObject/SavePackage.h"
+#if WITH_EDITOR
+#include "AssetRegistry/AssetRegistryModule.h"
+#endif
 #include "ControlRigGizmoLibrary.h"
 #if WITH_EDITOR
 #include "EditMode/ControlRigEditMode.h"
@@ -24,6 +32,7 @@ THIRD_PARTY_INCLUDES_START
 #pragma pop_macro("check")
 THIRD_PARTY_INCLUDES_END
 
+#include <algorithm>
 #include <cmath>
 #include <string>
 
@@ -94,6 +103,123 @@ URigExecRuntimeLibrary::RigExecSelfTest(const FString& RigExecFile, const FStrin
 	return Report;
 }
 
+namespace
+{
+// Every output a rig publishes, flattened, for telling whether a nudge
+// moved it: the points, then each provider's final frame.
+std::vector<double>
+Snapshot(const rigExec::RigExecRuntimeReader& Reader)
+{
+	std::vector<double> Out;
+	for (const auto& Mesh : Reader.GetPoints())
+	{
+		for (const auto& P : Mesh.points)
+		{
+			Out.insert(Out.end(), {double(P[0]), double(P[1]), double(P[2])});
+		}
+	}
+	for (const auto& Frames : Reader.GetProviderFramePublications())
+	{
+		for (const auto& P : Frames.final.points)
+		{
+			Out.insert(Out.end(), {P[0], P[1], P[2]});
+		}
+	}
+	return Out;
+}
+} // namespace
+
+FString
+URigExecRuntimeLibrary::RigExecInspect(const FString& RigExecFile)
+{
+	TArray<uint8> Bytes;
+	if (!FFileHelper::LoadFileToArray(Bytes, *RigExecFile))
+	{
+		return FString::Printf(TEXT("FAILED cannot read %s"), *RigExecFile);
+	}
+	std::string Error;
+	std::unique_ptr<rigExec::RigExecRuntimeReader> Reader =
+		rigExec::RigExecRuntimeReader::Open(Bytes.GetData(), size_t(Bytes.Num()), &Error);
+	if (!Reader)
+	{
+		return FString::Printf(TEXT("FAILED open: %s"), UTF8_TO_TCHAR(Error.c_str()));
+	}
+	if (!Reader->Execute(&Error))
+	{
+		return FString::Printf(TEXT("FAILED execute: %s"), UTF8_TO_TCHAR(Error.c_str()));
+	}
+	FString Body;
+	const std::vector<std::string> External = Reader->GetExternalMoverTypes();
+	const std::vector<std::string> Missing = Reader->GetMissingExternalKernels();
+	size_t PointCount = 0;
+	for (const auto& Mesh : Reader->GetPoints())
+	{
+		PointCount += Mesh.points.size();
+	}
+	Body += FString::Printf(TEXT("  %d inputs, %d point outputs (%d points), %d frames, %d property values\n"),
+	                        int32(Reader->GetInputCount()), int32(Reader->GetPoints().size()), int32(PointCount),
+	                        int32(Reader->GetProviderFramePublications().size()), int32(Reader->GetPropertyValues().size()));
+	for (const std::string& Type : External)
+	{
+		Body += FString::Printf(TEXT("  plugin mover %s%s\n"), UTF8_TO_TCHAR(Type.c_str()),
+		                        std::find(Missing.begin(), Missing.end(), Type) != Missing.end() ? TEXT(" (no kernel: its points pass through)") : TEXT(""));
+	}
+	for (const std::string& Line : Reader->GetDiagnostics())
+	{
+		Body += FString::Printf(TEXT("  diagnostic: %s\n"), UTF8_TO_TCHAR(Line.c_str()));
+	}
+	const std::vector<double> Rest = Snapshot(*Reader);
+	int32 Numbers = 0, Moving = 0;
+	double Seconds = 0.0;
+	TArray<FString> Movers;
+	for (size_t I = 0; I < Reader->GetInputCount(); ++I)
+	{
+		const rigExec::RigExecRuntimeInputInfo& Info = Reader->GetInputInfo(I);
+		if (Info.type != rigExec::RrInputTag::Double && Info.type != rigExec::RrInputTag::Float)
+		{
+			continue;
+		}
+		++Numbers;
+		const double Default = Info.type == rigExec::RrInputTag::Double ? Info.defaultValue.f64 : double(Info.defaultValue.f32);
+		if (!Reader->SetInput(Info.name, Default + 0.5, &Error))
+		{
+			continue;
+		}
+		const double Start = FPlatformTime::Seconds();
+		if (!Reader->Execute(&Error))
+		{
+			return FString::Printf(TEXT("FAILED execute with %s nudged: %s\n"), UTF8_TO_TCHAR(Info.name.c_str()),
+			                       UTF8_TO_TCHAR(Error.c_str())) + Body;
+		}
+		Seconds += FPlatformTime::Seconds() - Start;
+		const std::vector<double> Now = Snapshot(*Reader);
+		double Moved = 0.0;
+		for (size_t K = 0; K < Now.size() && K < Rest.size(); ++K)
+		{
+			Moved = FMath::Max(Moved, FMath::Abs(Now[K] - Rest[K]));
+		}
+		if (Moved > 1e-6)
+		{
+			++Moving;
+			if (Movers.Num() < 6)
+			{
+				Movers.Add(FString::Printf(TEXT("%s (%.3g)"), UTF8_TO_TCHAR(Info.name.c_str()), Moved));
+			}
+		}
+		Reader->ResetInput(Info.name, &Error);
+	}
+	Reader->Execute(&Error);
+	const bool bBack = Snapshot(*Reader) == Rest;
+	Body += FString::Printf(TEXT("  %d of %d number inputs move the rig; %.2f ms an evaluation; reset %s\n"), Moving, Numbers,
+	                        Numbers ? Seconds * 1000.0 / Numbers : 0.0, bBack ? TEXT("restores the rest pose") : TEXT("DOES NOT restore the rest pose"));
+	if (Movers.Num() > 0)
+	{
+		Body += TEXT("  e.g. ") + FString::Join(Movers, TEXT(", ")) + TEXT("\n");
+	}
+	const bool bOk = Missing.empty() && bBack && (Moving > 0 || Numbers == 0);
+	return FString::Printf(TEXT("%s %s\n"), bOk ? TEXT("OK") : TEXT("CHECK"), *FPaths::GetCleanFilename(RigExecFile)) + Body;
+}
+
 bool
 URigExecRuntimeLibrary::ShowControlRigInViewport(UControlRig* ControlRig)
 {
@@ -144,5 +270,99 @@ URigExecRuntimeLibrary::SetControlsAsOverlay(bool bOverlay)
 	return true;
 #else
 	return false;
+#endif
+}
+
+URigExecCharacter*
+URigExecRuntimeLibrary::BakeCharacter(const FString& RigExecFile, const FString& StageFile, const FString& ControlsFile,
+                                      const FString& AssetPath)
+{
+#if WITH_EDITOR
+	auto Full = [](const FString& Path)
+	{
+		return Path.IsEmpty() || !FPaths::IsRelative(Path) ? Path : FPaths::ConvertRelativePathToFull(FPaths::ProjectDir(), Path);
+	};
+	TArray<uint8> Bytes;
+	if (!FFileHelper::LoadFileToArray(Bytes, *Full(RigExecFile)))
+	{
+		UE_LOG(LogTemp, Error, TEXT("BakeCharacter: cannot read %s"), *RigExecFile);
+		return nullptr;
+	}
+	std::string Error;
+	const std::unique_ptr<rigExec::RigExecRuntimeReader> Reader =
+		rigExec::RigExecRuntimeReader::Open(Bytes.GetData(), size_t(Bytes.Num()), &Error);
+	if (!Reader || !Reader->Execute(&Error))
+	{
+		UE_LOG(LogTemp, Error, TEXT("BakeCharacter: cannot open the rig: %s"), UTF8_TO_TCHAR(Error.c_str()));
+		return nullptr;
+	}
+	TArray<FString> Properties;
+	for (const auto& Points : Reader->GetPoints())
+	{
+		Properties.Add(UTF8_TO_TCHAR(Points.path.c_str()));
+	}
+	FRigExecMeshSet Set;
+	FString Why;
+	if (!URigExecComponent::ReadStageMeshes(Full(StageFile), Properties, Set, Why))
+	{
+		UE_LOG(LogTemp, Error, TEXT("BakeCharacter: %s: %s"), *StageFile, *Why);
+		return nullptr;
+	}
+	FString Controls, Picker;
+	if (!ControlsFile.IsEmpty())
+	{
+		if (!FFileHelper::LoadFileToString(Controls, *Full(ControlsFile)))
+		{
+			UE_LOG(LogTemp, Error, TEXT("BakeCharacter: cannot read %s"), *ControlsFile);
+			return nullptr;
+		}
+		// Biped_controls.json -> Biped_picker.json, when there is one.
+		const FString ControlsPath = Full(ControlsFile);
+		const int32 At = ControlsPath.Find(TEXT("_controls"), ESearchCase::CaseSensitive, ESearchDir::FromEnd);
+		if (At != INDEX_NONE)
+		{
+			FFileHelper::LoadFileToString(Picker, *(ControlsPath.Left(At) + TEXT("_picker.json")));
+		}
+	}
+
+	const FString PackageName = FPackageName::ObjectPathToPackageName(AssetPath);
+	const FString Name = FPackageName::GetShortName(PackageName);
+	UPackage* Package = CreatePackage(*PackageName);
+	Package->FullyLoad();
+	URigExecCharacter* Character = FindObject<URigExecCharacter>(Package, *Name);
+	const bool bNew = Character == nullptr;
+	if (bNew)
+	{
+		Character = NewObject<URigExecCharacter>(Package, *Name, RF_Public | RF_Standalone);
+	}
+	Character->Modify();
+	Character->SourceRigExec = RigExecFile;
+	Character->SourceStage = StageFile;
+	Character->SourceControls = ControlsFile;
+	Character->Program = MoveTemp(Bytes);
+	Character->Controls = MoveTemp(Controls);
+	Character->Picker = MoveTemp(Picker);
+	Character->MeshSet = MoveTemp(Set);
+	Character->MeshCount = Character->MeshSet.Meshes.Num();
+	Character->TouchRegionCount = Character->MeshSet.Regions.Num();
+	Character->RigExecBytes = Character->Program.Num();
+	Character->MarkPackageDirty();
+	if (bNew)
+	{
+		FAssetRegistryModule::AssetCreated(Character);
+	}
+	FSavePackageArgs Args;
+	Args.TopLevelFlags = RF_Public | RF_Standalone;
+	const FString File = FPackageName::LongPackageNameToFilename(PackageName, FPackageName::GetAssetPackageExtension());
+	if (!UPackage::SavePackage(Package, Character, *File, Args))
+	{
+		UE_LOG(LogTemp, Error, TEXT("BakeCharacter: cannot save %s"), *File);
+		return nullptr;
+	}
+	UE_LOG(LogTemp, Log, TEXT("BakeCharacter: %s: %d meshes, %d touch regions, %d rig bytes"), *AssetPath,
+	       Character->MeshCount, Character->TouchRegionCount, Character->RigExecBytes);
+	return Character;
+#else
+	return nullptr;
 #endif
 }

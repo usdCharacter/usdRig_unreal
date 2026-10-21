@@ -25,6 +25,7 @@
 #include "UDynamicMesh.h"
 #include "UnrealUSDWrapper.h"
 #include "UsdWrappers/UsdStage.h"
+#include "RigExecCharacter.h"
 
 // Unreal builds USD into the editor only; a packaged game loads no stage.
 #if USE_USD_SDK
@@ -183,12 +184,7 @@ DecomposeEuler(const FRot3& Rot, int32 Order, const double Hint[3], double Out[3
 #if USE_USD_SDK
 // A material's look as a UsdPreviewSurface states it; anything else (a
 // procedural shader) keeps the neutral default.
-struct FLook
-{
-	FLinearColor Color = FLinearColor(0.7f, 0.7f, 0.7f);
-	float Roughness = 0.6f;
-	float Metallic = 0.0f;
-};
+using FLook = FRigExecSurfaceLook;
 
 FLook
 ReadLook(const pxr::UsdShadeMaterial& Material)
@@ -215,6 +211,166 @@ ReadLook(const pxr::UsdShadeMaterial& Material)
 		Look.Metallic = Value;
 	}
 	return Look;
+}
+
+// Every mesh's touch regions, as usdview's TouchPose opens them: for each
+// mesh, the first layer (by layerOrder, then label, then path) of the
+// RigExecTouchRegions scopes naming it. Typed rigExec:touch:* properties win
+// and the older touchpose:* ones are the fallback, as in touchPoseModel.py.
+void
+ReadStageTouchRegions(const pxr::UsdStageRefPtr& UsdStage, FRigExecMeshSet& Out)
+{
+	const pxr::TfToken RegionsType("RigExecTouchRegions"), RegionType("RigExecTouchRegion");
+	const pxr::TfToken MeshRel("rigExec:touch:mesh"), LayerName("rigExec:touch:layerName"),
+		LayerOrder("rigExec:touch:layerOrder");
+	const pxr::TfToken TypedFaces("rigExec:touch:faces"), CustomFaces("touchpose:faces");
+	const pxr::TfToken TypedControl("rigExec:touch:control"), CustomControl("touchpose:control");
+	const pxr::TfToken TypedPalette("rigExec:touch:palette"), CustomPalette("touchpose:palette");
+	const pxr::TfToken Hilight("touchpose:hilight"), OwnColor("touchpose:color");
+	const pxr::TfToken LeadColor("touchpose:leadColor"), SelectedColor("touchpose:selectedColor");
+
+	auto IsRegion = [&](const pxr::UsdPrim& Child) {
+		return Child.GetTypeName() == RegionType || Child.HasAttribute(CustomFaces);
+	};
+	auto Targets = [](const pxr::UsdPrim& Prim, const pxr::TfToken& Typed, const pxr::TfToken& Custom) {
+		pxr::SdfPathVector Found;
+		for (const pxr::TfToken& Name : {Typed, Custom})
+		{
+			if (const pxr::UsdRelationship Rel = Prim.GetRelationship(Name))
+			{
+				Rel.GetTargets(&Found);
+				if (!Found.empty())
+				{
+					break;
+				}
+			}
+		}
+		return Found;
+	};
+	auto Color = [](const pxr::UsdPrim& Prim, const pxr::TfToken& Name) -> TOptional<FLinearColor> {
+		pxr::GfVec3f Value;
+		const pxr::UsdAttribute Attr = Prim.GetAttribute(Name);
+		if (Attr && Attr.Get(&Value))
+		{
+			return FLinearColor(Value[0], Value[1], Value[2]);
+		}
+		return {};
+	};
+
+	struct FLayer
+	{
+		int32 Order;
+		FString Label;
+		FString Path;
+		FString Mesh;
+		pxr::UsdPrim Prim;
+	};
+	TArray<FLayer> Layers;
+	for (const pxr::UsdPrim& Prim : UsdStage->Traverse())
+	{
+		if (Prim.GetTypeName() != RegionsType)
+		{
+			continue;
+		}
+		const pxr::SdfPathVector Mesh = Targets(Prim, MeshRel, pxr::TfToken("touchpose:mesh"));
+		bool bHasRegions = false;
+		for (const pxr::UsdPrim& Child : Prim.GetChildren())
+		{
+			bHasRegions |= IsRegion(Child);
+		}
+		if (Mesh.empty() || !bHasRegions)
+		{
+			continue;
+		}
+		FLayer& Layer = Layers.AddDefaulted_GetRef();
+		int Order = 0;
+		pxr::TfToken Name;
+		if (const pxr::UsdAttribute Attr = Prim.GetAttribute(LayerOrder))
+		{
+			Attr.Get(&Order);
+		}
+		if (const pxr::UsdAttribute Attr = Prim.GetAttribute(LayerName))
+		{
+			Attr.Get(&Name);
+		}
+		Layer.Order = Order;
+		Layer.Label = UTF8_TO_TCHAR((Name.IsEmpty() ? Prim.GetName() : Name).GetText());
+		Layer.Path = UTF8_TO_TCHAR(Prim.GetPath().GetString().c_str());
+		Layer.Mesh = UTF8_TO_TCHAR(Mesh.front().GetString().c_str());
+		Layer.Prim = Prim;
+	}
+	Layers.Sort([](const FLayer& A, const FLayer& B) {
+		return A.Order != B.Order ? A.Order < B.Order : A.Label != B.Label ? A.Label < B.Label : A.Path < B.Path;
+	});
+
+	for (int32 M = 0; M < Out.Meshes.Num(); ++M)
+	{
+		const FLayer* Layer = Layers.FindByPredicate([&](const FLayer& L) { return L.Mesh == Out.Meshes[M].Path; });
+		if (!Layer)
+		{
+			continue;
+		}
+		pxr::VtVec3fArray Palette;
+		for (const pxr::TfToken& Name : {TypedPalette, CustomPalette})
+		{
+			if (const pxr::UsdAttribute Attr = Layer->Prim.GetAttribute(Name))
+			{
+				if (Attr.Get(&Palette) && !Palette.empty())
+				{
+					break;
+				}
+			}
+		}
+		// Every mesh's scope carries the same two state colours; the last
+		// one read stands.
+		if (const TOptional<FLinearColor> Lead = Color(Layer->Prim, LeadColor))
+		{
+			Out.LeadColor = Lead;
+		}
+		if (const TOptional<FLinearColor> Selected = Color(Layer->Prim, SelectedColor))
+		{
+			Out.SelectedColor = Selected;
+		}
+		for (const pxr::UsdPrim& Child : Layer->Prim.GetChildren())
+		{
+			if (!IsRegion(Child))
+			{
+				continue;
+			}
+			const pxr::SdfPathVector Control = Targets(Child, TypedControl, CustomControl);
+			FRigExecTouchRegionSource& Region = Out.Regions.AddDefaulted_GetRef();
+			Region.Mesh = M;
+			Region.Name = UTF8_TO_TCHAR(Child.GetName().GetText());
+			Region.ControlPath = Control.empty() ? FString() : UTF8_TO_TCHAR(Control.front().GetString().c_str());
+			pxr::VtIntArray Faces;
+			for (const pxr::TfToken& Name : {TypedFaces, CustomFaces})
+			{
+				if (const pxr::UsdAttribute Attr = Child.GetAttribute(Name))
+				{
+					if (Attr.Get(&Faces) && !Faces.empty())
+					{
+						break;
+					}
+				}
+			}
+			Region.Faces.Append(Faces.cdata(), int32(Faces.size()));
+			int Index = 0;
+			if (const pxr::UsdAttribute Attr = Child.GetAttribute(Hilight))
+			{
+				Attr.Get(&Index);
+			}
+			if (Palette.empty())
+			{
+				Region.HoverColor = Color(Child, OwnColor).Get(FLinearColor(1.0f, 0.6f, 0.0f));
+			}
+			else
+			{
+				const pxr::GfVec3f& P = Palette[size_t(FMath::Max(Index, 0)) % Palette.size()];
+				Region.HoverColor = FLinearColor(P[0], P[1], P[2]);
+			}
+		}
+		UE_LOG(LogRigExec, Log, TEXT("touch layer %s on %s"), *Layer->Label, *Out.Meshes[M].Path);
+	}
 }
 #endif
 
@@ -372,10 +528,35 @@ URigExecComponent::Load()
 {
 	Bytes.Reset();
 	bPlaced = false;
-	if (!FFileHelper::LoadFileToArray(Bytes, *Resolve(RigExecFile)))
+	// The rig, its controls and its meshes: from the baked character, or
+	// from the files and the stage they were baked from.
+	FRigExecMeshSet Set;
+	FString ControlsText;
+	const bool bFromAsset = Character != nullptr;
+	if (bFromAsset)
 	{
-		UE_LOG(LogRigExec, Error, TEXT("cannot read %s"), *RigExecFile.FilePath);
-		return false;
+		SourceName = Character->GetPathName();
+		Bytes = Character->Program;
+		ControlsText = Character->Controls;
+		Set = Character->MeshSet;
+		if (Bytes.IsEmpty())
+		{
+			UE_LOG(LogRigExec, Error, TEXT("%s holds no rig; bake it again"), *SourceName);
+			return false;
+		}
+	}
+	else
+	{
+		SourceName = RigExecFile.FilePath;
+		if (!FFileHelper::LoadFileToArray(Bytes, *Resolve(RigExecFile)))
+		{
+			UE_LOG(LogRigExec, Error, TEXT("cannot read %s"), *RigExecFile.FilePath);
+			return false;
+		}
+		if (!ControlsFile.FilePath.IsEmpty() && !FFileHelper::LoadFileToString(ControlsText, *Resolve(ControlsFile)))
+		{
+			UE_LOG(LogRigExec, Error, TEXT("cannot read %s"), *ControlsFile.FilePath);
+		}
 	}
 	std::string Error;
 	delete Reader;
@@ -394,17 +575,151 @@ URigExecComponent::Load()
 		Reader = nullptr;
 		return false;
 	}
+	// A plugin mover (one usdRig registers from a USD-side library, such as
+	// RigExecPatchMover) has no kernel here: its points pass through.
+	for (const std::string& Type : Reader->GetMissingExternalKernels())
+	{
+		UE_LOG(LogRigExec, Warning, TEXT("%s: the rig uses %s, which the RigExec runtime in Unreal has no kernel for; its points do not move"),
+		       *SourceName, UTF8_TO_TCHAR(Type.c_str()));
+	}
+	if (!bFromAsset)
+	{
+		TArray<FString> Properties;
+		for (const auto& Points : Reader->GetPoints())
+		{
+			Properties.Add(UTF8_TO_TCHAR(Points.path.c_str()));
+		}
+		FString Why;
+		if (!ReadStageMeshes(Resolve(StageFile), Properties, Set, Why))
+		{
+			UE_LOG(LogRigExec, Error, TEXT("%s: %s: %s"), *GetPathName(), *StageFile.FilePath, *Why);
+			return false;
+		}
+	}
+	bStageZUp = Set.bZUp;
+	StageMetersPerUnit = Set.MetersPerUnit;
+	CentimetresPerUnit = Set.MetersPerUnit * 100.0;
 
+	BuildMeshes(Set);
+	if (Meshes.Num() == 0)
+	{
+		UE_LOG(LogRigExec, Error, TEXT("no mesh in %s matches the rig's points"), *SourceName);
+	}
+	ControlMaps.Reset();
+	ChannelMaps.Reset();
+	LimbMaps.Reset();
+	if (!ControlsText.IsEmpty())
+	{
+		LoadControls(ControlsText, bFromAsset ? SourceName : ControlsFile.FilePath);
+	}
+	LoadTouchRegions(Set);
+	SetUpRenderPath();
+	UE_LOG(LogRigExec, Log, TEXT("loaded %s: %d meshes, %d controls, %d channels, %d property chain values"),
+	       *SourceName, Meshes.Num(), ControlMaps.Num(), ChannelMaps.Num(),
+	       int32(Reader->GetPropertyValues().size()));
+	return Meshes.Num() > 0;
+}
+
+bool
+URigExecComponent::ReadStageMeshes(const FString& StagePath, const TArray<FString>& PointsProperties,
+                                   FRigExecMeshSet& Out, FString& Error)
+{
 #if USE_USD_SDK
-	Stage = UnrealUSDWrapper::OpenStage(*Resolve(StageFile), EUsdInitialLoadSet::LoadAll);
+	const UE::FUsdStage Stage = UnrealUSDWrapper::OpenStage(*StagePath, EUsdInitialLoadSet::LoadAll);
 	if (!Stage)
 	{
-		UE_LOG(LogRigExec, Error, TEXT("cannot open %s"), *StageFile.FilePath);
+		Error = TEXT("cannot open the stage");
 		return false;
 	}
 	const pxr::UsdStageRefPtr UsdStage(Stage);
 	const FUsdStageInfo StageInfo(UsdStage);
+	Out = FRigExecMeshSet();
+	Out.bZUp = StageInfo.UpAxis == EUsdUpAxis::ZAxis;
+	Out.MetersPerUnit = StageInfo.MetersPerUnit;
 
+	for (const FString& Property : PointsProperties)
+	{
+		if (!Property.EndsWith(TEXT(".points")))
+		{
+			continue;
+		}
+		const FString PrimPath = Property.LeftChop(7);
+		const pxr::UsdGeomMesh UsdMesh(UsdStage->GetPrimAtPath(pxr::SdfPath(TCHAR_TO_UTF8(*PrimPath))));
+		if (!UsdMesh)
+		{
+			continue;
+		}
+		FRigExecMeshSource& Mesh = Out.Meshes.AddDefaulted_GetRef();
+		Mesh.Path = PrimPath;
+		Mesh.Name = UTF8_TO_TCHAR(UsdMesh.GetPrim().GetName().GetText());
+		Mesh.PointsProperty = Property;
+		pxr::VtIntArray Counts, Indices;
+		UsdMesh.GetFaceVertexCountsAttr().Get(&Counts);
+		UsdMesh.GetFaceVertexIndicesAttr().Get(&Indices);
+		Mesh.FaceCounts.Append(Counts.cdata(), int32(Counts.size()));
+		Mesh.FaceIndices.Append(Indices.cdata(), int32(Indices.size()));
+
+		// Material slots: the mesh's own binding, then one per bound face
+		// subset, which overrides it for its faces.
+		pxr::UsdShadeMaterialBindingAPI Binding(UsdMesh.GetPrim());
+		Mesh.Slots.Add(ReadLook(Binding.ComputeBoundMaterial()));
+		Mesh.FaceSlots.Init(0, int32(Counts.size()));
+		for (const pxr::UsdGeomSubset& Subset : Binding.GetMaterialBindSubsets())
+		{
+			pxr::VtIntArray Faces;
+			Subset.GetIndicesAttr().Get(&Faces);
+			Mesh.Slots.Add(ReadLook(pxr::UsdShadeMaterialBindingAPI(Subset.GetPrim()).ComputeBoundMaterial()));
+			for (int Face : Faces)
+			{
+				if (Face >= 0 && Face < Mesh.FaceSlots.Num())
+				{
+					Mesh.FaceSlots[Face] = Mesh.Slots.Num() - 1;
+				}
+			}
+		}
+		// primvars:st, one per face-vertex corner so faces keep their own UVs
+		// across a seam; V flipped, as Unreal's UVs run top-down.
+		const pxr::UsdGeomPrimvar St = pxr::UsdGeomPrimvarsAPI(UsdMesh.GetPrim()).GetPrimvar(pxr::TfToken("st"));
+		pxr::VtVec2fArray Values;
+		if (St && St.ComputeFlattened(&Values) && !Values.empty())
+		{
+			const pxr::TfToken Interpolation = St.GetInterpolation();
+			Mesh.CornerUVs.SetNumUninitialized(int32(Indices.size()));
+			int32 Corner = 0;
+			for (int32 Face = 0; Face < int32(Counts.size()); ++Face)
+			{
+				for (int Side = 0; Side < Counts[Face]; ++Side, ++Corner)
+				{
+					size_t At = 0;
+					if (Interpolation == pxr::UsdGeomTokens->faceVarying)
+					{
+						At = size_t(Corner);
+					}
+					else if (Interpolation == pxr::UsdGeomTokens->vertex || Interpolation == pxr::UsdGeomTokens->varying)
+					{
+						At = size_t(Indices[Corner]);
+					}
+					else if (Interpolation == pxr::UsdGeomTokens->uniform)
+					{
+						At = size_t(Face);
+					}
+					const pxr::GfVec2f UV = At < Values.size() ? Values[At] : pxr::GfVec2f(0.0f);
+					Mesh.CornerUVs[Corner] = FVector2f(UV[0], 1.0f - UV[1]);
+				}
+			}
+		}
+	}
+	ReadStageTouchRegions(UsdStage, Out);
+	return true;
+#else
+	Error = TEXT("this build has no USD; bake a RigExec Character asset in the editor and load that");
+	return false;
+#endif
+}
+
+void
+URigExecComponent::BuildMeshes(const FRigExecMeshSet& Set)
+{
 	for (UDynamicMeshComponent* Mesh : Meshes)
 	{
 		if (Mesh)
@@ -422,68 +737,56 @@ URigExecComponent::Load()
 	Skins.Reset();
 	Meshes.Reset();
 	PointSlots.Reset();
+	MeshPaths.Reset();
 	MeshDrawn.Reset();
+	++LoadCount;
 	delete Touch;
 	Touch = new FRigExecTouch;
+
 	const auto& Points = Reader->GetPoints();
+	TMap<FString, int32> SlotOf;
 	for (int32 Slot = 0; Slot < int32(Points.size()); ++Slot)
 	{
-		const std::string& Property = Points[Slot].path;
-		const size_t Dot = Property.rfind('.');
-		if (Dot == std::string::npos || Property.substr(Dot) != ".points")
+		SlotOf.Add(UTF8_TO_TCHAR(Points[size_t(Slot)].path.c_str()), Slot);
+	}
+	UMaterialInterface* Parent = SurfaceMaterial ? SurfaceMaterial.Get()
+	                                             : LoadObject<UMaterialInterface>(nullptr, TEXT("/RigExec/M_RigExecSurface.M_RigExecSurface"));
+	if (!Parent)
+	{
+		Parent = LoadObject<UMaterialInterface>(nullptr, TEXT("/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial"));
+	}
+	for (const FRigExecMeshSource& Source : Set.Meshes)
+	{
+		const int32* Slot = SlotOf.Find(Source.PointsProperty);
+		if (!Slot)
 		{
+			UE_LOG(LogRigExec, Warning, TEXT("the rig does not pose %s"), *Source.PointsProperty);
 			continue;
 		}
-		const pxr::UsdGeomMesh UsdMesh(UsdStage->GetPrimAtPath(pxr::SdfPath(Property.substr(0, Dot))));
-		if (!UsdMesh)
-		{
-			continue;
-		}
-		pxr::VtIntArray Counts, Indices;
-		UsdMesh.GetFaceVertexCountsAttr().Get(&Counts);
-		UsdMesh.GetFaceVertexIndicesAttr().Get(&Indices);
-		const auto& Rig = Points[Slot].points;
+		const auto& Rig = Points[size_t(*Slot)].points;
+		const TArray<int32>& Counts = Source.FaceCounts;
+		const TArray<int32>& Indices = Source.FaceIndices;
 
 		FDynamicMesh3 Built;
 		for (const auto& P : Rig)
 		{
-			Built.AppendVertex(UsdToUnreal::ConvertVector(StageInfo, pxr::GfVec3f(P[0], P[1], P[2])));
+			Built.AppendVertex(Set.ToUnreal(P[0], P[1], P[2]));
 		}
 		// USD faces are counter-clockwise in a right-handed space. Swapping
 		// Y and Z mirrors them into Unreal's left-handed space, where the
 		// same index order is the front face, so the order is kept.
-		// Material slots: the mesh's own binding, then one per bound face
-		// subset, which overrides it for its faces.
-		pxr::UsdShadeMaterialBindingAPI Binding(UsdMesh.GetPrim());
-		TArray<pxr::UsdShadeMaterial> Slots;
-		Slots.Add(Binding.ComputeBoundMaterial());
-		TArray<int32> FaceSlot;
-		FaceSlot.Init(0, int32(Counts.size()));
-		for (const pxr::UsdGeomSubset& Subset : Binding.GetMaterialBindSubsets())
-		{
-			pxr::VtIntArray Faces;
-			Subset.GetIndicesAttr().Get(&Faces);
-			Slots.Add(pxr::UsdShadeMaterialBindingAPI(Subset.GetPrim()).ComputeBoundMaterial());
-			for (int Face : Faces)
-			{
-				if (Face >= 0 && Face < FaceSlot.Num())
-				{
-					FaceSlot[Face] = Slots.Num() - 1;
-				}
-			}
-		}
 		TArray<int32> TriangleFace;
 		TArray<FIndex3i> TriangleCorners;
 		int32 Cursor = 0;
-		for (int32 Face = 0; Face < int32(Counts.size()); ++Face)
+		for (int32 Face = 0; Face < Counts.Num(); ++Face)
 		{
-			const int Count = Counts[Face];
-			for (int Corner = 1; Corner + 1 < Count; ++Corner)
+			const int32 Count = Counts[Face];
+			for (int32 Corner = 1; Corner + 1 < Count && Cursor + Corner + 1 < Indices.Num(); ++Corner)
 			{
-				const int A = Indices[Cursor];
-				const int B = Indices[Cursor + Corner];
-				const int C = Indices[Cursor + Corner + 1];
-				if (A < int(Rig.size()) && B < int(Rig.size()) && C < int(Rig.size()))
+				const int32 A = Indices[Cursor];
+				const int32 B = Indices[Cursor + Corner];
+				const int32 C = Indices[Cursor + Corner + 1];
+				if (A < int32(Rig.size()) && B < int32(Rig.size()) && C < int32(Rig.size()))
 				{
 					if (Built.AppendTriangle(A, B, C) >= 0)
 					{
@@ -499,7 +802,8 @@ URigExecComponent::Load()
 		Built.Attributes()->EnableMaterialID();
 		for (int32 Triangle : Built.TriangleIndicesItr())
 		{
-			Built.Attributes()->GetMaterialID()->SetValue(Triangle, FaceSlot[TriangleFace[Triangle]]);
+			const int32 Face = TriangleFace[Triangle];
+			Built.Attributes()->GetMaterialID()->SetValue(Triangle, Source.FaceSlots.IsValidIndex(Face) ? Source.FaceSlots[Face] : 0);
 		}
 		// Each USD face is a triangle group: a renderer that wants the real
 		// polygons (a subdivision surface) gets the quads back from them.
@@ -508,44 +812,19 @@ URigExecComponent::Load()
 		{
 			Built.SetTriangleGroup(Triangle, TriangleFace[Triangle]);
 		}
-		// primvars:st, one element per face-vertex corner so faces keep their
-		// own UVs across a seam; V flipped, as Unreal's UVs run top-down.
+		if (Source.CornerUVs.Num() == Indices.Num() && Indices.Num() > 0)
 		{
-			const pxr::UsdGeomPrimvar St = pxr::UsdGeomPrimvarsAPI(UsdMesh.GetPrim()).GetPrimvar(pxr::TfToken("st"));
-			pxr::VtVec2fArray Values;
-			if (St && St.ComputeFlattened(&Values) && !Values.empty())
+			FDynamicMeshUVOverlay* UVs = Built.Attributes()->PrimaryUV();
+			TArray<int32> Elements;
+			Elements.SetNumUninitialized(Indices.Num());
+			for (int32 Corner = 0; Corner < Indices.Num(); ++Corner)
 			{
-				const pxr::TfToken Interpolation = St.GetInterpolation();
-				FDynamicMeshUVOverlay* UVs = Built.Attributes()->PrimaryUV();
-				TArray<int32> Elements;
-				Elements.SetNumUninitialized(int32(Indices.size()));
-				int32 Corner = 0;
-				for (int32 Face = 0; Face < int32(Counts.size()); ++Face)
-				{
-					for (int Side = 0; Side < Counts[Face]; ++Side, ++Corner)
-					{
-						size_t At = 0;
-						if (Interpolation == pxr::UsdGeomTokens->faceVarying)
-						{
-							At = size_t(Corner);
-						}
-						else if (Interpolation == pxr::UsdGeomTokens->vertex || Interpolation == pxr::UsdGeomTokens->varying)
-						{
-							At = size_t(Indices[Corner]);
-						}
-						else if (Interpolation == pxr::UsdGeomTokens->uniform)
-						{
-							At = size_t(Face);
-						}
-						const pxr::GfVec2f UV = At < Values.size() ? Values[At] : pxr::GfVec2f(0.0f);
-						Elements[Corner] = UVs->AppendElement(FVector2f(UV[0], 1.0f - UV[1]));
-					}
-				}
-				for (int32 Triangle : Built.TriangleIndicesItr())
-				{
-					const FIndex3i& C = TriangleCorners[Triangle];
-					UVs->SetTriangle(Triangle, FIndex3i(Elements[C.A], Elements[C.B], Elements[C.C]));
-				}
+				Elements[Corner] = UVs->AppendElement(Source.CornerUVs[Corner]);
+			}
+			for (int32 Triangle : Built.TriangleIndicesItr())
+			{
+				const FIndex3i& C = TriangleCorners[Triangle];
+				UVs->SetTriangle(Triangle, FIndex3i(Elements[C.A], Elements[C.B], Elements[C.C]));
 			}
 		}
 		// A colour per face corner, untinted: Touch Pose lights a region by
@@ -561,22 +840,15 @@ URigExecComponent::Load()
 			}
 		}
 
-		// Rebuilt from the files on every load, so never saved.
+		// Rebuilt on every load, so never saved.
 		UDynamicMeshComponent* Component = NewObject<UDynamicMeshComponent>(
-			GetOwner() ? static_cast<UObject*>(GetOwner()) : static_cast<UObject*>(this),
-			*FString(UTF8_TO_TCHAR(UsdMesh.GetPrim().GetName().GetText())), RF_Transient);
+			GetOwner() ? static_cast<UObject*>(GetOwner()) : static_cast<UObject*>(this), *Source.Name, RF_Transient);
 		Component->SetMesh(MoveTemp(Built));
 		// Deformed every evaluation, so never part of a lighting build.
 		Component->SetMobility(EComponentMobility::Movable);
-		UMaterialInterface* Parent = SurfaceMaterial ? SurfaceMaterial.Get()
-		                                             : LoadObject<UMaterialInterface>(nullptr, TEXT("/RigExec/M_RigExecSurface.M_RigExecSurface"));
-		if (!Parent)
+		for (int32 Index = 0; Parent && Index < Source.Slots.Num(); ++Index)
 		{
-			Parent = LoadObject<UMaterialInterface>(nullptr, TEXT("/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial"));
-		}
-		for (int32 Index = 0; Parent && Index < Slots.Num(); ++Index)
-		{
-			const FLook Look = ReadLook(Slots[Index]);
+			const FRigExecSurfaceLook& Look = Source.Slots[Index];
 			UMaterialInstanceDynamic* Instance = UMaterialInstanceDynamic::Create(Parent, Component);
 			// The basic shape material calls its colour "Color"; a project
 			// material may use the Unreal names.
@@ -592,41 +864,24 @@ URigExecComponent::Load()
 			Component->RegisterComponent();
 		}
 		Meshes.Add(Component);
-		PointSlots.Add(Slot);
+		PointSlots.Add(*Slot);
+		MeshPaths.Add(Source.Path);
 		MeshDrawn.Add(true);
 		FRigExecTouch::FMesh& Touched = Touch->Meshes.AddDefaulted_GetRef();
-		Touched.Path = UTF8_TO_TCHAR(UsdMesh.GetPrim().GetPath().GetString().c_str());
-		Touched.FaceFirstTriangle.Init(TriangleFace.Num(), int32(Counts.size()) + 1);
+		Touched.Path = Source.Path;
+		Touched.FaceFirstTriangle.Init(TriangleFace.Num(), Counts.Num() + 1);
 		for (int32 Triangle = TriangleFace.Num() - 1; Triangle >= 0; --Triangle)
 		{
 			Touched.FaceFirstTriangle[TriangleFace[Triangle]] = Triangle;
 		}
 		// A face that lost every triangle starts where the next one does.
-		for (int32 Face = int32(Counts.size()) - 1; Face >= 0; --Face)
+		for (int32 Face = Counts.Num() - 1; Face >= 0; --Face)
 		{
 			Touched.FaceFirstTriangle[Face] = FMath::Min(Touched.FaceFirstTriangle[Face], Touched.FaceFirstTriangle[Face + 1]);
 		}
+		Touched.FaceRegion.Init(-1, Counts.Num());
 		Touched.TriangleFace = MoveTemp(TriangleFace);
 	}
-	if (Meshes.Num() == 0)
-	{
-		UE_LOG(LogRigExec, Error, TEXT("no mesh in %s matches the rig's points"), *StageFile.FilePath);
-	}
-	CentimetresPerUnit = StageInfo.MetersPerUnit * 100.0;
-	if (!ControlsFile.FilePath.IsEmpty())
-	{
-		LoadControls();
-	}
-	LoadTouchRegions();
-	SetUpRenderPath();
-	UE_LOG(LogRigExec, Log, TEXT("loaded %s: %d meshes, %d controls, %d channels, %d property chain values"),
-	       *RigExecFile.FilePath, Meshes.Num(), ControlMaps.Num(), ChannelMaps.Num(),
-	       int32(Reader->GetPropertyValues().size()));
-	return Meshes.Num() > 0;
-#else
-	UE_LOG(LogRigExec, Error, TEXT("this build has no USD; the meshes cannot be read"));
-	return false;
-#endif
 }
 
 bool
@@ -687,9 +942,10 @@ URigExecComponent::Evaluate()
 		UE_LOG(LogRigExec, Error, TEXT("evaluation failed: %s"), UTF8_TO_TCHAR(Error.c_str()));
 		return -1.0f;
 	}
-#if USE_USD_SDK
 	const auto& Points = Reader->GetPoints();
-	const FUsdStageInfo StageInfo{pxr::UsdStageRefPtr(Stage)};
+	FRigExecMeshSet Units;
+	Units.bZUp = bStageZUp;
+	Units.MetersPerUnit = StageMetersPerUnit;
 	for (int32 M = 0; M < Meshes.Num(); ++M)
 	{
 		const auto& Rig = Points[size_t(PointSlots[M])].points;
@@ -709,7 +965,7 @@ URigExecComponent::Evaluate()
 				for (int32 V = 0; V < Count; ++V)
 				{
 					const auto& P = Rig[size_t(V)];
-					Mesh.SetVertex(V, UsdToUnreal::ConvertVector(StageInfo, pxr::GfVec3f(P[0], P[1], P[2])));
+					Mesh.SetVertex(V, Units.ToUnreal(P[0], P[1], P[2]));
 				}
 				// Normals from the deformed points every evaluation -- skin,
 				// blend shapes and every other deformer included, as a
@@ -740,7 +996,6 @@ URigExecComponent::Evaluate()
 			Touched.bTreeDirty = true;
 		}
 	}
-#endif
 	return float((FPlatformTime::Seconds() - Start) * 1000.0);
 }
 
@@ -839,16 +1094,14 @@ URigExecComponent::GetVertex(int32 Mesh, int32 Index) const
 }
 
 bool
-URigExecComponent::LoadControls()
+URigExecComponent::LoadControls(const FString& Text, const FString& Source)
 {
 	ControlMaps.Reset();
 	ChannelMaps.Reset();
-	FString Text;
 	TSharedPtr<FJsonObject> Root;
-	if (!FFileHelper::LoadFileToString(Text, *Resolve(ControlsFile)) ||
-	    !FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(Text), Root) || !Root)
+	if (!FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(Text), Root) || !Root)
 	{
-		UE_LOG(LogRigExec, Error, TEXT("cannot read %s"), *ControlsFile.FilePath);
+		UE_LOG(LogRigExec, Error, TEXT("cannot read the controls of %s"), *Source);
 		return false;
 	}
 	// The Control Rig is in USD space (build_control_rig.py): every control
@@ -859,7 +1112,7 @@ URigExecComponent::LoadControls()
 	{
 		UE_LOG(LogRigExec, Error,
 		       TEXT("%s is not a USD-space controls file; rebuild the Control Rig with build_control_rig.py"),
-		       *ControlsFile.FilePath);
+		       *Source);
 		return false;
 	}
 	UsdRoot = FName(Root->TryGetStringField(TEXT("root"), RootName) ? RootName : FString(TEXT("UsdSpace")));
@@ -944,7 +1197,7 @@ URigExecComponent::LoadControls()
 		if (Dropped.Num() > 0)
 		{
 			UE_LOG(LogRigExec, Log, TEXT("%d of %d channels are not live in %s: %s"), Dropped.Num(), Described,
-			       *RigExecFile.FilePath, *FString::Join(Dropped, TEXT(", ")));
+			       *SourceName, *FString::Join(Dropped, TEXT(", ")));
 		}
 	}
 	// Each control's fade, once the channels the runtime takes are known.
@@ -957,11 +1210,11 @@ URigExecComponent::LoadControls()
 			{
 				continue;
 			}
-			const FString Source = (*Fade)->GetStringField(TEXT("source"));
+			const FString FadeSource = (*Fade)->GetStringField(TEXT("source"));
 			ControlMaps[C].bFadeInvert = (*Fade)->GetBoolField(TEXT("invert"));
 			for (int32 K = 0; K < ChannelMaps.Num(); ++K)
 			{
-				if (ChannelMaps[K].Path == Source)
+				if (ChannelMaps[K].Path == FadeSource)
 				{
 					ControlMaps[C].FadeChannel = K;
 				}
@@ -1065,47 +1318,14 @@ URigExecComponent::PullControls()
 		{
 			continue;
 		}
-		// The control's value IS the avars matrix (USD space): read as a local.
-		const FMatrix Ue = Hierarchy->GetLocalTransform(Key).ToMatrixWithScale();
-		FRot3 Rot;
-		double Scale[3], Translate[3];
-		for (int32 Row = 0; Row < 3; ++Row)
+		// The control's value IS the avars matrix (USD space, centimetres):
+		// read as a local.
+		FMatrix Value = Hierarchy->GetLocalTransform(Key).ToMatrixWithScale();
+		for (int32 K = 0; K < 3; ++K)
 		{
-			for (int32 Col = 0; Col < 3; ++Col)
-			{
-				Rot.M[Row][Col] = Ue.M[Row][Col];
-			}
-			Scale[Row] = FMath::Sqrt(Rot.M[Row][0] * Rot.M[Row][0] + Rot.M[Row][1] * Rot.M[Row][1] +
-			                         Rot.M[Row][2] * Rot.M[Row][2]);
-			for (int32 Col = 0; Col < 3; ++Col)
-			{
-				Rot.M[Row][Col] /= FMath::Max(Scale[Row], 1e-12);
-			}
-			Translate[Row] = Ue.M[3][Row] / CentimetresPerUnit;
+			Value.M[3][K] /= CentimetresPerUnit;
 		}
-		// The sign multiplies the raw avar, so the hint is the effective
-		// angle and the raw value is effective * sign.
-		double Hint[3], Euler[3];
-		for (int32 A = 0; A < 3; ++A)
-		{
-			Hint[A] = Map.Values[3 + A] * Map.Sign[A];
-		}
-		DecomposeEuler(Rot, Map.Order, Hint, Euler);
-		for (int32 A = 0; A < 3; ++A)
-		{
-			if (Map.Channels[A])
-			{
-				Send(Map.Path + GTransformAvars[A], Map.Values[A], Translate[A] / Map.UnitScale);
-			}
-			if (Map.Channels[3 + A])
-			{
-				Send(Map.Path + GTransformAvars[3 + A], Map.Values[3 + A], Euler[A] * Map.Sign[A]);
-			}
-			if (Map.Channels[6 + A])
-			{
-				Send(Map.Path + GTransformAvars[6 + A], Map.Values[6 + A], Scale[A]);
-			}
-		}
+		Changed += SendControl(Map, Value, bForce);
 	}
 	for (FChannelMap& Map : ChannelMaps)
 	{
@@ -1141,12 +1361,186 @@ URigExecComponent::PullControls()
 	{
 		RefreshTouchColors();
 	}
-	if (Changed > 0 || !bPlaced)
+	// The gizmos follow the rig for the animator; a game draws none.
+	const bool bGame = GetWorld() && GetWorld()->IsGameWorld();
+	if ((Changed > 0 || !bPlaced) && !bGame)
 	{
 		PlaceControls();
 		bPlaced = true;
 	}
 	return Changed;
+}
+
+int32
+URigExecComponent::SendControl(FControlMap& Map, const FMatrix& Value, bool bForce)
+{
+	// Change test, in avar units: degrees and rig distance.
+	constexpr double Tolerance = 1e-5;
+	int32 Changed = 0;
+	auto Send = [&](const FString& Path, double& Held, double V)
+	{
+		if (!bForce && FMath::Abs(V - Held) <= Tolerance)
+		{
+			return;
+		}
+		std::string Why;
+		if (Reader->SetInput(TCHAR_TO_UTF8(*Path), V, &Why))
+		{
+			Held = V;
+			++Changed;
+		}
+	};
+	FRot3 Rot;
+	double Scale[3], Translate[3];
+	for (int32 Row = 0; Row < 3; ++Row)
+	{
+		for (int32 Col = 0; Col < 3; ++Col)
+		{
+			Rot.M[Row][Col] = Value.M[Row][Col];
+		}
+		Scale[Row] = FMath::Sqrt(Rot.M[Row][0] * Rot.M[Row][0] + Rot.M[Row][1] * Rot.M[Row][1] +
+		                         Rot.M[Row][2] * Rot.M[Row][2]);
+		for (int32 Col = 0; Col < 3; ++Col)
+		{
+			Rot.M[Row][Col] /= FMath::Max(Scale[Row], 1e-12);
+		}
+		Translate[Row] = Value.M[3][Row];
+	}
+	// The sign multiplies the raw avar, so the hint is the effective
+	// angle and the raw value is effective * sign.
+	double Hint[3], Euler[3];
+	for (int32 A = 0; A < 3; ++A)
+	{
+		Hint[A] = Map.Values[3 + A] * Map.Sign[A];
+	}
+	DecomposeEuler(Rot, Map.Order, Hint, Euler);
+	for (int32 A = 0; A < 3; ++A)
+	{
+		if (Map.Channels[A])
+		{
+			Send(Map.Path + GTransformAvars[A], Map.Values[A], Translate[A] / Map.UnitScale);
+		}
+		if (Map.Channels[3 + A])
+		{
+			Send(Map.Path + GTransformAvars[3 + A], Map.Values[3 + A], Euler[A] * Map.Sign[A]);
+		}
+		if (Map.Channels[6 + A])
+		{
+			Send(Map.Path + GTransformAvars[6 + A], Map.Values[6 + A], Scale[A]);
+		}
+	}
+	return Changed;
+}
+
+int32
+URigExecComponent::FindControlIndex(const FString& NameOrPath) const
+{
+	const FName Name(*NameOrPath);
+	for (int32 C = 0; C < ControlMaps.Num(); ++C)
+	{
+		if (ControlMaps[C].Path == NameOrPath || ControlMaps[C].Element == Name)
+		{
+			return C;
+		}
+	}
+	// The last path component, for a description without element names.
+	for (int32 C = 0; C < ControlMaps.Num(); ++C)
+	{
+		if (ControlMaps[C].Path.EndsWith(TEXT("/") + NameOrPath))
+		{
+			return C;
+		}
+	}
+	return INDEX_NONE;
+}
+
+int32
+URigExecComponent::GetControlParent(int32 Control) const
+{
+	return ControlMaps.IsValidIndex(Control) ? ControlMaps[Control].Parent : INDEX_NONE;
+}
+
+bool
+URigExecComponent::IsControlNull(int32 Control) const
+{
+	return ControlMaps.IsValidIndex(Control) && ControlMaps[Control].bNull;
+}
+
+const FString&
+URigExecComponent::GetControlPath(int32 Control) const
+{
+	static const FString None;
+	return ControlMaps.IsValidIndex(Control) ? ControlMaps[Control].Path : None;
+}
+
+FMatrix
+URigExecComponent::GetControlValueMatrix(int32 Control, bool bDefault) const
+{
+	if (!ControlMaps.IsValidIndex(Control) || ControlMaps[Control].bNull)
+	{
+		return FMatrix::Identity;
+	}
+	const FControlMap& Map = ControlMaps[Control];
+	const double* V = bDefault ? Map.Defaults : Map.Values;
+	// The inverse of SendControl: the rotations applied in the control's
+	// order (row vectors, first axis first), each row scaled, then moved.
+	const TCHAR* Name = GOrders[Map.Order];
+	FRot3 Rot = {{{1, 0, 0}, {0, 1, 0}, {0, 0, 1}}};
+	for (int32 Step = 0; Step < 3; ++Step)
+	{
+		const int32 Axis = Name[Step] - TEXT('X');
+		Rot = Multiply(Rot, AxisRotation(Axis, FMath::DegreesToRadians(V[3 + Axis] * Map.Sign[Axis])));
+	}
+	FMatrix Out = FMatrix::Identity;
+	for (int32 Row = 0; Row < 3; ++Row)
+	{
+		for (int32 Col = 0; Col < 3; ++Col)
+		{
+			Out.M[Row][Col] = Rot.M[Row][Col] * V[6 + Row];
+		}
+		Out.M[3][Row] = V[Row] * Map.UnitScale;
+	}
+	return Out;
+}
+
+bool
+URigExecComponent::GetControlAssetFrame(int32 Control, FMatrix& Out) const
+{
+	return ControlMaps.IsValidIndex(Control) && AssetFrame(ControlMaps[Control].Path, Out);
+}
+
+int32
+URigExecComponent::SetControlValueMatrix(int32 Control, const FMatrix& Value)
+{
+	if (!Reader || !ControlMaps.IsValidIndex(Control) || ControlMaps[Control].bNull)
+	{
+		return 0;
+	}
+	return SendControl(ControlMaps[Control], Value, false);
+}
+
+TArray<TPair<FString, double>>
+URigExecComponent::GetLimbFkSwitches() const
+{
+	TArray<TPair<FString, double>> Out;
+	for (const FLimbMap& Limb : LimbMaps)
+	{
+		// The switch's two ends are 0 and 1; IK is IkValue.
+		Out.Emplace(Limb.Switch, Limb.IkValue >= 0.5 ? 0.0 : 1.0);
+	}
+	return Out;
+}
+
+bool
+URigExecComponent::GetPickerText(FString& Out) const
+{
+	if (Character && !Character->Picker.IsEmpty())
+	{
+		Out = Character->Picker;
+		return true;
+	}
+	const FString File = PickerFilePath();
+	return !File.IsEmpty() && FFileHelper::LoadFileToString(Out, *File);
 }
 
 void
@@ -1248,7 +1642,10 @@ URigExecComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 				EDynamicMeshAttributeChangeFlags::VertexPositions | EDynamicMeshAttributeChangeFlags::NormalsTangents);
 		}
 	}
-	PullControls();
+	if (bPullControlRig)
+	{
+		PullControls();
+	}
 }
 
 void
@@ -1271,9 +1668,11 @@ URigExecComponent::OnRegister()
 	{
 		PrimaryComponentTick.AddPrerequisite(ControlRig, ControlRig->PrimaryComponentTick);
 	}
-	// A saved level keeps the file paths, not the meshes: rebuild them.
-	if (!IsTemplate() && !Reader && !RigExecFile.FilePath.IsEmpty() && !StageFile.FilePath.IsEmpty() &&
-	    GetWorld())
+	// A saved level keeps the character or the file paths, not the meshes:
+	// rebuild them.
+	// A commandlet (a cook) only saves the level: nothing to draw.
+	if (!IsTemplate() && !Reader && GetWorld() && !IsRunningCommandlet() &&
+	    (Character || (!RigExecFile.FilePath.IsEmpty() && !StageFile.FilePath.IsEmpty())))
 	{
 		Load();
 	}
@@ -1387,6 +1786,89 @@ URigExecComponent::AssetFrame(const FString& Path, FMatrix& Out) const
 		Out.M[3][K] = Origin[K];
 	}
 	return true;
+}
+
+TArray<FString>
+URigExecComponent::GetMatrixPrimvarPaths() const
+{
+	TArray<FString> Out;
+	if (Reader)
+	{
+		for (const rigExec::RigExecRuntimeMatrixPrimvar& Primvar : Reader->GetMatrixPrimvars())
+		{
+			Out.Add(UTF8_TO_TCHAR(Primvar.path.c_str()));
+		}
+	}
+	return Out;
+}
+
+bool
+URigExecComponent::GetMatrixPrimvar(const FString& Path, FMatrix& Out) const
+{
+	if (!Reader)
+	{
+		return false;
+	}
+	const FTCHARToUTF8 Wanted(*Path);
+	for (const rigExec::RigExecRuntimeMatrixPrimvar& Primvar : Reader->GetMatrixPrimvars())
+	{
+		if (Primvar.path == Wanted.Get())
+		{
+			for (int32 R = 0; R < 4; ++R)
+			{
+				for (int32 C = 0; C < 4; ++C)
+				{
+					Out.M[R][C] = Primvar.matrix._mtx[R][C];
+				}
+			}
+			return true;
+		}
+	}
+	return false;
+}
+
+int32
+URigExecComponent::FindMesh(const FString& PathOrName) const
+{
+	for (int32 M = 0; M < MeshPaths.Num(); ++M)
+	{
+		if (MeshPaths[M] == PathOrName || MeshPaths[M].EndsWith(TEXT("/") + PathOrName))
+		{
+			return M;
+		}
+	}
+	return INDEX_NONE;
+}
+
+const FString&
+URigExecComponent::GetMeshPath(int32 Mesh) const
+{
+	static const FString None;
+	return MeshPaths.IsValidIndex(Mesh) ? MeshPaths[Mesh] : None;
+}
+
+TArray<UPrimitiveComponent*>
+URigExecComponent::GetMeshDrawers(int32 Mesh) const
+{
+	TArray<UPrimitiveComponent*> Out;
+	if (Meshes.IsValidIndex(Mesh) && Meshes[Mesh])
+	{
+		Out.Add(Meshes[Mesh]);
+	}
+	if (Skins.IsValidIndex(Mesh) && Skins[Mesh])
+	{
+		Out.Add(Skins[Mesh]);
+	}
+	return Out;
+}
+
+void
+URigExecComponent::SetMeshMaterial(int32 Mesh, int32 Slot, UMaterialInterface* Material)
+{
+	for (UPrimitiveComponent* Drawer : GetMeshDrawers(Mesh))
+	{
+		Drawer->SetMaterial(Slot, Material);
+	}
 }
 
 FMatrix
@@ -1696,182 +2178,53 @@ URigExecComponent::GetRigFrame(const FString& Path) const
 }
 
 void
-URigExecComponent::LoadTouchRegions()
+URigExecComponent::LoadTouchRegions(const FRigExecMeshSet& Set)
 {
-#if USE_USD_SDK
-	if (!Touch || !Stage)
+	if (!Touch)
 	{
 		return;
 	}
-	const pxr::UsdStageRefPtr UsdStage(Stage);
-	const pxr::TfToken RegionsType("RigExecTouchRegions"), RegionType("RigExecTouchRegion");
-	const pxr::TfToken MeshRel("rigExec:touch:mesh"), LayerName("rigExec:touch:layerName"),
-		LayerOrder("rigExec:touch:layerOrder");
-	const pxr::TfToken TypedFaces("rigExec:touch:faces"), CustomFaces("touchpose:faces");
-	const pxr::TfToken TypedControl("rigExec:touch:control"), CustomControl("touchpose:control");
-	const pxr::TfToken TypedPalette("rigExec:touch:palette"), CustomPalette("touchpose:palette");
-	const pxr::TfToken Hilight("touchpose:hilight"), OwnColor("touchpose:color");
-	const pxr::TfToken LeadColor("touchpose:leadColor"), SelectedColor("touchpose:selectedColor");
-
-	auto IsRegion = [&](const pxr::UsdPrim& Child) {
-		return Child.GetTypeName() == RegionType || Child.HasAttribute(CustomFaces);
-	};
-	auto Targets = [](const pxr::UsdPrim& Prim, const pxr::TfToken& Typed, const pxr::TfToken& Custom) {
-		pxr::SdfPathVector Out;
-		for (const pxr::TfToken& Name : {Typed, Custom})
-		{
-			if (const pxr::UsdRelationship Rel = Prim.GetRelationship(Name))
-			{
-				Rel.GetTargets(&Out);
-				if (!Out.empty())
-				{
-					break;
-				}
-			}
-		}
-		return Out;
-	};
-	auto Color = [](const pxr::UsdPrim& Prim, const pxr::TfToken& Name, const FLinearColor& Fallback) {
-		pxr::GfVec3f Value;
-		const pxr::UsdAttribute Attr = Prim.GetAttribute(Name);
-		return Attr && Attr.Get(&Value) ? FLinearColor(Value[0], Value[1], Value[2]) : Fallback;
-	};
-
-	// Every scope, by type, that names a mesh and holds regions.
-	struct FLayer
-	{
-		int32 Order;
-		FString Label;
-		FString Path;
-		FString Mesh;
-		pxr::UsdPrim Prim;
-	};
-	TArray<FLayer> Layers;
-	for (const pxr::UsdPrim& Prim : UsdStage->Traverse())
-	{
-		if (Prim.GetTypeName() != RegionsType)
-		{
-			continue;
-		}
-		const pxr::SdfPathVector Mesh = Targets(Prim, MeshRel, pxr::TfToken("touchpose:mesh"));
-		bool bHasRegions = false;
-		for (const pxr::UsdPrim& Child : Prim.GetChildren())
-		{
-			bHasRegions |= IsRegion(Child);
-		}
-		if (Mesh.empty() || !bHasRegions)
-		{
-			continue;
-		}
-		FLayer& Layer = Layers.AddDefaulted_GetRef();
-		int Order = 0;
-		pxr::TfToken Name;
-		if (const pxr::UsdAttribute Attr = Prim.GetAttribute(LayerOrder))
-		{
-			Attr.Get(&Order);
-		}
-		if (const pxr::UsdAttribute Attr = Prim.GetAttribute(LayerName))
-		{
-			Attr.Get(&Name);
-		}
-		Layer.Order = Order;
-		Layer.Label = UTF8_TO_TCHAR((Name.IsEmpty() ? Prim.GetName() : Name).GetText());
-		Layer.Path = UTF8_TO_TCHAR(Prim.GetPath().GetString().c_str());
-		Layer.Mesh = UTF8_TO_TCHAR(Mesh.front().GetString().c_str());
-		Layer.Prim = Prim;
-	}
-	// The layer that opens live: lowest order, then label, then path.
-	Layers.Sort([](const FLayer& A, const FLayer& B) {
-		return A.Order != B.Order ? A.Order < B.Order : A.Label != B.Label ? A.Label < B.Label : A.Path < B.Path;
-	});
-
+	Touch->LeadColor = ScaleTo(Set.LeadColor.Get(GDefaultLeadColor), 0.95f);
+	Touch->SelectedColor = ScaleTo(Set.SelectedColor.Get(GDefaultSelectedColor), 0.62f);
 	TArray<FString> Missing;
-	for (int32 M = 0; M < Touch->Meshes.Num(); ++M)
+	for (const FRigExecTouchRegionSource& Source : Set.Regions)
 	{
-		FRigExecTouch::FMesh& Touched = Touch->Meshes[M];
-		const FLayer* Layer = Layers.FindByPredicate([&](const FLayer& L) { return L.Mesh == Touched.Path; });
-		const pxr::UsdGeomMesh UsdMesh(UsdStage->GetPrimAtPath(pxr::SdfPath(TCHAR_TO_UTF8(*Touched.Path))));
-		pxr::VtIntArray Counts;
-		if (!Layer || !UsdMesh || !UsdMesh.GetFaceVertexCountsAttr().Get(&Counts))
+		// Set.Meshes and Touch->Meshes line up unless a mesh the rig does not
+		// pose was skipped: match by path.
+		const int32 M = Touch->Meshes.IndexOfByPredicate(
+			[&](const FRigExecTouch::FMesh& Mesh) { return Set.Meshes.IsValidIndex(Source.Mesh) && Mesh.Path == Set.Meshes[Source.Mesh].Path; });
+		if (M == INDEX_NONE)
 		{
 			continue;
 		}
-		pxr::VtVec3fArray Palette;
-		for (const pxr::TfToken& Name : {TypedPalette, CustomPalette})
+		// Only an animator control can be selected; a rig helper is a null.
+		// A region that selects nothing must not swallow the click.
+		const FControlMap* Map = ControlMaps.FindByPredicate(
+			[&Source](const FControlMap& C) { return !C.bNull && C.Path == Source.ControlPath; });
+		if (!Map || Map->Element.IsNone())
 		{
-			if (const pxr::UsdAttribute Attr = Layer->Prim.GetAttribute(Name))
+			if (!Source.ControlPath.IsEmpty())
 			{
-				if (Attr.Get(&Palette) && !Palette.empty())
-				{
-					break;
-				}
+				Missing.Add(Source.Name);
+			}
+			continue;
+		}
+		FRigExecTouch::FMesh& Touched = Touch->Meshes[M];
+		const int32 Region = Touch->Regions.Num();
+		FRigExecTouch::FRegion& Out = Touch->Regions.AddDefaulted_GetRef();
+		Out.Mesh = M;
+		Out.Name = Source.Name;
+		Out.ControlPath = Source.ControlPath;
+		Out.Element = Map->Element;
+		Out.HoverColor = ScaleTo(Source.HoverColor, 1.0f);
+		for (int32 Face : Source.Faces)
+		{
+			if (Touched.FaceRegion.IsValidIndex(Face))
+			{
+				Touched.FaceRegion[Face] = Region;
+				Out.Faces.Add(Face);
 			}
 		}
-		// Every mesh's scope carries the same two state colours; the last
-		// one read stands.
-		Touch->LeadColor = ScaleTo(Color(Layer->Prim, LeadColor, GDefaultLeadColor), 0.95f);
-		Touch->SelectedColor = ScaleTo(Color(Layer->Prim, SelectedColor, GDefaultSelectedColor), 0.62f);
-
-		Touched.FaceRegion.Init(-1, int32(Counts.size()));
-		for (const pxr::UsdPrim& Child : Layer->Prim.GetChildren())
-		{
-			if (!IsRegion(Child))
-			{
-				continue;
-			}
-			// A region that selects nothing must not swallow the click.
-			const pxr::SdfPathVector Control = Targets(Child, TypedControl, CustomControl);
-			const FString ControlPath = Control.empty() ? FString() : UTF8_TO_TCHAR(Control.front().GetString().c_str());
-			// Only an animator control can be selected; a rig helper is a null.
-			const FControlMap* Map = ControlMaps.FindByPredicate(
-				[&ControlPath](const FControlMap& C) { return !C.bNull && C.Path == ControlPath; });
-			const FName Element = Map ? Map->Element : NAME_None;
-			if (Element.IsNone())
-			{
-				if (!ControlPath.IsEmpty())
-				{
-					Missing.Add(UTF8_TO_TCHAR(Child.GetName().GetText()));
-				}
-				continue;
-			}
-			pxr::VtIntArray Faces;
-			for (const pxr::TfToken& Name : {TypedFaces, CustomFaces})
-			{
-				if (const pxr::UsdAttribute Attr = Child.GetAttribute(Name))
-				{
-					if (Attr.Get(&Faces) && !Faces.empty())
-					{
-						break;
-					}
-				}
-			}
-			int Index = 0;
-			if (const pxr::UsdAttribute Attr = Child.GetAttribute(Hilight))
-			{
-				Attr.Get(&Index);
-			}
-			const int32 Region = Touch->Regions.Num();
-			FRigExecTouch::FRegion& Out = Touch->Regions.AddDefaulted_GetRef();
-			Out.Mesh = M;
-			Out.Name = UTF8_TO_TCHAR(Child.GetName().GetText());
-			Out.ControlPath = ControlPath;
-			Out.Element = Element;
-			const FLinearColor Base = Palette.empty()
-			                              ? Color(Child, OwnColor, FLinearColor(1.0f, 0.6f, 0.0f))
-			                              : FLinearColor(Palette[size_t(FMath::Max(Index, 0)) % Palette.size()][0],
-			                                             Palette[size_t(FMath::Max(Index, 0)) % Palette.size()][1],
-			                                             Palette[size_t(FMath::Max(Index, 0)) % Palette.size()][2]);
-			Out.HoverColor = ScaleTo(Base, 1.0f);
-			for (int Face : Faces)
-			{
-				if (Face >= 0 && Face < Touched.FaceRegion.Num())
-				{
-					Touched.FaceRegion[Face] = Region;
-					Out.Faces.Add(Face);
-				}
-			}
-		}
-		UE_LOG(LogRigExec, Log, TEXT("touch layer %s on %s"), *Layer->Label, *Touched.Path);
 	}
 	Touch->Written.Init(uint8(TouchStateCount), Touch->Regions.Num());
 	UE_LOG(LogRigExec, Log, TEXT("%d touch regions"), Touch->Regions.Num());
@@ -1880,7 +2233,6 @@ URigExecComponent::LoadTouchRegions()
 		UE_LOG(LogRigExec, Log, TEXT("%d touch regions name no Control Rig control and are skipped: %s"), Missing.Num(),
 		       *FString::Join(Missing, TEXT(", ")));
 	}
-#endif
 }
 
 int32

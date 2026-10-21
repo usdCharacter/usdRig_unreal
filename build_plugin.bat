@@ -1,5 +1,6 @@
 @echo off
-rem Packages the RigExec plugin and installs it into the example project.
+rem Packages the RigExec plugin into Build\RigExec, for use in other projects.
+rem The example project is C++ and builds the plugin from Plugins\ itself.
 rem
 rem Needs nothing from usdRig: the runtime libraries are vendored under
 rem Plugins\RigExec\Source\ThirdParty\RigExecLib. UE_ROOT names the engine
@@ -16,7 +17,5 @@ call "%UE_ROOT%\Engine\Build\BatchFiles\RunUAT.bat" BuildPlugin ^
     -Plugin="%~dp0Plugins\RigExec\RigExec.uplugin" -Package="%RIGEXEC_PLUGIN_OUT%" ^
     -TargetPlatforms=Win64 -Rocket
 if errorlevel 1 exit /b 1
-robocopy "%RIGEXEC_PLUGIN_OUT%" "%~dp0Examples\RigExecBiped\Plugins\RigExec" /MIR /NFL /NDL /NJH /NJS /NP >nul
-if errorlevel 8 exit /b 1
-echo installed into %~dp0Examples\RigExecBiped\Plugins\RigExec
+echo packaged into %RIGEXEC_PLUGIN_OUT%
 exit /b 0

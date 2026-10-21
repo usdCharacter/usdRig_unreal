@@ -1,4 +1,4 @@
-usdRig commit: 1719fa418c4838e2148bd7f88d7577564ead42e6
+usdRig commit: 3159dca2a38df1cab5d684376488f9ccfc1bdc12
 headers:
   rigExecBinary/external.h
   rigExecBinary/wireTypes.h

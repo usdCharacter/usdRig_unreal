@@ -19,7 +19,7 @@ which is the usdRig checkout beside this repository.
 To open it:
 
 ```bat
-build_plugin.bat                                   & rem once, and after any C++ change
+Examples\RigExecBiped\Setup_RigExecBiped.bat       & rem once: builds and sets up the content
 Examples\RigExecBiped\Launch_RigExecBiped.bat
 ```
 

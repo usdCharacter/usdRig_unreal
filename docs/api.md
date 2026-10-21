@@ -31,17 +31,19 @@ editor too.
 
 | Property | Type | |
 | --- | --- | --- |
+| `Character` | `URigExecCharacter*` | The baked character: the rig, its controls and picker, and its meshes in one asset, with no USD. When set, the file paths are ignored. What a packaged game loads (see [game.md](game.md)) |
 | `RigExecFile` | `FFilePath` | The `.rigexec` (`rigExecBake`). Relative paths are relative to the project directory |
 | `StageFile` | `FFilePath` | The USD stage the rig was baked from, read for mesh topology and materials |
 | `SurfaceMaterial` | `UMaterialInterface*` | Parent of each mesh material. It receives `Color`/`BaseColor`, `Roughness` and `Metallic` parameters. Empty means `/RigExec/M_RigExecSurface`, which also blends the vertex colour in by its alpha (the Touch Pose tint, see [Touch Pose](editor-workflow.md#touch-pose)) |
 | `ControlsFile` | `FFilePath` | The controls description (after `build_control_rig.py`). Optional: without it, nothing maps the Control Rig onto the rig |
 | `ControlRig` | `UControlRigComponent*` | The Control Rig that poses the rig. Empty means the owner's first one |
+| `bPullControlRig` | `bool` | Pull the Control Rig's controls into the rig each tick (default on). Off when something else drives the controls, such as the retargeter |
 
 ### Functions
 
 | Function | Blueprint | |
 | --- | --- | --- |
-| `bool Load()` | ✓ | Opens the rig, runs its first frame, builds the meshes from the stage and reads the controls. Returns false, with the reason logged to `LogRigExec`, on failure. Called from `OnRegister` when both file paths are set |
+| `bool Load()` | ✓ | Opens the rig, runs its first frame, builds the meshes (from `Character`, else from the stage) and reads the controls. Returns false, with the reason logged to `LogRigExec`, on failure. Called from `OnRegister` when `Character` or both file paths are set, except in a commandlet |
 | `bool SetChannel(const FString& Channel, float Value)` | ✓ | Sets one avar by path. It takes effect at the next `Evaluate`. Returns false (with a warning) when the runtime refuses it |
 | `void ClearChannels()` | ✓ | Drops every avar that was set, back to the baked pose, and resets the cached control values so the next pull resends them |
 | `float Evaluate()` | ✓ | Runs the rig and moves the meshes. Returns milliseconds, or negative on failure |
@@ -58,6 +60,48 @@ editor too.
 | `FName FindChannelElement(const FString& AttrPath) const` | C++ | The Control Rig control or channel for a rig attribute |
 | `FString PickerFilePath() const` | C++ | `<Name>_picker.json` beside the controls file, or empty |
 | `bool IsLimbSwitch(const FString& SwitchPath) const` | C++ | Whether `SwitchPath` is a limb switch this rig can match |
+| `bool GetPickerText(FString& Out) const` | C++ | The picker layout: the character's, else the file's |
+| `static bool ReadStageMeshes(const FString& Stage, const TArray<FString>& PointsProperties, FRigExecMeshSet& Out, FString& Error)` | C++ | Reads each posed mesh's topology, UVs, looks and touch regions off a stage. Builds with the USD SDK (the editor) only |
+
+**Driving controls directly** (C++), for code that bypasses Control Rig,
+such as `URigExecRetargetComponent`. Controls are indexed in the controls
+description's order, parents first. Matrices are USD row-vector, asset
+space, rig units.
+
+| Function | |
+| --- | --- |
+| `int32 GetControlCount() const`, `int32 FindControlIndex(const FString& NameOrPath) const` | The controls, and one by element name, path or last path component (-1 if none) |
+| `int32 GetControlParent(int32)`, `bool IsControlNull(int32)`, `const FString& GetControlPath(int32)` | Its parent, whether it is a helper null, its path |
+| `FMatrix GetControlValueMatrix(int32 Control, bool bDefault = false) const` | Its value as last sent, or its rest value |
+| `bool GetControlAssetFrame(int32 Control, FMatrix& Out) const` | Its posed frame from the last evaluation |
+| `int32 SetControlValueMatrix(int32 Control, const FMatrix& Value)` | Sends a value as the control's avars, decomposed in its rotation order. Returns how many avars changed; `Evaluate` to see them |
+| `TArray<TPair<FString, double>> GetLimbFkSwitches() const` | Each IK/FK limb's switch and its FK value |
+| `double GetCentimetresPerUnit() const` | Rig units to centimetres |
+
+## `URigExecCharacter`
+
+`Public/RigExecCharacter.h`: a baked character asset (see [game.md](game.md)).
+It shows `SourceRigExec`, `SourceStage` and `SourceControls` (what it was baked
+from), and `MeshCount`, `TouchRegionCount` and `RigExecBytes`. Its payload is
+`Program` (the `.rigexec` bytes), `Controls`, `Picker` and `MeshSet` (an
+`FRigExecMeshSet`). It is serialized with its own version number, and an asset
+from another version is refused at load, so bake it again.
+
+## `URigExecRetargetComponent`
+
+`Public/RigExecRetargetComponent.h`: drives a `URigExecComponent` from an
+animated `USkeletalMeshComponent` (see [game.md](game.md#the-retargeter)).
+
+| Property | |
+| --- | --- |
+| `Source` | The animated mesh. Empty means the owner's first skeletal mesh |
+| `Target` | The rig. Empty means the owner's |
+| `Bones` | `FRigExecRetargetBone` entries, parents first: `SourceBone`, `TargetControl`, `SourceAim`/`TargetAim` (a child of each, to line the rest poses up), `bTranslate` (carry the movement). Defaults to `MannequinToBiped()` |
+| `LeftControl`, `RightControl`, `LowControl`, `HighControl` | The entries whose targets set the facing |
+| `bForceFk`, `bEnabled` | Hand the limbs to FK; switch it off |
+| `Status`, `LastMilliseconds`, `LastErrorDegrees` | What it is doing, a frame's cost, and how closely the rig followed |
+
+`Rebind()` binds again on the next tick.
 
 ### Example: posing without Control Rig
 
@@ -119,6 +163,8 @@ print(rig.get_touch_region_name(region), rig.get_touch_region_control(region))
 | `FString RigExecSelfTest(const FString& RigExecFile, const FString& Channel, const TArray<float>& Values)` | Opens a `.rigexec` and poses `Channel` once per value. Reports whether property chains are live, each pose's time, and the largest point move from the first pose. Needs no stage and no Control Rig |
 | `bool ShowControlRigInViewport(UControlRig* ControlRig)` | *Editor only.* Enters the Control Rig animation mode, hands it this rig and shows its controls, which is the state the Animation Outliner's eye toggles. It loads the rig's shape libraries first, or the gizmos have no mesh |
 | `bool SetControlsAsOverlay(bool bOverlay)` | *Editor only.* Sets the Animation mode's "Controls As Overlay" (`ControlRigEditModeSettings.bShowControlsAsOverlay`) and saves it. Set it before opening a sequence |
+| `FString RigExecInspect(const FString& RigExecFile)` | Opens a `.rigexec` with the plugin's runtime and reports whether it plays here: its inputs and outputs, any plugin mover with no kernel, and which number inputs move it (each nudged by 0.5). Starts with `OK` when it opens, evaluates, responds and resets |
+| `URigExecCharacter* BakeCharacter(const FString& RigExecFile, const FString& StageFile, const FString& ControlsFile, const FString& AssetPath)` | *Editor only.* Bakes a character asset at `AssetPath` and saves it. Relative files are relative to the project |
 
 ## Editor module (`RigExecEditor`)
 

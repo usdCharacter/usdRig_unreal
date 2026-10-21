@@ -9,7 +9,26 @@
 | Platform | Win64 |
 | usdRig | **Not** needed to build. The runtime is vendored under `Plugins/RigExec/Source/ThirdParty/RigExecLib` |
 
-## Build and install into the example
+## Build the example
+
+The example is a C++ project. Its `.uproject` lists `../../Plugins` in
+`AdditionalPluginDirectories`, so one build compiles the plugin from source
+together with the example's game module, for the editor and for the game:
+
+```bat
+Examples\RigExecBiped\Setup_RigExecBiped.bat   & rem builds, then sets up the content
+```
+
+or just the build:
+
+```bat
+"%UE_ROOT%\Engine\Build\BatchFiles\Build.bat" RigExecBipedEditor Win64 Development -Project="%CD%\Examples\RigExecBiped\RigExecBiped.uproject"
+```
+
+Do not also install a packaged copy into `Examples\RigExecBiped\Plugins\RigExec`:
+the project would then find the plugin twice.
+
+## Package the plugin
 
 ```bat
 build_plugin.bat
@@ -21,9 +40,7 @@ This runs Unreal's automation tool:
 RunUAT BuildPlugin -Plugin=Plugins\RigExec\RigExec.uplugin -Package=Build\RigExec -TargetPlatforms=Win64 -Rocket
 ```
 
-It then mirrors the packaged plugin into
-`Examples\RigExecBiped\Plugins\RigExec`. Both `Build\` and the example's
-`Plugins\` folder are build output and are git-ignored.
+`Build\` is build output and is git-ignored.
 
 | Variable | Default | Meaning |
 | --- | --- | --- |
@@ -76,7 +93,8 @@ bin\build_rigexec.bat
 
 rem back here
 python Tools\update_rigexec_lib.py          & rem or: ... <path to usdRig>
-build_plugin.bat
+prepare_biped.bat                            & rem re-bake the example's rig data
+Examples\RigExecBiped\Setup_RigExecBiped.bat  & rem rebuild, re-bake RXC_Biped
 ```
 
 `update_rigexec_lib.py` takes the usdRig root as an argument, else

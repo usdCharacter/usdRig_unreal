@@ -1,6 +1,7 @@
 // The RigExec binary runtime inside Unreal: the rig is posed by the
 // vendored rigExecRuntime/rigExecBinary libraries (ThirdParty/RigExecLib),
-// and each mesh's topology is read once from the USD stage.
+// and each mesh's topology is read once from the USD stage (in the editor)
+// or from a baked URigExecCharacter (anywhere, a packaged game included).
 using UnrealBuildTool;
 
 public class RigExecRuntime : ModuleRules
@@ -24,7 +25,7 @@ public class RigExecRuntime : ModuleRules
 		// Showing a Control Rig in the level viewport is an editor feature.
 		if (Target.bBuildEditor)
 		{
-			PrivateDependencyModuleNames.AddRange(new string[] { "UnrealEd", "ControlRigEditor" });
+			PrivateDependencyModuleNames.AddRange(new string[] { "UnrealEd", "ControlRigEditor", "AssetRegistry" });
 		}
 
 		// Unreal's USD build: include paths, definitions and RTTI, as its

@@ -10,6 +10,7 @@
 #include "Framework/MultiBox/MultiBoxBuilder.h"
 #include "Misc/FileHelper.h"
 #include "RigExecActor.h"
+#include "RigExecCharacter.h"
 #include "RigExecComponent.h"
 #include "Rendering/DrawElements.h"
 #include "Rendering/SlateRenderer.h"
@@ -94,7 +95,13 @@ FRigExecPickerModel::Bind()
 			break;
 		}
 	}
-	const FString File = Found && Found->Rig ? Found->Rig->PickerFilePath() : FString();
+	// A baked character carries its layout; the asset's name stands for it.
+	FString File;
+	if (Found && Found->Rig)
+	{
+		const URigExecCharacter* Baked = Found->Rig->Character;
+		File = Baked && !Baked->Picker.IsEmpty() ? Baked->GetPathName() : Found->Rig->PickerFilePath();
+	}
 	if (Found == Actor.Get() && File == LoadedFile && (Panels.Num() > 0 || File.IsEmpty()))
 	{
 		return;
@@ -137,7 +144,7 @@ FRigExecPickerModel::LoadPicker(const FString& File)
 {
 	FString Text;
 	TSharedPtr<FJsonObject> Root;
-	if (!FFileHelper::LoadFileToString(Text, *File) ||
+	if (!Actor->Rig || !Actor->Rig->GetPickerText(Text) ||
 	    !FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(Text), Root) || !Root.IsValid())
 	{
 		StatusText = FString::Printf(TEXT("Cannot read %s"), *File);

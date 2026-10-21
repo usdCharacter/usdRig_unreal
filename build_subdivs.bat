@@ -21,5 +21,9 @@ call "%UE_ROOT%\Engine\Build\BatchFiles\RunUAT.bat" BuildPlugin ^
 if errorlevel 1 exit /b 1
 robocopy "%SUBDIVS_PLUGIN_OUT%" "%~dp0Examples\RigExecBiped\Plugins\SquarebitSubdivs" /MIR /XD Intermediate /NFL /NDL /NJH /NJS /NP >nul
 if errorlevel 8 exit /b 1
+rem The package leaves out ThirdParty, which the plugin's build rules read
+rem (the example is a C++ project, so its build loads them).
+robocopy "%SQUAREBIT_SUBDIVS%\Plugins\SquarebitSubdivs\ThirdParty" "%~dp0Examples\RigExecBiped\Plugins\SquarebitSubdivs\ThirdParty" /MIR /NFL /NDL /NJH /NJS /NP >nul
+if errorlevel 8 exit /b 1
 echo installed into %~dp0Examples\RigExecBiped\Plugins\SquarebitSubdivs
 exit /b 0

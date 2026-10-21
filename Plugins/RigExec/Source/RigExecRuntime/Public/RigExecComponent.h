@@ -5,7 +5,6 @@
 #include "Components/SceneComponent.h"
 #include "CoreMinimal.h"
 #include "Engine/EngineTypes.h"
-#include "UsdWrappers/UsdStage.h"
 
 #include "RigExecComponent.generated.h"
 
@@ -13,6 +12,8 @@ class UControlRigComponent;
 class UMaterialInterface;
 class UDynamicMeshComponent;
 class URigExecSkinComponent;
+class URigExecCharacter;
+struct FRigExecMeshSet;
 
 namespace rigExec
 {
@@ -33,6 +34,13 @@ public:
 
 	URigExecComponent();
 	virtual ~URigExecComponent() override;
+
+	/** The baked character (URigExecRuntimeLibrary::BakeCharacter): the rig,
+	 * its controls and its meshes in one asset, with no USD and no files on
+	 * disk -- what a packaged game loads. When set, the file paths below are
+	 * ignored. */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "RigExec")
+	TObjectPtr<URigExecCharacter> Character;
 
 	/** The rig: a .rigexec (rigExecBake), every input settable. Relative paths
 	 * here and below are relative to the project directory. */
@@ -106,6 +114,67 @@ public:
 	/** The picker layout export_picker.py wrote beside the controls file
 	 * (Biped_controls.json -> Biped_picker.json), resolved; empty if none. */
 	FString PickerFilePath() const;
+	/** The picker layout's text: the character asset's, else the file's.
+	 * False when there is none. */
+	bool GetPickerText(FString& Out) const;
+
+	/** Reads every mesh the rig poses (`PointsProperties`, "<mesh>.points")
+	 * off a USD stage: topology, UVs, material looks and touch regions.
+	 * Editor (or any build with the USD SDK) only; false with `Error` set
+	 * otherwise. */
+	static bool ReadStageMeshes(const FString& StagePath, const TArray<FString>& PointsProperties,
+	                            FRigExecMeshSet& Out, FString& Error);
+
+	/** Pull the Control Rig's controls into the rig each tick. Off when
+	 * something else drives the controls directly (a retargeter, through
+	 * SetControlValueMatrix). */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "RigExec")
+	bool bPullControlRig = true;
+
+	/** Direct control access, for drivers that bypass Control Rig. Controls
+	 * are indexed in the controls description's order, parents first;
+	 * matrices are USD row-vector, in asset space and rig units. */
+	int32 GetControlCount() const { return ControlMaps.Num(); }
+	/** The control whose path or Control Rig element name is `NameOrPath`, or -1. */
+	int32 FindControlIndex(const FString& NameOrPath) const;
+	int32 GetControlParent(int32 Control) const;
+	bool IsControlNull(int32 Control) const;
+	const FString& GetControlPath(int32 Control) const;
+	/** The control's value as last sent (`bDefault`: its rest value). */
+	FMatrix GetControlValueMatrix(int32 Control, bool bDefault = false) const;
+	/** The control's posed frame from the last evaluation; false when the
+	 * rig publishes none for it. */
+	bool GetControlAssetFrame(int32 Control, FMatrix& Out) const;
+	/** Sends a control's value: its avars, decomposed in its rotation order.
+	 * Returns how many avars changed; Evaluate to see them. */
+	int32 SetControlValueMatrix(int32 Control, const FMatrix& Value);
+	/** Rig units to centimetres. */
+	double GetCentimetresPerUnit() const { return CentimetresPerUnit; }
+
+	/** The matrix primvars the last evaluation published -- a surface
+	 * projector's frame and its packed shader dials -- as
+	 * "<prim>.primvars:<name>" paths. */
+	TArray<FString> GetMatrixPrimvarPaths() const;
+	/** One of them: USD row-vector, asset space, rig units. False when the
+	 * rig publishes no such primvar. */
+	bool GetMatrixPrimvar(const FString& Path, FMatrix& Out) const;
+	/** An asset-space frame (row vectors) in this component's space and in
+	 * centimetres: where the meshes' points are put. */
+	FMatrix AssetToComponent(const FMatrix& Asset) const { return ToUnreal(Asset); }
+	/** The mesh drawn for the stage prim `PathOrName` ("/Biped/Geom/l_eye_geo"
+	 * or "l_eye_geo"), or -1. */
+	int32 FindMesh(const FString& PathOrName) const;
+	const FString& GetMeshPath(int32 Mesh) const;
+	/** Everything drawing mesh `Mesh`: its Dynamic Mesh and, on the GPU path,
+	 * its skin. (A subdivision surface draws them too; it is its own
+	 * component.) */
+	TArray<UPrimitiveComponent*> GetMeshDrawers(int32 Mesh) const;
+	/** Puts `Material` on slot `Slot` of mesh `Mesh`, on everything drawing it. */
+	void SetMeshMaterial(int32 Mesh, int32 Slot, UMaterialInterface* Material);
+	/** Counts Loads: the meshes are new components after each. */
+	int32 GetLoadCount() const { return LoadCount; }
+	/** The limbs' IK/FK switches and the value each takes for FK. */
+	TArray<TPair<FString, double>> GetLimbFkSwitches() const;
 
 	/** Whether `SwitchPath` ("/.../L_Arm.avars:ikfk") is a limb's IK/FK
 	 * switch this rig can match. */
@@ -233,8 +302,12 @@ private:
 	TArray<TObjectPtr<UDynamicMeshComponent>> Meshes;
 	/** Each mesh's position in the reader's point list. */
 	TArray<int32> PointSlots;
-	/** The stage, kept for its up axis and units. */
-	UE::FUsdStage Stage;
+	/** Each mesh's stage prim. */
+	TArray<FString> MeshPaths;
+	int32 LoadCount = 0;
+	/** The stage's up axis and units, for converting the rig's points. */
+	bool bStageZUp = false;
+	double StageMetersPerUnit = 0.01;
 
 	struct FControlMap
 	{
@@ -281,7 +354,13 @@ private:
 	/** The global matrix of the parent of control C: its parent control or
 	 * null, or the USD-space root. */
 	FMatrix ParentGlobal(const class URigHierarchy* Hierarchy, int32 C) const;
-	bool LoadControls();
+	bool LoadControls(const FString& Text, const FString& Source);
+	/** Sends one control's value matrix (rig units) as avars. */
+	int32 SendControl(FControlMap& Map, const FMatrix& Value, bool bForce);
+	/** Builds the dynamic meshes from the stage's data and the rig's points. */
+	void BuildMeshes(const FRigExecMeshSet& Set);
+	/** Where the rig was loaded from, for the log. */
+	FString SourceName;
 	/** Moves every control's offset so its gizmo sits on the frame the rig
 	 * computed: offset = value^-1 * frame * parentFrame^-1. */
 	void PlaceControls();
@@ -332,8 +411,8 @@ private:
 	struct FRigExecFrames;
 	FRigExecFrames* FrameCache = nullptr;
 	double LastPoseTime = 0.0;
-	/** Reads the regions off the open stage; after the meshes and controls. */
-	void LoadTouchRegions();
+	/** Takes the regions whose control is known; after the meshes and controls. */
+	void LoadTouchRegions(const FRigExecMeshSet& Set);
 	/** Writes the regions whose highlight changed into the meshes' colours. */
 	void RefreshTouchColors();
 	/** Whether each mesh was drawn (visible) at its last update: a hidden

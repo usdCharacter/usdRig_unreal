@@ -4,7 +4,8 @@
 
 | Limit | Why |
 | --- | --- |
-| **Editor only** | Meshes are read from the USD stage, and Unreal builds USD into the editor only. In a build without `USE_USD_SDK`, `Load()` logs `this build has no USD; the meshes cannot be read`. The module still compiles for game targets, so a project that ships with the plugin enabled still packages |
+| **Games load a baked character** | Reading the stage needs USD, which Unreal builds into the editor only. A packaged game loads a `URigExecCharacter` asset (see [game.md](game.md)); a component given file paths in a game logs `this build has no USD; bake a RigExec Character asset in the editor and load that` |
+| **Plugin movers without a kernel** | A mover usdRig plays through a USD-side library (today `RigExecPatchMover`) has no kernel in the Unreal runtime: its points pass through, and `Load()` warns `the rig uses RigExecPatchMover, which the RigExec runtime in Unreal has no kernel for`. `URigExecRuntimeLibrary::RigExecInspect` reports it for any `.rigexec` |
 | **Win64 only** | The vendored runtime libraries are MSVC builds (`PlatformAllowList: Win64`) |
 | **No UVs or textures** | Meshes carry positions, per-vertex normals and material IDs only. Materials get the `UsdPreviewSurface` constants (`diffuseColor`, `roughness`, `metallic`). A procedural shader, such as the eye's iris, falls back to grey (0.7, roughness 0.6) |
 | **One base frame** | The component selects the first baked frame and poses from avars. Baked animation in the `.rigexec` is not played |
@@ -21,7 +22,7 @@ fallback. **Render Path** gives the reason:
 | --- | --- |
 | Draw On GPU is off for this component | Turn **Draw On GPU** on (RigExec > Render) |
 | this renderer has no compute shaders (below Shader Model 5) | Run on a Shader Model 5 renderer (DirectX 12, Vulkan or Metal), not a mobile or ES preview |
-| the RigExec normals shader is not compiled for this platform | Rebuild the plugin (`build_plugin.bat`) and let the shaders compile. Check the log for `RigExecNormals.usf` errors |
+| the RigExec normals shader is not compiled for this platform | Rebuild the project and let the shaders compile. Check the log for `RigExecNormals.usf` errors |
 
 To see the fallback on a machine that runs the GPU path, set `RigExec.ForceCPUFallback 1` in the console and
 reload the character (toggle **Draw On GPU**, or reopen the level). Set it back to 0 the same way.

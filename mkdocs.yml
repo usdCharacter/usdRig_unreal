@@ -87,6 +87,7 @@ nav:
     - Building and installing: building.md
     - Preparing a rig: rig-preparation.md
     - Working in the editor: editor-workflow.md
+    - "In a game: baking and retargeting": game.md
     - Limits and troubleshooting: troubleshooting.md
   - Reference:
     - API reference: api.md

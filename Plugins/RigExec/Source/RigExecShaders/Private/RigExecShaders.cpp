@@ -36,6 +36,12 @@ RigExecShaders::CanUseGpuSkin(FString* OutReason)
 	{
 		return Fail(TEXT("this renderer has no compute shaders (it runs below Shader Model 5)"));
 	}
+	// A commandlet (a cook) may have no global shaders at all, and asking
+	// for the map then asserts.
+	if (!GGlobalShaderMap[GMaxRHIShaderPlatform])
+	{
+		return Fail(TEXT("no global shaders are loaded (a commandlet)"));
+	}
 	FGlobalShaderMap* ShaderMap = GetGlobalShaderMap(GMaxRHIFeatureLevel);
 	if (!ShaderMap || !TShaderMapRef<FRigExecNormalsCS>(ShaderMap).IsValid())
 	{

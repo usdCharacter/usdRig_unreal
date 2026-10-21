@@ -31,7 +31,8 @@ control re-poses the rig and deforms the meshes in place.
 | `Scripts/` | Python: rig preparation (runs under usdRig's Python) and editor setup (runs inside Unreal) |
 | `Tools/make_materials.py` | Regenerates the plugin's surface material (`M_RigExecSurface`) |
 | `Tools/update_rigexec_lib.py` | Refreshes the vendored runtime from a built usdRig checkout |
-| `build_plugin.bat` | Packages the plugin with Unreal's automation tool and installs it into the example project |
+| `build_plugin.bat` | Packages the plugin with Unreal's automation tool, for use in other projects |
+| `package_game.bat` | Packages the example as a Win64 game: the biped running around, retargeted from the UE5 Mannequin, with no USD |
 | `build_subdivs.bat` | For local testing with [Squarebit Subdivs](https://www.squarebitstudios.com/squarebit-subdivs): packages `../SquarebitSubdivs` into the example project |
 | `prepare_biped.bat` | Rebuilds the example's rig data from usdRig's biped |
 | `docs/` | Full documentation (see below) |
@@ -55,10 +56,13 @@ was baked from, which lives in the usdRig checkout.
 ## Quick start
 
 ```bat
-build_plugin.bat
-build_subdivs.bat            & rem optional: GPU subdivision (needs ..\SquarebitSubdivs)
+build_subdivs.bat                              & rem optional: GPU subdivision (needs ..\SquarebitSubdivs)
+Examples\RigExecBiped\Setup_RigExecBiped.bat   & rem builds the C++ project and its content
 Examples\RigExecBiped\Launch_RigExecBiped.bat
 ```
+
+To run around as the biped, open `L_RigExecGame` and press Play, or package
+the game with `package_game.bat` (see [docs/game.md](docs/game.md)).
 
 The project opens on `L_RigExec`, which has the biped, a floor and lights. To
 pose the biped:
@@ -79,6 +83,7 @@ pose the biped:
 | [docs/building.md](docs/building.md) | Building and packaging, the vendored runtime, using the plugin in another project |
 | [docs/rig-preparation.md](docs/rig-preparation.md) | Baking a rig and exporting its controls and picker, plus the file formats |
 | [docs/editor-workflow.md](docs/editor-workflow.md) | Setting up a character, animating in Sequencer, the picker, IK/FK and space switching |
+| [docs/game.md](docs/game.md) | Running the character in a packaged game: the baked character asset and the Mannequin retargeter |
 | [docs/subdivision.md](docs/subdivision.md) | Drawing the character subdivided on the GPU with Squarebit Subdivs, and how Touch Pose reaches it |
 | [docs/api.md](docs/api.md) | C++, Blueprint and Python API reference |
 | [docs/plans/touchpose-remaining.md](docs/plans/touchpose-remaining.md) | Touch Pose work still to do (on hold) |
@@ -90,8 +95,10 @@ pose the biped:
   is a CPU fallback, which the component, a toast and the log all report. The GPU skin writes motion vectors
   for TSR and motion blur, and is refit for hardware ray tracing in projects that enable it.
 
-- **Editor only.** Unreal builds USD into the editor, not into packaged games,
-  and the meshes are read from the stage.
+- **Games load a baked character.** Unreal builds USD into the editor only, so
+  a packaged game loads a `RigExec Character` asset baked in the editor (the
+  `.rigexec`, its controls and the meshes in one asset). See
+  [docs/game.md](docs/game.md).
 - **Win64 only.** The vendored runtime libraries are MSVC builds.
 - **No UVs or textures.** Materials carry their preview-surface colour,
   roughness and metallic values. A procedural shader, such as the eye's iris,
