@@ -1,7 +1,7 @@
 @echo off
 rem Rebuilds the example project's rig data from usdRig's
 rem examples\biped\Biped_stack.usda: the .rigexec, the controls
-rem description and the picker layout. The project's Control Rig, level and
+rem description, the picker layout and the layer and deformer stacks. The project's Control Rig, level and
 rem sequence are built from the controls file, so run
 rem Scripts\setup_example_project.py in the editor after this.
 rem
@@ -19,4 +19,5 @@ set "DATA=%~dp0Examples\RigExecBiped\RigExecData"
 "%RIG%\build\rigExecBake.exe" "%STAGE%" --rig /Biped/Rig --time 1 -o "%DATA%\Biped.rigexec" || exit /b 1
 "%PY%" "%~dp0Scripts\export_controls.py" "%STAGE%" "%DATA%\Biped_controls.json" || exit /b 1
 "%PY%" "%~dp0Scripts\export_picker.py" "%STAGE%" "%DATA%\Biped_picker.json" || exit /b 1
+"%PY%" "%~dp0Scripts\export_stack.py" "%STAGE%" "%DATA%\Biped_stack.json" --rig /Biped/Rig || exit /b 1
 exit /b 0

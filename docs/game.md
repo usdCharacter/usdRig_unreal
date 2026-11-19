@@ -84,7 +84,8 @@ libraries and no `.usda` files: the character is the cooked `RXC_Biped`.
 ### Pause menu and settings
 
 Esc (outside the close-up), P or gamepad Start pauses the game and opens
-**PAUSED**: Resume, Settings, Quit Game. Quit closes the game (in the
+**PAUSED**: Resume, Choose Character (with more than one), Animation
+Studio (Play the Game in the studio), Settings, Quit Game. Quit closes the game (in the
 editor it ends Play In Editor). The menu works with the mouse, the arrow
 keys or W/S with Enter or Space, and the gamepad's D-pad with A and B.
 
@@ -184,6 +185,153 @@ ffmpeg -framerate 30 -i Build\Game\Windows\RigExecBiped\Saved\RigExecFrames\fram
 
 `-RigExecFrames` saves every frame; with the fixed 30 fps step, each frame is
 1/30 s of play.
+
+## The animation studio
+
+A game mode of its own, `ARigExecStudioGameMode`, in its own level
+`/Game/RigExec/L_RigExecStudio`. Choose a character, then pose and animate
+it. There is no Control Rig and no editor behind it, so it ships in the
+packaged game.
+
+Ways in:
+
+- **Tools > RigExec > Play Animation Studio** in the editor opens the level
+  and plays it. **Open Animation Studio Level** only opens it.
+- **ANIMATION STUDIO** in any level's pause menu. In the studio, the same
+  item reads **PLAY THE GAME**.
+- **RigExecStudioGameMode** as the **GameMode Override** of any level, in
+  World Settings.
+
+It opens on the character lobby. **Character** in the top bar goes back to
+it.
+
+| Part | Does |
+| --- | --- |
+| **TouchPose** | (Auto, Q, the default.) Hover the skin to light the control under it. Click to select it (Shift toggles, Ctrl removes), and drag to pose it. Across turns about the view's up, and up and down about its side. Controls that only move, or Move mode (W), follow the cursor; Ctrl swaps rotate and move for one drag, Alt twists about the view, Shift is fine. Controls no touch region reaches get a small dot to click instead |
+| **Manipulators** | Move (W), Rotate (E) and Scale (R) put a manipulator on the selected control. Move has an arrow per axis its translate channels run along, and a centre square for the view's plane. Rotate has a ring per axis and an outer ring about the view. Scale has a handle per axis and a centre box for all three. Only the channels the control exposes get a handle, and Shift is fine. The skin still takes presses away from the handles; in Auto only the skin does |
+| **Hover picker** | The character's picker (its baked layout), one tab per panel, drawn over the view. Clicking a button selects (Shift, Ctrl, Alt mirror). IK/FK buttons switch the limb and space buttons offer the spaces, both matched. The idle IK/FK half is drawn dim; picking it switches the limb to it, matched. `[` and `]` change tabs |
+| **Channel box** | The selected control's translate, rotate and scale. Drag a value across to change it (Shift: fine); right-click puts it back to rest. Below: the limb's IK/FK state with a matched switch, the control's space, and its other channels |
+| **Timeline** | Play and Pause (Space), step frames (← →), jump between keys (`,` `.`), Loop, Key the selection (S; nothing selected keys everything), Key All, Delete Key (Del or X), Auto Key (K, on by default: every change is keyed on the frame), the length (± 6 frames), New. The rows show every key and the selection's keys. Click a key to go to it; drag it to move it. Click or drag elsewhere to scrub |
+| **Library** | Animations and poses. Click one to use it: an animation goes on the timeline, a pose is applied at the **Pose mix** amount and keyed when Auto Key is on. Shift-click an animation to add it at the current frame. **+ Save Anim** and **+ Save Pose** ask for a name. Your own items have an **x** to delete them; the defaults cannot be deleted |
+| **Top bar** | Auto, Rotate, Move and Scale (Q, E, W, R), the Library and Picker panels, Zero (the selection, or everything), Undo and Redo (Ctrl+Z, Ctrl+Y), Frame the selection (F), Home (H), Character, Menu |
+| **Camera** | Right-drag or Alt-drag orbits, middle-drag pans, the wheel zooms. Left-drag on empty space orbits, and a click there clears the selection. Esc clears the selection first, then opens the menu |
+
+**The defaults** are baked on the first visit with each character. The
+Mannequin's Idle, Walk, Jog, Jump, Punch, Dash, Land and Fall Down go through
+the character's retargeter (`URigExecRetargetComponent::DriveOnce`) one sample
+a frame at 30 fps. Every third frame is kept as a key, so the clip plays like
+the animation and its keys stay readable on the timeline. Poses are taken
+along the way: Rest, Idle, Walk Contact and Passing, and so on. The clips are
+FK, so the IK/FK switches are keyed at FK. The bake takes a few seconds and
+is kept, so later visits load it. **Rebake defaults** bakes again.
+(Additive animations, such as the Mannequin's hit reacts, cannot be baked
+this way and are skipped.)
+
+**Where things are kept**: `Saved/RigExecStudio/<Character>/`. The baked
+defaults go in `Defaults/` (with a `manifest.json` naming the bake version),
+your animations in `Animations/` and your poses in `Poses/`. Each is a JSON
+file of the rig's own values, keyed by control path: a control key holds its
+nine transform avars, a channel key one value. Between keys, each value
+follows a smooth curve that never overshoots its keys; spaces and other
+choices hold until the next key.
+
+The rig runs on worker threads in the studio, as in the game, so the game
+thread never waits for it; while a clip plays it runs every other frame
+(the clip is 30 fps). A drag starts from the last pose that landed, and an
+IK/FK or space switch evaluates on the game thread for the pose it reads.
+The self-test runs it on the game thread, to read each pose straight away.
+
+The FPS counter (Settings > FPS counter) is drawn large on a dark plate:
+bottom left in the game, at the bottom left of the view in the studio.
+Debug stats are drawn at the same size beside it.
+
+`-RigExecStudioTest` drives every part in turn and checks the result: the
+bake, a clip and a pose, a rotate drag (the control turns exactly what the
+cursor asked, about the view's up), a move drag (the control follows the
+cursor), the manipulator's move arrow, view ring and scale box, keys and
+the curve between them, save and reload, matched IK/FK switches by button
+and by picking, matched space switches, TouchPose picks and a hover-picker
+button. It writes `Saved/RigExecStudioTest/<character>.txt` and
+screenshots, then quits:
+
+```bat
+UnrealEditor.exe Examples\RigExecBiped\RigExecBiped.uproject /Game/RigExec/L_RigExecStudio -game -RigExecStudioTest -RigExecCharacter=Biped
+```
+
+`-RigExecStudioDemo`, started from the game level, plays a scripted tour for
+a recording instead. A cursor drawn on screen clicks and drags through the
+real UI, with captions: the lobby, the game, the pause menu into the studio,
+then for each character the library, TouchPose on the face, the picker and
+manipulators on the body, keys and playback, matched IK/FK and space
+switches, and saving a pose:
+
+```bat
+Build\Game\Windows\RigExecBiped.exe -RigExecStudioDemo -fullscreen -ResX=1920 -ResY=1080
+```
+
+### VR
+
+The studio plays in a PC VR headset through OpenXR: a Meta Quest over Link
+or Air Link, or any headset with an OpenXR runtime. The PC runs the game and
+the headset shows it. The project enables the **OpenXR** plugin. The game
+itself stays on the desktop, so in a headset the game level opens the
+studio straight away.
+
+To play:
+
+1. In the **Meta Quest Link** app on the PC, open **Settings > General** and
+   choose **Set Meta Quest Link as active** next to **OpenXR Runtime**.
+2. Put the headset on and start Link (cable or Air Link).
+3. Run `RigExecBiped_VR.bat` beside the packaged game: it starts
+   `RigExecBiped.exe -vr`. Or start the game as usual and turn on
+   **Settings > VR headset**.
+
+From the editor, **Play > VR Preview** works the same way in
+`L_RigExecStudio`.
+
+You stand in front of the character. The studio's HUD is on a large panel
+around it, upright through the character, so the lobby, menus, library,
+picker, channel box and timeline are where they are on the desktop. The
+view in the middle is see-through. The marks the HUD draws on the
+character (the manipulator, TouchPose's highlight and dots) line up with it
+as seen from the headset. A HUD pixel maps to the world along the line
+from your eye through that pixel on the panel.
+
+| Control | Does |
+| --- | --- |
+| **Trigger** | The mouse's left button, at the laser's point on the panel: click, drag, TouchPose, manipulators, picker, timeline. Either hand; the last trigger pulled points |
+| **Grip** | Holds a control: the one under the laser, or the selection. A control that moves goes where the hand goes, and turns with it if it can. A control that only turns turns as the hand turns; held within 60 cm, it swings to point at the hand and twists with the wrist. Auto Key keys it on release |
+| **A** / **B** | Play and pause / undo |
+| **X** / **Y** | Key the selection / frame it |
+| **Right stick** | Across: a 30° snap turn about the character. Forward and back: nearer and further |
+| **Left stick** | Across: a frame at a time. Forward and back: what you look at moves up and down |
+| **Stick click** | Home |
+| **Menu button** | The pause menu. In menus and the lobby the sticks move the highlight, A takes it, B goes back, and the trigger clicks what it points at |
+
+The world never turns or glides under you: Home and Frame move you at
+once, and the right stick turns you in steps. While a headset is on, the
+game turns off motion blur, depth of field, lens flares, colour fringing
+and virtual shadow maps, and uses TAA instead of TSR (each is put back when
+VR is turned off). The headset's resolution comes from the Link app. Lower it
+there, or use **Settings > Screen percentage**, if the frame rate drops
+below the headset's.
+
+`-RigExecVRSim` runs the same VR studio on the desktop without a headset,
+for trying it: the camera stands where your head would be and the mouse is
+the right hand's laser. The left button is the trigger and the right button
+the grip. The self-test with it also checks the panel's mapping (a point
+on the character, to its panel pixel and back) and the grip (a move and a
+turn from afar):
+
+```bat
+UnrealEditor.exe Examples\RigExecBiped\RigExecBiped.uproject /Game/RigExec/L_RigExecStudio -game -RigExecStudioTest -RigExecCharacter=Biped -RigExecVRSim
+```
+
+The VR parts are `RigExecVR.h/.cpp` (`ARigExecVRRig`: the headset camera,
+the two lasers, the panel and its canvas texture) and the VR half of
+`RigExecMenuHUD.cpp`. The panel's material is `/Game/RigExec/VR/M_RigExecVRPanel`.
+It is premultiplied (alpha composite) and unlit, drawn over everything, with
+the camera's exposure undone so its brightness holds.
 
 ## Squarebit Eye
 

@@ -22,6 +22,8 @@
 		{ "Name": "PythonScriptPlugin", "Enabled": true },
 		{ "Name": "ControlRig", "Enabled": true },
 		{ "Name": "USDCore", "Enabled": true },
-		{ "Name": "EnhancedInput", "Enabled": true }
+		{ "Name": "EnhancedInput", "Enabled": true },
+		{ "Name": "OpenXR", "Enabled": true },
+		{ "Name": "XRBase", "Enabled": true }
 	]
 }

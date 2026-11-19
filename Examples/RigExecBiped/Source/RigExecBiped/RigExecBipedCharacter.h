@@ -64,6 +64,11 @@ public:
 
 	virtual void BeginPlay() override;
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
+	/** The keys follow the pawn: its mapping goes on when a player takes it and
+	 * comes off when they leave it (the character select swaps pawns, and a
+	 * mapping left behind would take the keys for a pawn nobody controls). */
+	virtual void PossessedBy(AController* NewController) override;
+	virtual void UnPossessed() override;
 	virtual void Tick(float DeltaSeconds) override;
 
 	/** The close-up: cuts to a camera on the face, subdivides the biped
@@ -73,6 +78,42 @@ public:
 	/** Back to play: the follow camera, subdivision level 0, the face at rest. */
 	void EndCinematic();
 	bool IsInCinematic() const { return bCinematic; }
+
+	/** A baked character the player can be: its label and asset. */
+	struct FChoice
+	{
+		FString Label;
+		FSoftObjectPath Asset;
+	};
+	/** Every baked RigExec character in the project, the biped first. */
+	static TArray<FChoice> FindCharacters();
+	/** The character to be: -RigExecCharacter=<label>, else the biped (the
+	 * default; others are chosen in the lobby). */
+	static FSoftObjectPath ChosenCharacter();
+	/** Remembers the choice (saved with the settings). */
+	static void ChooseCharacter(const FSoftObjectPath& Asset);
+	/** Speed settings (the menu's Settings page), for every character:
+	 * the rig on worker threads, and how often it runs when seen from afar
+	 * (playing, out of the close-up) and in the lobby. The close-up always
+	 * runs it every frame. */
+	static bool bRigAsync;
+	static int32 RigRateFar;
+	static int32 RigRateLobby;
+
+	/** A lobby preview (ARigExecCharacterSelect): loads PreviewAsset, has no
+	 * controller and runs none of the demos or the close-up. */
+	bool bPreview = false;
+	FSoftObjectPath PreviewAsset;
+	/** Posed by the animation studio (ARigExecStudioGameMode): it stands
+	 * still, the keys and mouse leave it alone and its rig runs every frame. */
+	bool bStudio = false;
+	/** A lobby preview taken as the player's pawn: starts behaving as one. */
+	void BecomePlayable();
+	/** The player's old pawn, left in the lobby when another is chosen. */
+	void BecomePreview();
+
+	/** The asset this character was loaded from. */
+	FSoftObjectPath GetCharacterAsset() const { return CharacterAsset.ToSoftObjectPath(); }
 	float GetCinematicTime() const { return CinematicTime; }
 	/** The subdivision level drawn now; -1 without Squarebit Subdivs. */
 	int32 GetSubdivisionLevel() const;
@@ -148,6 +189,14 @@ private:
 	void TurnEyes(float Yaw, float Pitch);
 	/** The point between the eyes, in the world. */
 	FVector FaceCentre() const;
+	/** The face's size against the biped's, whose close-ups were framed by
+	 * eye: its eyes-to-chin over the biped's 11.15 cm. The close-up cameras
+	 * stand back by it, so every character's face fills the frame alike. */
+	float FaceScale() const;
+	mutable float CachedFaceScale = 0.0f;
+	int32 Chin = INDEX_NONE;
+	/** Each close-up light's own brightness, before FaceScale. */
+	TArray<float> FaceLightCandelas;
 	/** -RigExecPadDemo: runs to the pad, watches the close-up, presses Esc. */
 	void DrivePadDemo(float Before);
 	/** -RigExecPortrait: a posed, lit portrait of the face at subdivision

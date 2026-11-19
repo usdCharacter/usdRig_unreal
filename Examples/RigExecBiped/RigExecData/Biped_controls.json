@@ -122,9 +122,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "Main",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot",
@@ -226,9 +224,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "Shot",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux",
@@ -330,9 +326,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "Aux",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/spine_mid_follow",
@@ -434,9 +428,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "spine_mid_follow",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/spine_mid_follow/M_SpineMid",
@@ -538,9 +530,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "M_SpineMid",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/headwire_low_follow/M_HeadwireLow",
@@ -642,9 +632,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "M_HeadwireLow",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/headwire_low_follow/M_HeadwireLow/head_low_aim",
@@ -746,9 +734,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "head_low_aim",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/headwire_mid_follow/M_HeadwireMid",
@@ -850,9 +836,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "M_HeadwireMid",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/headwire_top_follow/M_HeadwireTop",
@@ -954,9 +938,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "M_HeadwireTop",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/headwire_top_follow/M_HeadwireTop/head_top_aim",
@@ -1058,9 +1040,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "head_top_aim",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/spine_bend_1_follow/M_SpineBend1",
@@ -1162,9 +1142,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "M_SpineBend1",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/spine_bend_2_follow/M_SpineBend2",
@@ -1266,9 +1244,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "M_SpineBend2",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/spine_bend_3_follow/M_SpineBend3",
@@ -1370,9 +1346,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "M_SpineBend3",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/arm_bend_0_l_follow/arm_bend_0_l_cst",
@@ -1474,9 +1448,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "arm_bend_0_l_cst",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/arm_bend_0_l_follow/arm_bend_0_l_cst/L_ArmBend0",
@@ -1578,9 +1550,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_ArmBend0",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/arm_bend_0_l_follow/arm_bend_0_l_cst/L_ArmBend0/arm_bend_1_l_cst_on_0",
@@ -1682,9 +1652,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "arm_bend_1_l_cst_on_0",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/arm_bend_1_l_follow/arm_bend_1_l_cst",
@@ -1786,9 +1754,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "arm_bend_1_l_cst",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/arm_bend_1_l_follow/arm_bend_1_l_cst/L_ArmBend1",
@@ -1890,9 +1856,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_ArmBend1",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/arm_bend_2_l_follow/arm_bend_2_l_cst",
@@ -1994,9 +1958,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "arm_bend_2_l_cst",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/arm_bend_2_l_follow/arm_bend_2_l_cst/L_ArmBend2",
@@ -2098,9 +2060,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_ArmBend2",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/arm_bend_2_l_follow/arm_bend_2_l_cst/L_ArmBend2/arm_bend_1_l_cst_on_2",
@@ -2202,9 +2162,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "arm_bend_1_l_cst_on_2",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/arm_bend_2_l_follow/arm_bend_2_l_cst/L_ArmBend2/arm_bend_3_l_cst_on_2",
@@ -2306,9 +2264,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "arm_bend_3_l_cst_on_2",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/arm_bend_3_l_follow/arm_bend_3_l_cst",
@@ -2410,9 +2366,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "arm_bend_3_l_cst",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/arm_bend_3_l_follow/arm_bend_3_l_cst/L_ArmBend3",
@@ -2514,9 +2468,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_ArmBend3",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/arm_bend_4_l_follow/arm_bend_4_l_cst",
@@ -2618,9 +2570,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "arm_bend_4_l_cst",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/arm_bend_4_l_follow/arm_bend_4_l_cst/L_ArmBend4",
@@ -2722,9 +2672,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_ArmBend4",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/arm_bend_4_l_follow/arm_bend_4_l_cst/L_ArmBend4/arm_bend_3_l_cst_on_4",
@@ -2826,9 +2774,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "arm_bend_3_l_cst_on_4",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/arm_bend_0_r_follow/arm_bend_0_r_cst",
@@ -2930,9 +2876,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "arm_bend_0_r_cst",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/arm_bend_0_r_follow/arm_bend_0_r_cst/R_ArmBend0",
@@ -3034,9 +2978,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_ArmBend0",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/arm_bend_0_r_follow/arm_bend_0_r_cst/R_ArmBend0/arm_bend_1_r_cst_on_0",
@@ -3138,9 +3080,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "arm_bend_1_r_cst_on_0",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/arm_bend_1_r_follow/arm_bend_1_r_cst",
@@ -3242,9 +3182,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "arm_bend_1_r_cst",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/arm_bend_1_r_follow/arm_bend_1_r_cst/R_ArmBend1",
@@ -3346,9 +3284,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_ArmBend1",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/arm_bend_2_r_follow/arm_bend_2_r_cst",
@@ -3450,9 +3386,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "arm_bend_2_r_cst",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/arm_bend_2_r_follow/arm_bend_2_r_cst/R_ArmBend2",
@@ -3554,9 +3488,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_ArmBend2",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/arm_bend_2_r_follow/arm_bend_2_r_cst/R_ArmBend2/arm_bend_1_r_cst_on_2",
@@ -3658,9 +3590,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "arm_bend_1_r_cst_on_2",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/arm_bend_2_r_follow/arm_bend_2_r_cst/R_ArmBend2/arm_bend_3_r_cst_on_2",
@@ -3762,9 +3692,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "arm_bend_3_r_cst_on_2",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/arm_bend_3_r_follow/arm_bend_3_r_cst",
@@ -3866,9 +3794,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "arm_bend_3_r_cst",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/arm_bend_3_r_follow/arm_bend_3_r_cst/R_ArmBend3",
@@ -3970,9 +3896,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_ArmBend3",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/arm_bend_4_r_follow/arm_bend_4_r_cst",
@@ -4074,9 +3998,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "arm_bend_4_r_cst",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/arm_bend_4_r_follow/arm_bend_4_r_cst/R_ArmBend4",
@@ -4178,9 +4100,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_ArmBend4",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/arm_bend_4_r_follow/arm_bend_4_r_cst/R_ArmBend4/arm_bend_3_r_cst_on_4",
@@ -4282,9 +4202,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "arm_bend_3_r_cst_on_4",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/leg_bend_0_l_follow/leg_bend_0_l_cst",
@@ -4386,9 +4304,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "leg_bend_0_l_cst",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/leg_bend_0_l_follow/leg_bend_0_l_cst/L_LegBend0",
@@ -4490,9 +4406,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_LegBend0",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/leg_bend_0_l_follow/leg_bend_0_l_cst/L_LegBend0/leg_bend_1_l_cst_on_0",
@@ -4594,9 +4508,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "leg_bend_1_l_cst_on_0",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/leg_bend_1_l_follow/leg_bend_1_l_cst",
@@ -4698,9 +4610,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "leg_bend_1_l_cst",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/leg_bend_1_l_follow/leg_bend_1_l_cst/L_LegBend1",
@@ -4802,9 +4712,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_LegBend1",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/leg_bend_2_l_follow/leg_bend_2_l_cst",
@@ -4906,9 +4814,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "leg_bend_2_l_cst",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/leg_bend_2_l_follow/leg_bend_2_l_cst/L_LegBend2",
@@ -5010,9 +4916,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_LegBend2",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/leg_bend_2_l_follow/leg_bend_2_l_cst/L_LegBend2/leg_bend_1_l_cst_on_2",
@@ -5114,9 +5018,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "leg_bend_1_l_cst_on_2",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/leg_bend_2_l_follow/leg_bend_2_l_cst/L_LegBend2/leg_bend_3_l_cst_on_2",
@@ -5218,9 +5120,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "leg_bend_3_l_cst_on_2",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/leg_bend_3_l_follow/leg_bend_3_l_cst",
@@ -5322,9 +5222,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "leg_bend_3_l_cst",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/leg_bend_3_l_follow/leg_bend_3_l_cst/L_LegBend3",
@@ -5426,9 +5324,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_LegBend3",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/leg_bend_4_l_follow/leg_bend_4_l_cst",
@@ -5530,9 +5426,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "leg_bend_4_l_cst",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/leg_bend_4_l_follow/leg_bend_4_l_cst/L_LegBend4",
@@ -5634,9 +5528,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_LegBend4",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/leg_bend_4_l_follow/leg_bend_4_l_cst/L_LegBend4/leg_bend_3_l_cst_on_4",
@@ -5738,9 +5630,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "leg_bend_3_l_cst_on_4",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/leg_bend_0_r_follow/leg_bend_0_r_cst",
@@ -5842,9 +5732,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "leg_bend_0_r_cst",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/leg_bend_0_r_follow/leg_bend_0_r_cst/R_LegBend0",
@@ -5946,9 +5834,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_LegBend0",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/leg_bend_0_r_follow/leg_bend_0_r_cst/R_LegBend0/leg_bend_1_r_cst_on_0",
@@ -6050,9 +5936,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "leg_bend_1_r_cst_on_0",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/leg_bend_1_r_follow/leg_bend_1_r_cst",
@@ -6154,9 +6038,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "leg_bend_1_r_cst",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/leg_bend_1_r_follow/leg_bend_1_r_cst/R_LegBend1",
@@ -6258,9 +6140,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_LegBend1",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/leg_bend_2_r_follow/leg_bend_2_r_cst",
@@ -6362,9 +6242,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "leg_bend_2_r_cst",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/leg_bend_2_r_follow/leg_bend_2_r_cst/R_LegBend2",
@@ -6466,9 +6344,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_LegBend2",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/leg_bend_2_r_follow/leg_bend_2_r_cst/R_LegBend2/leg_bend_1_r_cst_on_2",
@@ -6570,9 +6446,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "leg_bend_1_r_cst_on_2",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/leg_bend_2_r_follow/leg_bend_2_r_cst/R_LegBend2/leg_bend_3_r_cst_on_2",
@@ -6674,9 +6548,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "leg_bend_3_r_cst_on_2",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/leg_bend_3_r_follow/leg_bend_3_r_cst",
@@ -6778,9 +6650,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "leg_bend_3_r_cst",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/leg_bend_3_r_follow/leg_bend_3_r_cst/R_LegBend3",
@@ -6882,9 +6752,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_LegBend3",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/leg_bend_4_r_follow/leg_bend_4_r_cst",
@@ -6986,9 +6854,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "leg_bend_4_r_cst",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/leg_bend_4_r_follow/leg_bend_4_r_cst/R_LegBend4",
@@ -7090,9 +6956,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_LegBend4",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/leg_bend_4_r_follow/leg_bend_4_r_cst/R_LegBend4/leg_bend_3_r_cst_on_4",
@@ -7194,9 +7058,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "leg_bend_3_r_cst_on_4",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/index_001_l_bind_fk_follow",
@@ -7298,9 +7160,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "index_001_l_bind_fk_follow",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/index_001_l_bind_fk_follow/L_IndexMeta",
@@ -7402,9 +7262,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_IndexMeta",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/index_001_l_bind_fk_follow/L_IndexMeta/L_IndexBase",
@@ -7506,9 +7364,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_IndexBase",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/index_001_l_bind_fk_follow/L_IndexMeta/L_IndexBase/L_IndexMid",
@@ -7610,9 +7466,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_IndexMid",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/index_001_l_bind_fk_follow/L_IndexMeta/L_IndexBase/L_IndexMid/L_IndexTip",
@@ -7714,9 +7568,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_IndexTip",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/middle_001_l_bind_fk_follow",
@@ -7818,9 +7670,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "middle_001_l_bind_fk_follow",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/middle_001_l_bind_fk_follow/L_MiddleMeta",
@@ -7922,9 +7772,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_MiddleMeta",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/middle_001_l_bind_fk_follow/L_MiddleMeta/L_MiddleBase",
@@ -8026,9 +7874,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_MiddleBase",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/middle_001_l_bind_fk_follow/L_MiddleMeta/L_MiddleBase/L_MiddleMid",
@@ -8130,9 +7976,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_MiddleMid",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/middle_001_l_bind_fk_follow/L_MiddleMeta/L_MiddleBase/L_MiddleMid/L_MiddleTip",
@@ -8234,9 +8078,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_MiddleTip",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/pinkyCup_l_bind_fk_follow",
@@ -8338,9 +8180,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "pinkyCup_l_bind_fk_follow",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/pinkyCup_l_bind_fk_follow/L_PinkyCup",
@@ -8442,9 +8282,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_PinkyCup",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/pinkyCup_l_bind_fk_follow/L_PinkyCup/L_PinkyMeta",
@@ -8546,9 +8384,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_PinkyMeta",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/pinkyCup_l_bind_fk_follow/L_PinkyCup/L_PinkyMeta/L_PinkyBase",
@@ -8650,9 +8486,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_PinkyBase",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/pinkyCup_l_bind_fk_follow/L_PinkyCup/L_PinkyMeta/L_PinkyBase/L_PinkyMid",
@@ -8754,9 +8588,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_PinkyMid",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/pinkyCup_l_bind_fk_follow/L_PinkyCup/L_PinkyMeta/L_PinkyBase/L_PinkyMid/L_PinkyTip",
@@ -8858,9 +8690,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_PinkyTip",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/ring_001_l_bind_fk_follow",
@@ -8962,9 +8792,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "ring_001_l_bind_fk_follow",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/ring_001_l_bind_fk_follow/L_RingMeta",
@@ -9066,9 +8894,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_RingMeta",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/ring_001_l_bind_fk_follow/L_RingMeta/L_RingBase",
@@ -9170,9 +8996,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_RingBase",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/ring_001_l_bind_fk_follow/L_RingMeta/L_RingBase/L_RingMid",
@@ -9274,9 +9098,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_RingMid",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/ring_001_l_bind_fk_follow/L_RingMeta/L_RingBase/L_RingMid/L_RingTip",
@@ -9378,9 +9200,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_RingTip",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/thumbCup_l_bind_fk_follow",
@@ -9482,9 +9302,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "thumbCup_l_bind_fk_follow",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/thumbCup_l_bind_fk_follow/L_ThumbMeta",
@@ -9586,9 +9404,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_ThumbMeta",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/thumbCup_l_bind_fk_follow/L_ThumbMeta/L_ThumbBase",
@@ -9690,9 +9506,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_ThumbBase",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/thumbCup_l_bind_fk_follow/L_ThumbMeta/L_ThumbBase/L_ThumbMid",
@@ -9794,9 +9608,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_ThumbMid",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/thumbCup_l_bind_fk_follow/L_ThumbMeta/L_ThumbBase/L_ThumbMid/L_ThumbTip",
@@ -9898,9 +9710,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_ThumbTip",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/L_LegIK",
@@ -10005,9 +9815,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_LegIK",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/L_LegIK/ankle_l_pivot/bankIn_l_pivot/bankOut_l_pivot/heel_l_roll/L_Heel",
@@ -10112,9 +9920,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_Heel",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/L_LegIK/ankle_l_pivot/bankIn_l_pivot/bankOut_l_pivot/heel_l_roll/L_Heel/ball_l_pivot/toe_l_roll/L_Toe",
@@ -10219,9 +10025,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_Toe",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/L_LegIK/ankle_l_pivot/bankIn_l_pivot/bankOut_l_pivot/heel_l_roll/L_Heel/ball_l_pivot/toe_l_roll/L_Toe/ballRoll_l_up/ballRoll_l_down/L_BallRoll",
@@ -10326,9 +10130,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_BallRoll",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/L_LegIK/ankle_l_pivot/bankIn_l_pivot/bankOut_l_pivot/heel_l_roll/L_Heel/ball_l_pivot/toe_l_roll/L_Toe/ballRoll_l_up/ballRoll_l_down/L_BallRoll/ankle_l_ikTarget",
@@ -10433,9 +10235,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "ankle_l_ikTarget",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/L_LegIK/ankle_l_pivot/bankIn_l_pivot/bankOut_l_pivot/heel_l_roll/L_Heel/ball_l_pivot/toe_l_roll/L_Toe/ballRoll_l_up/ballRoll_l_down/L_BallRoll/ball_l_ikTarget",
@@ -10540,9 +10340,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "ball_l_ikTarget",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/L_LegIK/ankle_l_pivot/bankIn_l_pivot/bankOut_l_pivot/heel_l_roll/L_Heel/ball_l_pivot/toe_l_roll/L_Toe/ballRoll_l_up/ballRoll_l_down_twin",
@@ -10647,9 +10445,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "ballRoll_l_down_twin",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/L_LegIK/ankle_l_pivot/bankIn_l_pivot/bankOut_l_pivot/heel_l_roll/L_Heel/ball_l_pivot/toe_l_roll/L_Toe/ballRoll_l_up_twin",
@@ -10754,9 +10550,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "ballRoll_l_up_twin",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/L_LegIK/ankle_l_pivot/bankIn_l_pivot/bankOut_l_pivot/heel_l_roll/L_Heel/ball_l_pivot/toe_l_roll/L_Toe/toeBend_l",
@@ -10861,9 +10655,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "toeBend_l",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/L_LegIK/ankle_l_pivot/bankIn_l_pivot/bankOut_l_pivot/heel_l_roll/L_Heel/ball_l_pivot/toe_l_roll/L_Toe/toeBend_l/toeBend_l_fk",
@@ -10968,9 +10760,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "toeBend_l_fk",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/L_LegIK/ankle_l_pivot/bankIn_l_pivot/bankOut_l_pivot/heel_l_roll/L_Heel/ball_l_pivot/toe_l_roll/L_Toe/toeBend_l/toeBend_l_fk/toe_l_ikTarget",
@@ -11075,9 +10865,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "toe_l_ikTarget",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/L_LegIK/ankle_l_pivot/bankIn_l_pivot/bankOut_l_pivot/heel_l_roll/L_Heel/ball_l_pivot/toe_l_roll_twin",
@@ -11182,9 +10970,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "toe_l_roll_twin",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/L_LegIK/ankle_l_pivot/bankIn_l_pivot/bankOut_l_pivot/heel_l_roll_twin",
@@ -11289,9 +11075,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "heel_l_roll_twin",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/L_LegIK/ankle_l_pivot/bankIn_l_pivot/bankOut_l_pivot_twin",
@@ -11396,9 +11180,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "bankOut_l_pivot_twin",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/L_LegIK/ankle_l_pivot/bankIn_l_pivot_twin",
@@ -11503,9 +11285,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "bankIn_l_pivot_twin",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/L_LegIK/ankle_l_pivot/L_Bank",
@@ -11610,9 +11390,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_Bank",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/L_LegPV",
@@ -11717,9 +11495,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_LegPV",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/L_ArmIK",
@@ -11824,9 +11600,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_ArmIK",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/L_ArmPV",
@@ -11931,9 +11705,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_ArmPV",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/L_Arm",
@@ -12035,9 +11807,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_Arm",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/index_001_r_bind_fk_follow",
@@ -12139,9 +11909,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "index_001_r_bind_fk_follow",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/index_001_r_bind_fk_follow/R_IndexMeta",
@@ -12243,9 +12011,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_IndexMeta",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/index_001_r_bind_fk_follow/R_IndexMeta/R_IndexBase",
@@ -12347,9 +12113,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_IndexBase",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/index_001_r_bind_fk_follow/R_IndexMeta/R_IndexBase/R_IndexMid",
@@ -12451,9 +12215,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_IndexMid",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/index_001_r_bind_fk_follow/R_IndexMeta/R_IndexBase/R_IndexMid/R_IndexTip",
@@ -12555,9 +12317,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_IndexTip",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/middle_001_r_bind_fk_follow",
@@ -12659,9 +12419,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "middle_001_r_bind_fk_follow",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/middle_001_r_bind_fk_follow/R_MiddleMeta",
@@ -12763,9 +12521,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_MiddleMeta",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/middle_001_r_bind_fk_follow/R_MiddleMeta/R_MiddleBase",
@@ -12867,9 +12623,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_MiddleBase",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/middle_001_r_bind_fk_follow/R_MiddleMeta/R_MiddleBase/R_MiddleMid",
@@ -12971,9 +12725,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_MiddleMid",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/middle_001_r_bind_fk_follow/R_MiddleMeta/R_MiddleBase/R_MiddleMid/R_MiddleTip",
@@ -13075,9 +12827,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_MiddleTip",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/pinkyCup_r_bind_fk_follow",
@@ -13179,9 +12929,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "pinkyCup_r_bind_fk_follow",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/pinkyCup_r_bind_fk_follow/R_PinkyCup",
@@ -13283,9 +13031,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_PinkyCup",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/pinkyCup_r_bind_fk_follow/R_PinkyCup/R_PinkyMeta",
@@ -13387,9 +13133,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_PinkyMeta",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/pinkyCup_r_bind_fk_follow/R_PinkyCup/R_PinkyMeta/R_PinkyBase",
@@ -13491,9 +13235,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_PinkyBase",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/pinkyCup_r_bind_fk_follow/R_PinkyCup/R_PinkyMeta/R_PinkyBase/R_PinkyMid",
@@ -13595,9 +13337,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_PinkyMid",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/pinkyCup_r_bind_fk_follow/R_PinkyCup/R_PinkyMeta/R_PinkyBase/R_PinkyMid/R_PinkyTip",
@@ -13699,9 +13439,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_PinkyTip",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/ring_001_r_bind_fk_follow",
@@ -13803,9 +13541,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "ring_001_r_bind_fk_follow",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/ring_001_r_bind_fk_follow/R_RingMeta",
@@ -13907,9 +13643,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_RingMeta",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/ring_001_r_bind_fk_follow/R_RingMeta/R_RingBase",
@@ -14011,9 +13745,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_RingBase",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/ring_001_r_bind_fk_follow/R_RingMeta/R_RingBase/R_RingMid",
@@ -14115,9 +13847,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_RingMid",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/ring_001_r_bind_fk_follow/R_RingMeta/R_RingBase/R_RingMid/R_RingTip",
@@ -14219,9 +13949,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_RingTip",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/thumbCup_r_bind_fk_follow",
@@ -14323,9 +14051,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "thumbCup_r_bind_fk_follow",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/thumbCup_r_bind_fk_follow/R_ThumbMeta",
@@ -14427,9 +14153,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_ThumbMeta",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/thumbCup_r_bind_fk_follow/R_ThumbMeta/R_ThumbBase",
@@ -14531,9 +14255,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_ThumbBase",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/thumbCup_r_bind_fk_follow/R_ThumbMeta/R_ThumbBase/R_ThumbMid",
@@ -14635,9 +14357,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_ThumbMid",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/thumbCup_r_bind_fk_follow/R_ThumbMeta/R_ThumbBase/R_ThumbMid/R_ThumbTip",
@@ -14739,9 +14459,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_ThumbTip",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/R_LegIK",
@@ -14846,9 +14564,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_LegIK",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/R_LegIK/ankle_r_pivot/bankIn_r_pivot/bankOut_r_pivot/heel_r_roll/R_Heel",
@@ -14953,9 +14669,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_Heel",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/R_LegIK/ankle_r_pivot/bankIn_r_pivot/bankOut_r_pivot/heel_r_roll/R_Heel/ball_r_pivot/toe_r_roll/R_Toe",
@@ -15060,9 +14774,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_Toe",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/R_LegIK/ankle_r_pivot/bankIn_r_pivot/bankOut_r_pivot/heel_r_roll/R_Heel/ball_r_pivot/toe_r_roll/R_Toe/ballRoll_r_up/ballRoll_r_down/R_BallRoll",
@@ -15167,9 +14879,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_BallRoll",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/R_LegIK/ankle_r_pivot/bankIn_r_pivot/bankOut_r_pivot/heel_r_roll/R_Heel/ball_r_pivot/toe_r_roll/R_Toe/ballRoll_r_up/ballRoll_r_down/R_BallRoll/ankle_r_ikTarget",
@@ -15274,9 +14984,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "ankle_r_ikTarget",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/R_LegIK/ankle_r_pivot/bankIn_r_pivot/bankOut_r_pivot/heel_r_roll/R_Heel/ball_r_pivot/toe_r_roll/R_Toe/ballRoll_r_up/ballRoll_r_down/R_BallRoll/ball_r_ikTarget",
@@ -15381,9 +15089,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "ball_r_ikTarget",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/R_LegIK/ankle_r_pivot/bankIn_r_pivot/bankOut_r_pivot/heel_r_roll/R_Heel/ball_r_pivot/toe_r_roll/R_Toe/ballRoll_r_up/ballRoll_r_down_twin",
@@ -15488,9 +15194,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "ballRoll_r_down_twin",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/R_LegIK/ankle_r_pivot/bankIn_r_pivot/bankOut_r_pivot/heel_r_roll/R_Heel/ball_r_pivot/toe_r_roll/R_Toe/ballRoll_r_up_twin",
@@ -15595,9 +15299,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "ballRoll_r_up_twin",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/R_LegIK/ankle_r_pivot/bankIn_r_pivot/bankOut_r_pivot/heel_r_roll/R_Heel/ball_r_pivot/toe_r_roll/R_Toe/toeBend_r",
@@ -15702,9 +15404,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "toeBend_r",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/R_LegIK/ankle_r_pivot/bankIn_r_pivot/bankOut_r_pivot/heel_r_roll/R_Heel/ball_r_pivot/toe_r_roll/R_Toe/toeBend_r/toeBend_r_fk",
@@ -15809,9 +15509,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "toeBend_r_fk",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/R_LegIK/ankle_r_pivot/bankIn_r_pivot/bankOut_r_pivot/heel_r_roll/R_Heel/ball_r_pivot/toe_r_roll/R_Toe/toeBend_r/toeBend_r_fk/toe_r_ikTarget",
@@ -15916,9 +15614,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "toe_r_ikTarget",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/R_LegIK/ankle_r_pivot/bankIn_r_pivot/bankOut_r_pivot/heel_r_roll/R_Heel/ball_r_pivot/toe_r_roll_twin",
@@ -16023,9 +15719,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "toe_r_roll_twin",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/R_LegIK/ankle_r_pivot/bankIn_r_pivot/bankOut_r_pivot/heel_r_roll_twin",
@@ -16130,9 +15824,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "heel_r_roll_twin",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/R_LegIK/ankle_r_pivot/bankIn_r_pivot/bankOut_r_pivot_twin",
@@ -16237,9 +15929,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "bankOut_r_pivot_twin",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/R_LegIK/ankle_r_pivot/bankIn_r_pivot_twin",
@@ -16344,9 +16034,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "bankIn_r_pivot_twin",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/R_LegIK/ankle_r_pivot/R_Bank",
@@ -16451,9 +16139,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_Bank",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/R_ArmIK",
@@ -16558,9 +16244,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_ArmIK",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/R_LegPV",
@@ -16665,9 +16349,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_LegPV",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/R_ArmPV",
@@ -16772,9 +16454,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_ArmPV",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/R_Arm",
@@ -16876,9 +16556,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_Arm",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/R_Leg",
@@ -16980,9 +16658,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_Leg",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body",
@@ -17084,9 +16760,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "M_Body",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso",
@@ -17188,9 +16862,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "M_Torso",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest",
@@ -17292,9 +16964,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "M_Chest",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop",
@@ -17396,9 +17066,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "M_ChestTop",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/R_Shldr",
@@ -17500,9 +17168,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_Shldr",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/R_Shldr/R_UpArmSwing",
@@ -17604,9 +17270,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_UpArmSwing",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/R_Shldr/R_UpArmSwing/R_UpArm",
@@ -17711,9 +17375,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_UpArm",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/R_Shldr/R_UpArmSwing/R_UpArm/R_LoArm",
@@ -17818,9 +17480,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_LoArm",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/R_Shldr/R_UpArmSwing/R_UpArm/R_LoArm/R_Hand",
@@ -17925,9 +17585,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_Hand",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/R_Shldr/R_UpArmSwing/arm_r_root_breath_tx",
@@ -18029,9 +17687,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "arm_r_root_breath_tx",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/R_Shldr/R_UpArmSwing/arm_r_root_breath_tz",
@@ -18133,9 +17789,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "arm_r_root_breath_tz",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/L_Shldr",
@@ -18237,9 +17891,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_Shldr",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/L_Shldr/L_UpArmSwing",
@@ -18341,9 +17993,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_UpArmSwing",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/L_Shldr/L_UpArmSwing/L_UpArm",
@@ -18448,9 +18098,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_UpArm",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/L_Shldr/L_UpArmSwing/L_UpArm/L_LoArm",
@@ -18555,9 +18203,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_LoArm",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/L_Shldr/L_UpArmSwing/L_UpArm/L_LoArm/L_Hand",
@@ -18662,9 +18308,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_Hand",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/L_Shldr/L_UpArmSwing/arm_l_root_breath_tx",
@@ -18766,9 +18410,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "arm_l_root_breath_tx",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/L_Shldr/L_UpArmSwing/arm_l_root_breath_tz",
@@ -18870,9 +18512,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "arm_l_root_breath_tz",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck",
@@ -18974,9 +18614,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "M_Neck",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/neck_cv1",
@@ -19078,9 +18716,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "neck_cv1",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head",
@@ -19182,9 +18818,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "M_Head",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal",
@@ -19286,9 +18920,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "M_HeadGimbal",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull",
@@ -19390,9 +19022,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "M_Skull",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace",
@@ -19494,9 +19124,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "M_UpFace",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/nose_bridge_follow/nose_bridge_compress/M_NoseBridge",
@@ -19598,9 +19226,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "M_NoseBridge",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/nose_bridge_follow/nose_bridge_compress/M_NoseBridge/nose_compress/M_Nose",
@@ -19702,9 +19328,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "M_Nose",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/nose_bridge_follow/nose_bridge_compress/M_NoseBridge/nose_compress/M_Nose/sneer_l_auto",
@@ -19806,9 +19430,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "sneer_l_auto",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/nose_bridge_follow/nose_bridge_compress/M_NoseBridge/nose_compress/M_Nose/sneer_l_auto/L_Sneer",
@@ -19910,9 +19532,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_Sneer",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/nose_bridge_follow/nose_bridge_compress/M_NoseBridge/nose_compress/M_Nose/nostril_flare_l_auto",
@@ -20014,9 +19634,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "nostril_flare_l_auto",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/nose_bridge_follow/nose_bridge_compress/M_NoseBridge/nose_compress/M_Nose/nostril_flare_l_auto/nostril_flare_l_ctl",
@@ -20118,9 +19736,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "nostril_flare_l_ctl",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/nose_bridge_follow/nose_bridge_compress/M_NoseBridge/nose_compress/M_Nose/nostril_flare_l_auto/nostril_flare_l_ctl/L_Nostril",
@@ -20222,9 +19838,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_Nostril",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/nose_bridge_follow/nose_bridge_compress/M_NoseBridge/nose_compress/M_Nose/sneer_r_auto",
@@ -20326,9 +19940,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "sneer_r_auto",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/nose_bridge_follow/nose_bridge_compress/M_NoseBridge/nose_compress/M_Nose/sneer_r_auto/R_Sneer",
@@ -20430,9 +20042,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_Sneer",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/nose_bridge_follow/nose_bridge_compress/M_NoseBridge/nose_compress/M_Nose/nostril_flare_r_auto",
@@ -20534,9 +20144,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "nostril_flare_r_auto",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/nose_bridge_follow/nose_bridge_compress/M_NoseBridge/nose_compress/M_Nose/nostril_flare_r_auto/nostril_flare_r_ctl",
@@ -20638,9 +20246,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "nostril_flare_r_ctl",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/nose_bridge_follow/nose_bridge_compress/M_NoseBridge/nose_compress/M_Nose/nostril_flare_r_auto/nostril_flare_r_ctl/R_Nostril",
@@ -20742,9 +20348,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_Nostril",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/nose_bridge_follow/nose_bridge_compress/M_NoseBridge/nose_compress/M_Nose/septum_auto",
@@ -20846,9 +20450,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "septum_auto",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/nose_bridge_follow/nose_bridge_compress/M_NoseBridge/nose_compress/M_Nose/septum_auto/M_Septum",
@@ -20950,9 +20552,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "M_Septum",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/nose_bridge_follow/nose_bridge_compress/M_NoseBridge/nose_compress_twin",
@@ -21054,9 +20654,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "nose_compress_twin",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/nose_bridge_follow/nose_bridge_compress_twin",
@@ -21158,9 +20756,7 @@
     1.0,
     0.7538,
     1.0
-   ],
-   "element": "nose_bridge_compress_twin",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/lookRot_aim/M_LookRot",
@@ -21262,9 +20858,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "M_LookRot",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/lookRot_aim/M_LookRot/eye_l_converge",
@@ -21366,9 +20960,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "eye_l_converge",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/lookRot_aim/M_LookRot/eye_r_converge",
@@ -21470,9 +21062,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "eye_r_converge",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket",
@@ -21574,9 +21164,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_EyeSocket",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/eye_l_follow/L_Eye",
@@ -21678,9 +21266,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_Eye",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/eye_l_follow/L_Eye/eye_l_dragTarget",
@@ -21782,9 +21368,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "eye_l_dragTarget",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/blinkUpper_l_pivot",
@@ -21886,9 +21470,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "blinkUpper_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/blinkUpper_l_pivot/lid_up_3_l_follow_on_blinkUpper_l_pivot",
@@ -21990,9 +21572,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_up_3_l_follow_on_blinkUpper_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/blinkUpper_l_pivot/lid_up_2_l_follow_on_blinkUpper_l_pivot",
@@ -22094,9 +21674,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_up_2_l_follow_on_blinkUpper_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/blinkUpper_l_pivot/lid_up_1_l_follow_on_blinkUpper_l_pivot",
@@ -22198,9 +21776,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_up_1_l_follow_on_blinkUpper_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/blinkUpper_l_pivot/lid_up_0_l_follow_on_blinkUpper_l_pivot",
@@ -22302,9 +21878,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_up_0_l_follow_on_blinkUpper_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/blinkUpper_l_pivot/lid_corner_outer_l_follow_on_blinkUpper_l_pivot",
@@ -22406,9 +21980,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_corner_outer_l_follow_on_blinkUpper_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/blinkUpper_l_pivot/lid_up_4_l_follow_on_blinkUpper_l_pivot",
@@ -22510,9 +22082,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_up_4_l_follow_on_blinkUpper_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/blinkLower_l_pivot",
@@ -22614,9 +22184,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "blinkLower_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/blinkLower_l_pivot/lid_up_0_l_follow_on_blinkLower_l_pivot",
@@ -22718,9 +22286,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_up_0_l_follow_on_blinkLower_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/blinkLower_l_pivot/lid_corner_inner_l_follow_on_blinkLower_l_pivot",
@@ -22822,9 +22388,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_corner_inner_l_follow_on_blinkLower_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/blinkLower_l_pivot/lid_low_0_l_follow_on_blinkLower_l_pivot",
@@ -22926,9 +22490,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_low_0_l_follow_on_blinkLower_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/blinkLower_l_pivot/lid_low_1_l_follow_on_blinkLower_l_pivot",
@@ -23030,9 +22592,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_low_1_l_follow_on_blinkLower_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/blinkLower_l_pivot/lid_low_2_l_follow_on_blinkLower_l_pivot",
@@ -23134,9 +22694,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_low_2_l_follow_on_blinkLower_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/blinkLower_l_pivot/lid_low_3_l_follow_on_blinkLower_l_pivot",
@@ -23238,9 +22796,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_low_3_l_follow_on_blinkLower_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/blinkLower_l_pivot/lid_low_4_l_follow_on_blinkLower_l_pivot",
@@ -23342,9 +22898,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_low_4_l_follow_on_blinkLower_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/blinkLower_l_pivot/lid_corner_outer_l_follow_on_blinkLower_l_pivot",
@@ -23446,9 +23000,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_corner_outer_l_follow_on_blinkLower_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/socketStretch_l_pivot",
@@ -23550,9 +23102,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "socketStretch_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/socketStretch_l_pivot/socketLine_upper_l_follow_on_socketStretch_l_pivot",
@@ -23654,9 +23204,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "socketLine_upper_l_follow_on_socketStretch_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/socketStretch_l_pivot/lid_up_3_l_follow_on_socketStretch_l_pivot",
@@ -23758,9 +23306,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_up_3_l_follow_on_socketStretch_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/socketStretch_l_pivot/lid_up_2_l_follow_on_socketStretch_l_pivot",
@@ -23862,9 +23408,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_up_2_l_follow_on_socketStretch_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/socketStretch_l_pivot/lid_up_1_l_follow_on_socketStretch_l_pivot",
@@ -23966,9 +23510,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_up_1_l_follow_on_socketStretch_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/socketStretch_l_pivot/lid_up_0_l_follow_on_socketStretch_l_pivot",
@@ -24070,9 +23612,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_up_0_l_follow_on_socketStretch_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/socketStretch_l_pivot/lid_corner_outer_l_follow_on_socketStretch_l_pivot",
@@ -24174,9 +23714,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_corner_outer_l_follow_on_socketStretch_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/socketStretch_l_pivot/lid_up_4_l_follow_on_socketStretch_l_pivot",
@@ -24278,9 +23816,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_up_4_l_follow_on_socketStretch_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/socketStretch_l_pivot/socket_l_0_follow_on_socketStretch_l_pivot",
@@ -24382,9 +23918,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "socket_l_0_follow_on_socketStretch_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/socketStretch_l_pivot/socket_l_1_follow_on_socketStretch_l_pivot",
@@ -24486,9 +24020,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "socket_l_1_follow_on_socketStretch_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/socketStretch_l_pivot/socket_l_2_follow_on_socketStretch_l_pivot",
@@ -24590,9 +24122,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "socket_l_2_follow_on_socketStretch_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/socketStretch_l_pivot/socket_l_3_follow_on_socketStretch_l_pivot",
@@ -24694,9 +24224,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "socket_l_3_follow_on_socketStretch_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/socketStretch_l_pivot/socket_l_10_follow_on_socketStretch_l_pivot",
@@ -24798,9 +24326,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "socket_l_10_follow_on_socketStretch_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/socketStretch_l_pivot/socket_l_11_follow_on_socketStretch_l_pivot",
@@ -24902,9 +24428,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "socket_l_11_follow_on_socketStretch_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/eyeDrag_upper_l_pivot/lid_up_3_l_follow_on_eyeDrag_upper_l_pivot",
@@ -25006,9 +24530,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_up_3_l_follow_on_eyeDrag_upper_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/eyeDrag_upper_l_pivot/lid_up_2_l_follow_on_eyeDrag_upper_l_pivot",
@@ -25110,9 +24632,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_up_2_l_follow_on_eyeDrag_upper_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/eyeDrag_upper_l_pivot/lid_up_1_l_follow_on_eyeDrag_upper_l_pivot",
@@ -25214,9 +24734,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_up_1_l_follow_on_eyeDrag_upper_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/eyeDrag_upper_l_pivot/lid_up_0_l_follow_on_eyeDrag_upper_l_pivot",
@@ -25318,9 +24836,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_up_0_l_follow_on_eyeDrag_upper_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/eyeDrag_upper_l_pivot/lid_corner_inner_l_follow_on_eyeDrag_upper_l_pivot",
@@ -25422,9 +24938,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_corner_inner_l_follow_on_eyeDrag_upper_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/eyeDrag_upper_l_pivot/lid_corner_outer_l_follow_on_eyeDrag_upper_l_pivot",
@@ -25526,9 +25040,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_corner_outer_l_follow_on_eyeDrag_upper_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/eyeDrag_upper_l_pivot/lid_up_4_l_follow_on_eyeDrag_upper_l_pivot",
@@ -25630,9 +25142,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_up_4_l_follow_on_eyeDrag_upper_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/eyeDrag_lower_l_pivot/lid_up_0_l_follow_on_eyeDrag_lower_l_pivot",
@@ -25734,9 +25244,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_up_0_l_follow_on_eyeDrag_lower_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/eyeDrag_lower_l_pivot/lid_corner_inner_l_follow_on_eyeDrag_lower_l_pivot",
@@ -25838,9 +25346,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_corner_inner_l_follow_on_eyeDrag_lower_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/eyeDrag_lower_l_pivot/lid_low_0_l_follow_on_eyeDrag_lower_l_pivot",
@@ -25942,9 +25448,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_low_0_l_follow_on_eyeDrag_lower_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/eyeDrag_lower_l_pivot/lid_low_1_l_follow_on_eyeDrag_lower_l_pivot",
@@ -26046,9 +25550,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_low_1_l_follow_on_eyeDrag_lower_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/eyeDrag_lower_l_pivot/lid_low_2_l_follow_on_eyeDrag_lower_l_pivot",
@@ -26150,9 +25652,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_low_2_l_follow_on_eyeDrag_lower_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/eyeDrag_lower_l_pivot/lid_low_3_l_follow_on_eyeDrag_lower_l_pivot",
@@ -26254,9 +25754,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_low_3_l_follow_on_eyeDrag_lower_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/eyeDrag_lower_l_pivot/lid_low_4_l_follow_on_eyeDrag_lower_l_pivot",
@@ -26358,9 +25856,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_low_4_l_follow_on_eyeDrag_lower_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/eyeDrag_lower_l_pivot/lid_corner_outer_l_follow_on_eyeDrag_lower_l_pivot",
@@ -26462,9 +25958,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_corner_outer_l_follow_on_eyeDrag_lower_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/lid_squash_upper_l_pivot",
@@ -26566,9 +26060,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_squash_upper_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/lid_squash_lower_l_pivot",
@@ -26670,9 +26162,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_squash_lower_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/socketLift_l_pivot",
@@ -26774,9 +26264,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "socketLift_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/socketLift_l_pivot/socket_l_0_follow_on_socketLift_l_pivot",
@@ -26878,9 +26366,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "socket_l_0_follow_on_socketLift_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/socketLift_l_pivot/socket_l_1_follow_on_socketLift_l_pivot",
@@ -26982,9 +26468,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "socket_l_1_follow_on_socketLift_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/socketLift_l_pivot/socket_l_2_follow_on_socketLift_l_pivot",
@@ -27086,9 +26570,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "socket_l_2_follow_on_socketLift_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/socketLift_l_pivot/socket_l_3_follow_on_socketLift_l_pivot",
@@ -27190,9 +26672,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "socket_l_3_follow_on_socketLift_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/socketLift_l_pivot/socket_l_10_follow_on_socketLift_l_pivot",
@@ -27294,9 +26774,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "socket_l_10_follow_on_socketLift_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/socketLift_l_pivot/socket_l_11_follow_on_socketLift_l_pivot",
@@ -27398,9 +26876,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "socket_l_11_follow_on_socketLift_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/socketLine_upper_l_follow/socketLine_upper_l_auto",
@@ -27502,9 +26978,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "socketLine_upper_l_auto",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/socketLine_upper_l_follow/socketLine_upper_l_auto/L_UpSocketLine",
@@ -27606,9 +27080,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_UpSocketLine",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/socketLine_lower_l_auto",
@@ -27710,9 +27182,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "socketLine_lower_l_auto",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/socketLine_lower_l_auto/L_LowSocketLine",
@@ -27814,9 +27284,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_LowSocketLine",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/lid_up_3_l_follow/L_UpLid4",
@@ -27918,9 +27386,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_UpLid4",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/lid_up_2_l_follow/L_UpLid3",
@@ -28022,9 +27488,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_UpLid3",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/lid_up_1_l_follow/L_UpLid2",
@@ -28126,9 +27590,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_UpLid2",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/lid_up_0_l_follow/L_UpLid1",
@@ -28230,9 +27692,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_UpLid1",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/lid_corner_inner_l_follow/L_InLid",
@@ -28334,9 +27794,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_InLid",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/lid_low_0_l_follow/L_LoLid1",
@@ -28438,9 +27896,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_LoLid1",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/lid_low_1_l_follow/L_LoLid2",
@@ -28542,9 +27998,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_LoLid2",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/lid_low_2_l_follow/L_LoLid3",
@@ -28646,9 +28100,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_LoLid3",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/lid_low_3_l_follow/L_LoLid4",
@@ -28750,9 +28202,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_LoLid4",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/lid_low_4_l_follow/L_LoLid5",
@@ -28854,9 +28304,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_LoLid5",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/lid_corner_outer_l_follow/L_OutLid",
@@ -28958,9 +28406,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_OutLid",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/lid_up_4_l_follow/L_UpLid5",
@@ -29062,9 +28508,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_UpLid5",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/socket_l_0_follow/L_UpSocket4",
@@ -29166,9 +28610,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_UpSocket4",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/socket_l_1_follow/L_UpSocket3",
@@ -29270,9 +28712,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_UpSocket3",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/socket_l_2_follow/L_UpSocket2",
@@ -29374,9 +28814,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_UpSocket2",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/socket_l_3_follow/L_UpSocket1",
@@ -29478,9 +28916,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_UpSocket1",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/socket_l_4_follow/L_InSocket",
@@ -29582,9 +29018,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_InSocket",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/socket_l_5_follow/L_LoSocket1",
@@ -29686,9 +29120,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_LoSocket1",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/socket_l_6_follow/L_LoSocket2",
@@ -29790,9 +29222,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_LoSocket2",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/socket_l_7_follow/L_LoSocket3",
@@ -29894,9 +29324,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_LoSocket3",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/socket_l_8_follow/L_LoSocket4",
@@ -29998,9 +29426,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_LoSocket4",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/socket_l_9_follow/L_LoSocket5",
@@ -30102,9 +29528,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_LoSocket5",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/socket_l_10_follow/L_OutSocket",
@@ -30206,9 +29630,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_OutSocket",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/socket_l_11_follow/L_UpSocket5",
@@ -30310,9 +29732,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_UpSocket5",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/L_UpLid",
@@ -30414,9 +29834,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_UpLid",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/L_LoLid",
@@ -30518,9 +29936,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_LoLid",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/cheekLift_l_auto",
@@ -30622,9 +30038,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "cheekLift_l_auto",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/cheekLift_l_auto/cheekLift_l_pivot",
@@ -30726,9 +30140,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "cheekLift_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/L_MaskFlare",
@@ -30830,9 +30242,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_MaskFlare",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/L_EyeSocket/eyeSocket_l_aim",
@@ -30934,9 +30344,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "eyeSocket_l_aim",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket",
@@ -31038,9 +30446,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_EyeSocket",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/eye_r_follow/R_Eye",
@@ -31142,9 +30548,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_Eye",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/eye_r_follow/R_Eye/eye_r_dragTarget",
@@ -31246,9 +30650,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "eye_r_dragTarget",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/blinkUpper_r_pivot",
@@ -31350,9 +30752,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "blinkUpper_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/blinkUpper_r_pivot/lid_up_3_r_follow_on_blinkUpper_r_pivot",
@@ -31454,9 +30854,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_up_3_r_follow_on_blinkUpper_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/blinkUpper_r_pivot/lid_up_2_r_follow_on_blinkUpper_r_pivot",
@@ -31558,9 +30956,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_up_2_r_follow_on_blinkUpper_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/blinkUpper_r_pivot/lid_up_1_r_follow_on_blinkUpper_r_pivot",
@@ -31662,9 +31058,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_up_1_r_follow_on_blinkUpper_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/blinkUpper_r_pivot/lid_up_0_r_follow_on_blinkUpper_r_pivot",
@@ -31766,9 +31160,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_up_0_r_follow_on_blinkUpper_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/blinkUpper_r_pivot/lid_corner_outer_r_follow_on_blinkUpper_r_pivot",
@@ -31870,9 +31262,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_corner_outer_r_follow_on_blinkUpper_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/blinkUpper_r_pivot/lid_up_4_r_follow_on_blinkUpper_r_pivot",
@@ -31974,9 +31364,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_up_4_r_follow_on_blinkUpper_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/blinkLower_r_pivot",
@@ -32078,9 +31466,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "blinkLower_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/blinkLower_r_pivot/lid_up_0_r_follow_on_blinkLower_r_pivot",
@@ -32182,9 +31568,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_up_0_r_follow_on_blinkLower_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/blinkLower_r_pivot/lid_corner_inner_r_follow_on_blinkLower_r_pivot",
@@ -32286,9 +31670,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_corner_inner_r_follow_on_blinkLower_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/blinkLower_r_pivot/lid_low_0_r_follow_on_blinkLower_r_pivot",
@@ -32390,9 +31772,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_low_0_r_follow_on_blinkLower_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/blinkLower_r_pivot/lid_low_1_r_follow_on_blinkLower_r_pivot",
@@ -32494,9 +31874,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_low_1_r_follow_on_blinkLower_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/blinkLower_r_pivot/lid_low_2_r_follow_on_blinkLower_r_pivot",
@@ -32598,9 +31976,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_low_2_r_follow_on_blinkLower_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/blinkLower_r_pivot/lid_low_3_r_follow_on_blinkLower_r_pivot",
@@ -32702,9 +32078,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_low_3_r_follow_on_blinkLower_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/blinkLower_r_pivot/lid_low_4_r_follow_on_blinkLower_r_pivot",
@@ -32806,9 +32180,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_low_4_r_follow_on_blinkLower_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/blinkLower_r_pivot/lid_corner_outer_r_follow_on_blinkLower_r_pivot",
@@ -32910,9 +32282,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_corner_outer_r_follow_on_blinkLower_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/socketStretch_r_pivot",
@@ -33014,9 +32384,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "socketStretch_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/socketStretch_r_pivot/socketLine_upper_r_follow_on_socketStretch_r_pivot",
@@ -33118,9 +32486,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "socketLine_upper_r_follow_on_socketStretch_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/socketStretch_r_pivot/lid_up_3_r_follow_on_socketStretch_r_pivot",
@@ -33222,9 +32588,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_up_3_r_follow_on_socketStretch_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/socketStretch_r_pivot/lid_up_2_r_follow_on_socketStretch_r_pivot",
@@ -33326,9 +32690,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_up_2_r_follow_on_socketStretch_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/socketStretch_r_pivot/lid_up_1_r_follow_on_socketStretch_r_pivot",
@@ -33430,9 +32792,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_up_1_r_follow_on_socketStretch_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/socketStretch_r_pivot/lid_up_0_r_follow_on_socketStretch_r_pivot",
@@ -33534,9 +32894,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_up_0_r_follow_on_socketStretch_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/socketStretch_r_pivot/lid_corner_outer_r_follow_on_socketStretch_r_pivot",
@@ -33638,9 +32996,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_corner_outer_r_follow_on_socketStretch_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/socketStretch_r_pivot/lid_up_4_r_follow_on_socketStretch_r_pivot",
@@ -33742,9 +33098,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_up_4_r_follow_on_socketStretch_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/socketStretch_r_pivot/socket_r_0_follow_on_socketStretch_r_pivot",
@@ -33846,9 +33200,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "socket_r_0_follow_on_socketStretch_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/socketStretch_r_pivot/socket_r_1_follow_on_socketStretch_r_pivot",
@@ -33950,9 +33302,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "socket_r_1_follow_on_socketStretch_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/socketStretch_r_pivot/socket_r_2_follow_on_socketStretch_r_pivot",
@@ -34054,9 +33404,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "socket_r_2_follow_on_socketStretch_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/socketStretch_r_pivot/socket_r_3_follow_on_socketStretch_r_pivot",
@@ -34158,9 +33506,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "socket_r_3_follow_on_socketStretch_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/socketStretch_r_pivot/socket_r_10_follow_on_socketStretch_r_pivot",
@@ -34262,9 +33608,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "socket_r_10_follow_on_socketStretch_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/socketStretch_r_pivot/socket_r_11_follow_on_socketStretch_r_pivot",
@@ -34366,9 +33710,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "socket_r_11_follow_on_socketStretch_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/eyeDrag_upper_r_pivot/lid_up_3_r_follow_on_eyeDrag_upper_r_pivot",
@@ -34470,9 +33812,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_up_3_r_follow_on_eyeDrag_upper_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/eyeDrag_upper_r_pivot/lid_up_2_r_follow_on_eyeDrag_upper_r_pivot",
@@ -34574,9 +33914,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_up_2_r_follow_on_eyeDrag_upper_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/eyeDrag_upper_r_pivot/lid_up_1_r_follow_on_eyeDrag_upper_r_pivot",
@@ -34678,9 +34016,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_up_1_r_follow_on_eyeDrag_upper_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/eyeDrag_upper_r_pivot/lid_up_0_r_follow_on_eyeDrag_upper_r_pivot",
@@ -34782,9 +34118,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_up_0_r_follow_on_eyeDrag_upper_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/eyeDrag_upper_r_pivot/lid_corner_inner_r_follow_on_eyeDrag_upper_r_pivot",
@@ -34886,9 +34220,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_corner_inner_r_follow_on_eyeDrag_upper_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/eyeDrag_upper_r_pivot/lid_corner_outer_r_follow_on_eyeDrag_upper_r_pivot",
@@ -34990,9 +34322,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_corner_outer_r_follow_on_eyeDrag_upper_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/eyeDrag_upper_r_pivot/lid_up_4_r_follow_on_eyeDrag_upper_r_pivot",
@@ -35094,9 +34424,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_up_4_r_follow_on_eyeDrag_upper_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/eyeDrag_lower_r_pivot/lid_up_0_r_follow_on_eyeDrag_lower_r_pivot",
@@ -35198,9 +34526,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_up_0_r_follow_on_eyeDrag_lower_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/eyeDrag_lower_r_pivot/lid_corner_inner_r_follow_on_eyeDrag_lower_r_pivot",
@@ -35302,9 +34628,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_corner_inner_r_follow_on_eyeDrag_lower_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/eyeDrag_lower_r_pivot/lid_low_0_r_follow_on_eyeDrag_lower_r_pivot",
@@ -35406,9 +34730,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_low_0_r_follow_on_eyeDrag_lower_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/eyeDrag_lower_r_pivot/lid_low_1_r_follow_on_eyeDrag_lower_r_pivot",
@@ -35510,9 +34832,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_low_1_r_follow_on_eyeDrag_lower_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/eyeDrag_lower_r_pivot/lid_low_2_r_follow_on_eyeDrag_lower_r_pivot",
@@ -35614,9 +34934,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_low_2_r_follow_on_eyeDrag_lower_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/eyeDrag_lower_r_pivot/lid_low_3_r_follow_on_eyeDrag_lower_r_pivot",
@@ -35718,9 +35036,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_low_3_r_follow_on_eyeDrag_lower_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/eyeDrag_lower_r_pivot/lid_low_4_r_follow_on_eyeDrag_lower_r_pivot",
@@ -35822,9 +35138,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_low_4_r_follow_on_eyeDrag_lower_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/eyeDrag_lower_r_pivot/lid_corner_outer_r_follow_on_eyeDrag_lower_r_pivot",
@@ -35926,9 +35240,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_corner_outer_r_follow_on_eyeDrag_lower_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/lid_squash_upper_r_pivot",
@@ -36030,9 +35342,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_squash_upper_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/lid_squash_lower_r_pivot",
@@ -36134,9 +35444,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lid_squash_lower_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/socketLift_r_pivot",
@@ -36238,9 +35546,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "socketLift_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/socketLift_r_pivot/socket_r_0_follow_on_socketLift_r_pivot",
@@ -36342,9 +35648,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "socket_r_0_follow_on_socketLift_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/socketLift_r_pivot/socket_r_1_follow_on_socketLift_r_pivot",
@@ -36446,9 +35750,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "socket_r_1_follow_on_socketLift_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/socketLift_r_pivot/socket_r_2_follow_on_socketLift_r_pivot",
@@ -36550,9 +35852,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "socket_r_2_follow_on_socketLift_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/socketLift_r_pivot/socket_r_3_follow_on_socketLift_r_pivot",
@@ -36654,9 +35954,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "socket_r_3_follow_on_socketLift_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/socketLift_r_pivot/socket_r_10_follow_on_socketLift_r_pivot",
@@ -36758,9 +36056,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "socket_r_10_follow_on_socketLift_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/socketLift_r_pivot/socket_r_11_follow_on_socketLift_r_pivot",
@@ -36862,9 +36158,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "socket_r_11_follow_on_socketLift_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/socketLine_upper_r_follow/socketLine_upper_r_auto",
@@ -36966,9 +36260,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "socketLine_upper_r_auto",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/socketLine_upper_r_follow/socketLine_upper_r_auto/R_UpSocketLine",
@@ -37070,9 +36362,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_UpSocketLine",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/socketLine_lower_r_auto",
@@ -37174,9 +36464,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "socketLine_lower_r_auto",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/socketLine_lower_r_auto/R_LowSocketLine",
@@ -37278,9 +36566,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_LowSocketLine",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/lid_up_3_r_follow/R_UpLid4",
@@ -37382,9 +36668,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_UpLid4",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/lid_up_2_r_follow/R_UpLid3",
@@ -37486,9 +36770,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_UpLid3",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/lid_up_1_r_follow/R_UpLid2",
@@ -37590,9 +36872,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_UpLid2",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/lid_up_0_r_follow/R_UpLid1",
@@ -37694,9 +36974,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_UpLid1",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/lid_corner_inner_r_follow/R_InLid",
@@ -37798,9 +37076,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_InLid",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/lid_low_0_r_follow/R_LoLid1",
@@ -37902,9 +37178,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_LoLid1",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/lid_low_1_r_follow/R_LoLid2",
@@ -38006,9 +37280,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_LoLid2",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/lid_low_2_r_follow/R_LoLid3",
@@ -38110,9 +37382,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_LoLid3",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/lid_low_3_r_follow/R_LoLid4",
@@ -38214,9 +37484,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_LoLid4",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/lid_low_4_r_follow/R_LoLid5",
@@ -38318,9 +37586,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_LoLid5",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/lid_corner_outer_r_follow/R_OutLid",
@@ -38422,9 +37688,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_OutLid",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/lid_up_4_r_follow/R_UpLid5",
@@ -38526,9 +37790,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_UpLid5",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/socket_r_0_follow/R_UpSocket4",
@@ -38630,9 +37892,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_UpSocket4",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/socket_r_1_follow/R_UpSocket3",
@@ -38734,9 +37994,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_UpSocket3",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/socket_r_2_follow/R_UpSocket2",
@@ -38838,9 +38096,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_UpSocket2",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/socket_r_3_follow/R_UpSocket1",
@@ -38942,9 +38198,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_UpSocket1",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/socket_r_4_follow/R_InSocket",
@@ -39046,9 +38300,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_InSocket",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/socket_r_5_follow/R_LoSocket1",
@@ -39150,9 +38402,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_LoSocket1",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/socket_r_6_follow/R_LoSocket2",
@@ -39254,9 +38504,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_LoSocket2",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/socket_r_7_follow/R_LoSocket3",
@@ -39358,9 +38606,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_LoSocket3",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/socket_r_8_follow/R_LoSocket4",
@@ -39462,9 +38708,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_LoSocket4",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/socket_r_9_follow/R_LoSocket5",
@@ -39566,9 +38810,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_LoSocket5",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/socket_r_10_follow/R_OutSocket",
@@ -39670,9 +38912,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_OutSocket",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/socket_r_11_follow/R_UpSocket5",
@@ -39774,9 +39014,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_UpSocket5",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/R_UpLid",
@@ -39878,9 +39116,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_UpLid",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/R_LoLid",
@@ -39982,9 +39218,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_LoLid",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/cheekLift_r_auto",
@@ -40086,9 +39320,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "cheekLift_r_auto",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/cheekLift_r_auto/cheekLift_r_pivot",
@@ -40190,9 +39422,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "cheekLift_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/R_MaskFlare",
@@ -40294,9 +39524,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_MaskFlare",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/R_EyeSocket/eyeSocket_r_aim",
@@ -40398,9 +39626,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "eyeSocket_r_aim",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/M_HeadTip",
@@ -40502,9 +39728,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "M_HeadTip",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/M_HeadTip/brow_main_l_auto",
@@ -40606,9 +39830,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "brow_main_l_auto",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/M_HeadTip/brow_main_l_auto/L_Brow",
@@ -40710,9 +39932,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_Brow",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/M_HeadTip/brow_main_l_auto/L_Brow/brow_inner_l_auto",
@@ -40814,9 +40034,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "brow_inner_l_auto",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/M_HeadTip/brow_main_l_auto/L_Brow/brow_inner_l_auto/L_InBrow",
@@ -40918,9 +40136,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_InBrow",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/M_HeadTip/brow_main_l_auto/L_Brow/brow_inner_l_auto/L_InBrow/brow_peak_l_drag_twin",
@@ -41022,9 +40238,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "brow_peak_l_drag_twin",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/M_HeadTip/brow_main_l_auto/L_Brow/brow_inner_l_auto/L_InBrow/brow_corrugator_l_auto",
@@ -41126,9 +40340,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "brow_corrugator_l_auto",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/M_HeadTip/brow_main_l_auto/L_Brow/brow_inner_l_auto/L_InBrow/brow_corrugator_l_auto/L_BrowTense",
@@ -41230,9 +40442,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_BrowTense",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/M_HeadTip/brow_main_l_auto/L_Brow/brow_peak_l_drag/L_MidBrow",
@@ -41334,9 +40544,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_MidBrow",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/M_HeadTip/brow_main_r_auto",
@@ -41438,9 +40646,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "brow_main_r_auto",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/M_HeadTip/brow_main_r_auto/R_Brow",
@@ -41542,9 +40748,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_Brow",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/M_HeadTip/brow_main_r_auto/R_Brow/brow_inner_r_auto",
@@ -41646,9 +40850,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "brow_inner_r_auto",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/M_HeadTip/brow_main_r_auto/R_Brow/brow_inner_r_auto/R_InBrow",
@@ -41750,9 +40952,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_InBrow",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/M_HeadTip/brow_main_r_auto/R_Brow/brow_inner_r_auto/R_InBrow/brow_peak_r_drag_twin",
@@ -41854,9 +41054,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "brow_peak_r_drag_twin",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/M_HeadTip/brow_main_r_auto/R_Brow/brow_inner_r_auto/R_InBrow/brow_corrugator_r_auto",
@@ -41958,9 +41156,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "brow_corrugator_r_auto",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/M_HeadTip/brow_main_r_auto/R_Brow/brow_inner_r_auto/R_InBrow/brow_corrugator_r_auto/R_BrowTense",
@@ -42062,9 +41258,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_BrowTense",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/M_HeadTip/brow_main_r_auto/R_Brow/brow_peak_r_drag/R_MidBrow",
@@ -42166,9 +41360,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_MidBrow",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/cheek_l_auto",
@@ -42270,9 +41462,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "cheek_l_auto",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/cheek_l_auto/L_Cheek",
@@ -42374,9 +41564,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_Cheek",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/cheek_inner_l_auto",
@@ -42478,9 +41666,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "cheek_inner_l_auto",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/cheek_inner_l_auto/L_CheekInner",
@@ -42582,9 +41768,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_CheekInner",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/ear_l_auto",
@@ -42686,9 +41870,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "ear_l_auto",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/ear_l_auto/L_Ear",
@@ -42790,9 +41972,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_Ear",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/cheek_r_auto",
@@ -42894,9 +42074,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "cheek_r_auto",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/cheek_r_auto/R_Cheek",
@@ -42998,9 +42176,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_Cheek",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/cheek_inner_r_auto",
@@ -43102,9 +42278,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "cheek_inner_r_auto",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/cheek_inner_r_auto/R_CheekInner",
@@ -43206,9 +42380,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_CheekInner",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/ear_r_auto",
@@ -43310,9 +42482,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "ear_r_auto",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/ear_r_auto/R_Ear",
@@ -43414,9 +42584,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_Ear",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/face_upper_aim",
@@ -43518,9 +42686,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "face_upper_aim",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_UpFace/head_top_squetch",
@@ -43622,9 +42788,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "head_top_squetch",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace",
@@ -43726,9 +42890,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "M_LoFace",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/face_mid_compress/mouthMain_auto",
@@ -43830,9 +42992,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "mouthMain_auto",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/face_mid_compress/mouthMain_auto/M_Mouth",
@@ -43934,9 +43094,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "M_Mouth",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/face_mid_compress/mouthMain_auto/M_Mouth/mouth_corner_l_follow_on_mouthMain_ctl",
@@ -44038,9 +43196,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "mouth_corner_l_follow_on_mouthMain_ctl",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/face_mid_compress/mouthMain_auto/M_Mouth/mouth_corner_r_follow_on_mouthMain_ctl",
@@ -44142,9 +43298,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "mouth_corner_r_follow_on_mouthMain_ctl",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/face_mid_compress/mouthMain_auto/M_Mouth/lipMain_center_up_follow_on_mouthMain_ctl",
@@ -44246,9 +43400,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lipMain_center_up_follow_on_mouthMain_ctl",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/face_mid_compress/mouthMain_auto/M_Mouth/lipMain_center_low_follow_on_mouthMain_ctl",
@@ -44350,9 +43502,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lipMain_center_low_follow_on_mouthMain_ctl",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/face_mid_compress/mouthMain_auto/M_Mouth/lipMain_corner_l_follow_on_mouthMain_ctl",
@@ -44454,9 +43604,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lipMain_corner_l_follow_on_mouthMain_ctl",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/face_mid_compress/mouthMain_auto/M_Mouth/lipMain_corner_r_follow_on_mouthMain_ctl",
@@ -44558,9 +43706,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lipMain_corner_r_follow_on_mouthMain_ctl",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/face_mid_compress/mouthMain_auto/M_Mouth/lipMain_up_0_l_follow_on_mouthMain_ctl",
@@ -44662,9 +43808,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lipMain_up_0_l_follow_on_mouthMain_ctl",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/face_mid_compress/mouthMain_auto/M_Mouth/lipMain_up_0_r_follow_on_mouthMain_ctl",
@@ -44766,9 +43910,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lipMain_up_0_r_follow_on_mouthMain_ctl",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/face_mid_compress/mouthMain_auto/M_Mouth/lipMain_up_1_l_follow_on_mouthMain_ctl",
@@ -44870,9 +44012,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lipMain_up_1_l_follow_on_mouthMain_ctl",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/face_mid_compress/mouthMain_auto/M_Mouth/lipMain_up_1_r_follow_on_mouthMain_ctl",
@@ -44974,9 +44114,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lipMain_up_1_r_follow_on_mouthMain_ctl",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/face_mid_compress/mouthMain_auto/M_Mouth/lipMain_up_2_l_follow_on_mouthMain_ctl",
@@ -45078,9 +44216,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lipMain_up_2_l_follow_on_mouthMain_ctl",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/face_mid_compress/mouthMain_auto/M_Mouth/lipMain_up_2_r_follow_on_mouthMain_ctl",
@@ -45182,9 +44318,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lipMain_up_2_r_follow_on_mouthMain_ctl",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/face_mid_compress/mouthMain_auto/M_Mouth/lipMain_low_0_l_follow_on_mouthMain_ctl",
@@ -45286,9 +44420,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lipMain_low_0_l_follow_on_mouthMain_ctl",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/face_mid_compress/mouthMain_auto/M_Mouth/lipMain_low_0_r_follow_on_mouthMain_ctl",
@@ -45390,9 +44522,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lipMain_low_0_r_follow_on_mouthMain_ctl",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/face_mid_compress/mouthMain_auto/M_Mouth/lipMain_low_1_l_follow_on_mouthMain_ctl",
@@ -45494,9 +44624,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lipMain_low_1_l_follow_on_mouthMain_ctl",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/face_mid_compress/mouthMain_auto/M_Mouth/lipMain_low_1_r_follow_on_mouthMain_ctl",
@@ -45598,9 +44726,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lipMain_low_1_r_follow_on_mouthMain_ctl",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/face_mid_compress/mouthMain_auto/M_Mouth/lipMain_low_2_l_follow_on_mouthMain_ctl",
@@ -45702,9 +44828,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lipMain_low_2_l_follow_on_mouthMain_ctl",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/face_mid_compress/mouthMain_auto/M_Mouth/lipMain_low_2_r_follow_on_mouthMain_ctl",
@@ -45806,9 +44930,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lipMain_low_2_r_follow_on_mouthMain_ctl",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/face_mid_compress/lip_upper_rotScale_pivot",
@@ -45910,9 +45032,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lip_upper_rotScale_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/face_mid_compress/lip_upper_translate_pivot",
@@ -46014,9 +45134,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lip_upper_translate_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/face_mid_compress/lip_upper_translate_pivot/M_UpLipCenter",
@@ -46118,9 +45236,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "M_UpLipCenter",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/face_mid_compress/mouth_corner_l_headPin",
@@ -46222,9 +45338,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "mouth_corner_l_headPin",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/face_mid_compress/mouth_corner_r_headPin",
@@ -46326,9 +45440,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "mouth_corner_r_headPin",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/face_mid_compress/R_UpLip",
@@ -46430,9 +45542,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_UpLip",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/face_mid_compress/L_UpLip",
@@ -46534,9 +45644,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_UpLip",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/face_mid_compress/M_UpLip",
@@ -46638,9 +45746,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "M_UpLip",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/face_mid_compress/cheekPuff_l_auto",
@@ -46742,9 +45848,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "cheekPuff_l_auto",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/face_mid_compress/cheekPuff_l_auto/L_CheekPuff",
@@ -46846,9 +45950,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_CheekPuff",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/face_mid_compress/cheekPuff_r_auto",
@@ -46950,9 +46052,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "cheekPuff_r_auto",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/face_mid_compress/cheekPuff_r_auto/R_CheekPuff",
@@ -47054,9 +46154,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_CheekPuff",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/face_mid_compress/M_UpTeeth",
@@ -47158,9 +46256,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "M_UpTeeth",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/face_mid_compress/M_UpTeeth/M_UpTeethShear",
@@ -47262,9 +46358,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "M_UpTeethShear",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/face_mid_compress/M_UpTeeth/M_UpTeethShear/L_UpTeeth_molar",
@@ -47366,9 +46460,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_UpTeeth_molar",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/face_mid_compress/M_UpTeeth/M_UpTeethShear/R_UpTeeth_molar",
@@ -47470,9 +46562,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_UpTeeth_molar",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/face_mid_compress/M_UpTeeth/M_UpGumline",
@@ -47574,9 +46664,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "M_UpGumline",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/face_mid_compress_twin",
@@ -47678,9 +46766,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "face_mid_compress_twin",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/nose_bridge_follow_twin",
@@ -47782,9 +46868,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "nose_bridge_follow_twin",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/M_Jaw",
@@ -47886,9 +46970,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "M_Jaw",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/M_Jaw/lip_lower_rotScale_pivot",
@@ -47990,9 +47072,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lip_lower_rotScale_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/M_Jaw/lip_lower_translate_pivot",
@@ -48094,9 +47174,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lip_lower_translate_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/M_Jaw/lip_lower_translate_pivot/M_LoLipCenter",
@@ -48198,9 +47276,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "M_LoLipCenter",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/M_Jaw/mouth_corner_l_follow_on_jaw_ctl",
@@ -48302,9 +47378,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "mouth_corner_l_follow_on_jaw_ctl",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/M_Jaw/mouth_corner_l_jawPin",
@@ -48406,9 +47480,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "mouth_corner_l_jawPin",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/M_Jaw/mouth_corner_r_follow_on_jaw_ctl",
@@ -48510,9 +47582,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "mouth_corner_r_follow_on_jaw_ctl",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/M_Jaw/mouth_corner_r_jawPin",
@@ -48614,9 +47684,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "mouth_corner_r_jawPin",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/M_Jaw/lipMain_center_low_follow_on_jaw_ctl",
@@ -48718,9 +47786,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lipMain_center_low_follow_on_jaw_ctl",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/M_Jaw/lipMain_corner_l_follow_on_jaw_ctl",
@@ -48822,9 +47888,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lipMain_corner_l_follow_on_jaw_ctl",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/M_Jaw/lipMain_corner_r_follow_on_jaw_ctl",
@@ -48926,9 +47990,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lipMain_corner_r_follow_on_jaw_ctl",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/M_Jaw/lipMain_up_0_l_follow_on_jaw_ctl",
@@ -49030,9 +48092,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lipMain_up_0_l_follow_on_jaw_ctl",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/M_Jaw/lipMain_up_0_r_follow_on_jaw_ctl",
@@ -49134,9 +48194,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lipMain_up_0_r_follow_on_jaw_ctl",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/M_Jaw/lipMain_up_1_l_follow_on_jaw_ctl",
@@ -49238,9 +48296,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lipMain_up_1_l_follow_on_jaw_ctl",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/M_Jaw/lipMain_up_1_r_follow_on_jaw_ctl",
@@ -49342,9 +48398,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lipMain_up_1_r_follow_on_jaw_ctl",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/M_Jaw/lipMain_up_2_l_follow_on_jaw_ctl",
@@ -49446,9 +48500,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lipMain_up_2_l_follow_on_jaw_ctl",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/M_Jaw/lipMain_up_2_r_follow_on_jaw_ctl",
@@ -49550,9 +48602,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lipMain_up_2_r_follow_on_jaw_ctl",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/M_Jaw/lipMain_low_0_l_follow_on_jaw_ctl",
@@ -49654,9 +48704,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lipMain_low_0_l_follow_on_jaw_ctl",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/M_Jaw/lipMain_low_0_r_follow_on_jaw_ctl",
@@ -49758,9 +48806,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lipMain_low_0_r_follow_on_jaw_ctl",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/M_Jaw/lipMain_low_1_l_follow_on_jaw_ctl",
@@ -49862,9 +48908,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lipMain_low_1_l_follow_on_jaw_ctl",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/M_Jaw/lipMain_low_1_r_follow_on_jaw_ctl",
@@ -49966,9 +49010,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lipMain_low_1_r_follow_on_jaw_ctl",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/M_Jaw/lipMain_low_2_l_follow_on_jaw_ctl",
@@ -50070,9 +49112,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lipMain_low_2_l_follow_on_jaw_ctl",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/M_Jaw/lipMain_low_2_r_follow_on_jaw_ctl",
@@ -50174,9 +49214,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lipMain_low_2_r_follow_on_jaw_ctl",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/M_Jaw/R_LoLip",
@@ -50278,9 +49316,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_LoLip",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/M_Jaw/L_LoLip",
@@ -50382,9 +49418,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_LoLip",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/M_Jaw/M_LoLip",
@@ -50486,9 +49520,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "M_LoLip",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/M_Jaw/chin_auto",
@@ -50590,9 +49622,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "chin_auto",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/M_Jaw/chin_auto/M_Chin",
@@ -50694,9 +49724,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "M_Chin",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/M_Jaw/tongue_curl_l",
@@ -50798,9 +49826,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "tongue_curl_l",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/M_Jaw/tongue_curl_r",
@@ -50902,9 +49928,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "tongue_curl_r",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/M_Jaw/M_LoTeeth",
@@ -51006,9 +50030,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "M_LoTeeth",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/M_Jaw/M_LoTeeth/M_LoTeethShear",
@@ -51110,9 +50132,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "M_LoTeethShear",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/M_Jaw/M_LoTeeth/M_LoTeethShear/L_LoTeeth_molar",
@@ -51214,9 +50234,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_LoTeeth_molar",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/M_Jaw/M_LoTeeth/M_LoTeethShear/R_LoTeeth_molar",
@@ -51318,9 +50336,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_LoTeeth_molar",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/M_Jaw/M_LoTeeth/M_LoGumline",
@@ -51422,9 +50438,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "M_LoGumline",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/M_Jaw/M_TongueBase",
@@ -51526,9 +50540,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "M_TongueBase",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/M_Jaw/M_TongueBase/M_TongueMid",
@@ -51630,9 +50642,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "M_TongueMid",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/M_Jaw/M_TongueBase/M_TongueMid/M_TongueTip",
@@ -51734,9 +50744,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "M_TongueTip",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/jaw_compression_auto",
@@ -51838,9 +50846,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "jaw_compression_auto",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/mouth_corner_l_follow/mouth_corner_l_pin/L_Mouth",
@@ -51942,9 +50948,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_Mouth",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/mouth_corner_r_follow/mouth_corner_r_pin/R_Mouth",
@@ -52046,9 +51050,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_Mouth",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lipMain_center_up_follow/lipMain_center_up_turn",
@@ -52150,9 +51152,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lipMain_center_up_turn",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lipMain_center_up_follow/lipMain_center_up_turn/lipMain_center_up_pivot",
@@ -52254,9 +51254,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lipMain_center_up_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lipMain_center_up_follow/lipMain_center_up_turn/lipMain_center_up_pivot/lip_center_up_follow_on_lipMain_center_up_pivot",
@@ -52358,9 +51356,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lip_center_up_follow_on_lipMain_center_up_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lipMain_center_low_follow/lipMain_center_low_turn",
@@ -52462,9 +51458,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lipMain_center_low_turn",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lipMain_center_low_follow/lipMain_center_low_turn/lipMain_center_low_pivot",
@@ -52566,9 +51560,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lipMain_center_low_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lipMain_center_low_follow/lipMain_center_low_turn/lipMain_center_low_pivot/lip_center_low_follow_on_lipMain_center_low_pivot",
@@ -52670,9 +51662,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lip_center_low_follow_on_lipMain_center_low_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lipMain_corner_l_follow/lipMain_corner_l_turn",
@@ -52774,9 +51764,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lipMain_corner_l_turn",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lipMain_corner_l_follow/lipMain_corner_l_turn/lipMain_corner_l_pivot",
@@ -52878,9 +51866,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lipMain_corner_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lipMain_corner_l_follow/lipMain_corner_l_turn/lipMain_corner_l_pivot/lip_corner_l_follow_on_lipMain_corner_l_pivot",
@@ -52982,9 +51968,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lip_corner_l_follow_on_lipMain_corner_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lipMain_corner_r_follow/lipMain_corner_r_turn",
@@ -53086,9 +52070,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lipMain_corner_r_turn",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lipMain_corner_r_follow/lipMain_corner_r_turn/lipMain_corner_r_pivot",
@@ -53190,9 +52172,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lipMain_corner_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lipMain_corner_r_follow/lipMain_corner_r_turn/lipMain_corner_r_pivot/lip_corner_r_follow_on_lipMain_corner_r_pivot",
@@ -53294,9 +52274,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lip_corner_r_follow_on_lipMain_corner_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lipMain_up_0_l_follow/lipMain_up_0_l_turn",
@@ -53398,9 +52376,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lipMain_up_0_l_turn",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lipMain_up_0_l_follow/lipMain_up_0_l_turn/lipMain_up_0_l_pivot",
@@ -53502,9 +52478,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lipMain_up_0_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lipMain_up_0_l_follow/lipMain_up_0_l_turn/lipMain_up_0_l_pivot/lip_up_0_l_follow_on_lipMain_up_0_l_pivot",
@@ -53606,9 +52580,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lip_up_0_l_follow_on_lipMain_up_0_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lipMain_up_0_r_follow/lipMain_up_0_r_turn",
@@ -53710,9 +52682,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lipMain_up_0_r_turn",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lipMain_up_0_r_follow/lipMain_up_0_r_turn/lipMain_up_0_r_pivot",
@@ -53814,9 +52784,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lipMain_up_0_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lipMain_up_0_r_follow/lipMain_up_0_r_turn/lipMain_up_0_r_pivot/lip_up_0_r_follow_on_lipMain_up_0_r_pivot",
@@ -53918,9 +52886,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lip_up_0_r_follow_on_lipMain_up_0_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lipMain_up_1_l_follow/lipMain_up_1_l_turn",
@@ -54022,9 +52988,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lipMain_up_1_l_turn",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lipMain_up_1_l_follow/lipMain_up_1_l_turn/lipMain_up_1_l_pivot",
@@ -54126,9 +53090,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lipMain_up_1_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lipMain_up_1_l_follow/lipMain_up_1_l_turn/lipMain_up_1_l_pivot/lip_up_1_l_follow_on_lipMain_up_1_l_pivot",
@@ -54230,9 +53192,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lip_up_1_l_follow_on_lipMain_up_1_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lipMain_up_1_r_follow/lipMain_up_1_r_turn",
@@ -54334,9 +53294,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lipMain_up_1_r_turn",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lipMain_up_1_r_follow/lipMain_up_1_r_turn/lipMain_up_1_r_pivot",
@@ -54438,9 +53396,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lipMain_up_1_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lipMain_up_1_r_follow/lipMain_up_1_r_turn/lipMain_up_1_r_pivot/lip_up_1_r_follow_on_lipMain_up_1_r_pivot",
@@ -54542,9 +53498,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lip_up_1_r_follow_on_lipMain_up_1_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lipMain_up_2_l_follow/lipMain_up_2_l_turn",
@@ -54646,9 +53600,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lipMain_up_2_l_turn",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lipMain_up_2_l_follow/lipMain_up_2_l_turn/lipMain_up_2_l_pivot",
@@ -54750,9 +53702,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lipMain_up_2_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lipMain_up_2_l_follow/lipMain_up_2_l_turn/lipMain_up_2_l_pivot/lip_up_2_l_follow_on_lipMain_up_2_l_pivot",
@@ -54854,9 +53804,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lip_up_2_l_follow_on_lipMain_up_2_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lipMain_up_2_r_follow/lipMain_up_2_r_turn",
@@ -54958,9 +53906,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lipMain_up_2_r_turn",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lipMain_up_2_r_follow/lipMain_up_2_r_turn/lipMain_up_2_r_pivot",
@@ -55062,9 +54008,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lipMain_up_2_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lipMain_up_2_r_follow/lipMain_up_2_r_turn/lipMain_up_2_r_pivot/lip_up_2_r_follow_on_lipMain_up_2_r_pivot",
@@ -55166,9 +54110,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lip_up_2_r_follow_on_lipMain_up_2_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lipMain_low_0_l_follow/lipMain_low_0_l_turn",
@@ -55270,9 +54212,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lipMain_low_0_l_turn",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lipMain_low_0_l_follow/lipMain_low_0_l_turn/lipMain_low_0_l_pivot",
@@ -55374,9 +54314,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lipMain_low_0_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lipMain_low_0_l_follow/lipMain_low_0_l_turn/lipMain_low_0_l_pivot/lip_low_0_l_follow_on_lipMain_low_0_l_pivot",
@@ -55478,9 +54416,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lip_low_0_l_follow_on_lipMain_low_0_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lipMain_low_0_r_follow/lipMain_low_0_r_turn",
@@ -55582,9 +54518,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lipMain_low_0_r_turn",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lipMain_low_0_r_follow/lipMain_low_0_r_turn/lipMain_low_0_r_pivot",
@@ -55686,9 +54620,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lipMain_low_0_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lipMain_low_0_r_follow/lipMain_low_0_r_turn/lipMain_low_0_r_pivot/lip_low_0_r_follow_on_lipMain_low_0_r_pivot",
@@ -55790,9 +54722,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lip_low_0_r_follow_on_lipMain_low_0_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lipMain_low_1_l_follow/lipMain_low_1_l_turn",
@@ -55894,9 +54824,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lipMain_low_1_l_turn",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lipMain_low_1_l_follow/lipMain_low_1_l_turn/lipMain_low_1_l_pivot",
@@ -55998,9 +54926,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lipMain_low_1_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lipMain_low_1_l_follow/lipMain_low_1_l_turn/lipMain_low_1_l_pivot/lip_low_1_l_follow_on_lipMain_low_1_l_pivot",
@@ -56102,9 +55028,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lip_low_1_l_follow_on_lipMain_low_1_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lipMain_low_1_r_follow/lipMain_low_1_r_turn",
@@ -56206,9 +55130,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lipMain_low_1_r_turn",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lipMain_low_1_r_follow/lipMain_low_1_r_turn/lipMain_low_1_r_pivot",
@@ -56310,9 +55232,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lipMain_low_1_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lipMain_low_1_r_follow/lipMain_low_1_r_turn/lipMain_low_1_r_pivot/lip_low_1_r_follow_on_lipMain_low_1_r_pivot",
@@ -56414,9 +55334,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lip_low_1_r_follow_on_lipMain_low_1_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lipMain_low_2_l_follow/lipMain_low_2_l_turn",
@@ -56518,9 +55436,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lipMain_low_2_l_turn",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lipMain_low_2_l_follow/lipMain_low_2_l_turn/lipMain_low_2_l_pivot",
@@ -56622,9 +55538,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lipMain_low_2_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lipMain_low_2_l_follow/lipMain_low_2_l_turn/lipMain_low_2_l_pivot/lip_low_2_l_follow_on_lipMain_low_2_l_pivot",
@@ -56726,9 +55640,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lip_low_2_l_follow_on_lipMain_low_2_l_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lipMain_low_2_r_follow/lipMain_low_2_r_turn",
@@ -56830,9 +55742,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lipMain_low_2_r_turn",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lipMain_low_2_r_follow/lipMain_low_2_r_turn/lipMain_low_2_r_pivot",
@@ -56934,9 +55844,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lipMain_low_2_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lipMain_low_2_r_follow/lipMain_low_2_r_turn/lipMain_low_2_r_pivot/lip_low_2_r_follow_on_lipMain_low_2_r_pivot",
@@ -57038,9 +55946,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lip_low_2_r_follow_on_lipMain_low_2_r_pivot",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lip_center_up_follow/M_UpLipMid",
@@ -57142,9 +56048,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "M_UpLipMid",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lip_center_low_follow/M_LoLipMid",
@@ -57246,9 +56150,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "M_LoLipMid",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lip_corner_l_follow/L_OutLip",
@@ -57350,9 +56252,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_OutLip",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lip_corner_r_follow/R_OutLip",
@@ -57454,9 +56354,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_OutLip",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lip_up_0_l_follow/lip_up_0_l_pinch",
@@ -57558,9 +56456,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lip_up_0_l_pinch",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lip_up_0_l_follow/lip_up_0_l_pinch/L_UpLip3",
@@ -57662,9 +56558,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_UpLip3",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lip_up_0_r_follow/lip_up_0_r_pinch",
@@ -57766,9 +56660,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lip_up_0_r_pinch",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lip_up_0_r_follow/lip_up_0_r_pinch/R_UpLip3",
@@ -57870,9 +56762,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_UpLip3",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lip_up_1_l_follow/L_UpLip2",
@@ -57974,9 +56864,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_UpLip2",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lip_up_1_r_follow/R_UpLip2",
@@ -58078,9 +56966,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_UpLip2",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lip_up_2_l_follow/L_UpLip1",
@@ -58182,9 +57068,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_UpLip1",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lip_up_2_r_follow/R_UpLip1",
@@ -58286,9 +57170,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_UpLip1",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lip_low_0_l_follow/lip_low_0_l_pinch",
@@ -58390,9 +57272,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lip_low_0_l_pinch",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lip_low_0_l_follow/lip_low_0_l_pinch/L_LoLip3",
@@ -58494,9 +57374,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_LoLip3",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lip_low_0_r_follow/lip_low_0_r_pinch",
@@ -58598,9 +57476,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lip_low_0_r_pinch",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lip_low_0_r_follow/lip_low_0_r_pinch/R_LoLip3",
@@ -58702,9 +57578,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_LoLip3",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lip_low_1_l_follow/L_LoLip2",
@@ -58806,9 +57680,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_LoLip2",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lip_low_1_r_follow/R_LoLip2",
@@ -58910,9 +57782,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_LoLip2",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lip_low_2_l_follow/L_LoLip1",
@@ -59014,9 +57884,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_LoLip1",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/lip_low_2_r_follow/R_LoLip1",
@@ -59118,9 +57986,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_LoLip1",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/M_LoFace/head_low_squetch",
@@ -59222,9 +58088,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "head_low_squetch",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/face_psd_drivers",
@@ -59326,9 +58190,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "face_psd_drivers",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/face_psd_drivers/mouth_corner_l_driver",
@@ -59430,9 +58292,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "mouth_corner_l_driver",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/face_psd_drivers/mouth_corner_r_driver",
@@ -59534,9 +58394,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "mouth_corner_r_driver",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/face_psd_drivers/jaw_driver",
@@ -59638,9 +58496,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "jaw_driver",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/face_psd_drivers/jaw__mouth_corner_l_driver",
@@ -59742,9 +58598,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "jaw__mouth_corner_l_driver",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/face_psd_drivers/jaw__mouth_corner_r_driver",
@@ -59846,9 +58700,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "jaw__mouth_corner_r_driver",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/face_psd_drivers/lip_volume_l_driver",
@@ -59950,9 +58802,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lip_volume_l_driver",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/face_psd_drivers/lip_volume_r_driver",
@@ -60054,9 +58904,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lip_volume_r_driver",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/face_psd_drivers/brow_inner_l_TX_driver",
@@ -60158,9 +59006,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "brow_inner_l_TX_driver",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/face_psd_drivers/brow_inner_r_TX_driver",
@@ -60262,9 +59108,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "brow_inner_r_TX_driver",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/face_psd_drivers/brow_inner_l_TY_driver",
@@ -60366,9 +59210,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "brow_inner_l_TY_driver",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/face_psd_drivers/brow_inner_r_TY_driver",
@@ -60470,9 +59312,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "brow_inner_r_TY_driver",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/face_psd_drivers/brow_inner_combo_l_driver",
@@ -60574,9 +59414,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "brow_inner_combo_l_driver",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/face_psd_drivers/brow_inner_combo_r_driver",
@@ -60678,9 +59516,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "brow_inner_combo_r_driver",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/face_psd_drivers/brow_main_l_TY_driver",
@@ -60782,9 +59618,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "brow_main_l_TY_driver",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/face_psd_drivers/brow_main_r_TY_driver",
@@ -60886,9 +59720,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "brow_main_r_TY_driver",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/face_psd_drivers/brow_corrugator_l_driver",
@@ -60990,9 +59822,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "brow_corrugator_l_driver",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/face_psd_drivers/brow_corrugator_r_driver",
@@ -61094,9 +59924,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "brow_corrugator_r_driver",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/face_psd_drivers/lip_upper_driver",
@@ -61198,9 +60026,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lip_upper_driver",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_Head/M_HeadGimbal/skull_follow/M_Skull/face_psd_drivers/lip_lower_driver",
@@ -61302,9 +60128,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "lip_lower_driver",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/M_Neck/M_NeckShift",
@@ -61406,9 +60230,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "M_NeckShift",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_Torso/M_Chest/M_ChestTop/breathing_drivers",
@@ -61510,9 +60332,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "breathing_drivers",
-   "kind": "null"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_HipSwivel",
@@ -61614,9 +60434,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "M_HipSwivel",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_HipSwivel/M_BodyGimbal",
@@ -61718,9 +60536,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "M_BodyGimbal",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_HipSwivel/M_BodyGimbal/R_Hip",
@@ -61822,9 +60638,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_Hip",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_HipSwivel/M_BodyGimbal/R_Hip/R_UpLegSwing",
@@ -61926,9 +60740,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_UpLegSwing",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_HipSwivel/M_BodyGimbal/R_Hip/R_UpLegSwing/R_UpLeg",
@@ -62033,9 +60845,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_UpLeg",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_HipSwivel/M_BodyGimbal/R_Hip/R_UpLegSwing/R_UpLeg/R_LoLeg",
@@ -62140,9 +60950,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_LoLeg",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_HipSwivel/M_BodyGimbal/R_Hip/R_UpLegSwing/R_UpLeg/R_LoLeg/R_Foot",
@@ -62247,9 +61055,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_Foot",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_HipSwivel/M_BodyGimbal/R_Hip/R_UpLegSwing/R_UpLeg/R_LoLeg/R_Foot/R_Ball",
@@ -62351,9 +61157,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "R_Ball",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_HipSwivel/M_BodyGimbal/L_Hip",
@@ -62455,9 +61259,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_Hip",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_HipSwivel/M_BodyGimbal/L_Hip/L_UpLegSwing",
@@ -62559,9 +61361,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_UpLegSwing",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_HipSwivel/M_BodyGimbal/L_Hip/L_UpLegSwing/L_UpLeg",
@@ -62666,9 +61466,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_UpLeg",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_HipSwivel/M_BodyGimbal/L_Hip/L_UpLegSwing/L_UpLeg/L_LoLeg",
@@ -62773,9 +61571,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_LoLeg",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_HipSwivel/M_BodyGimbal/L_Hip/L_UpLegSwing/L_UpLeg/L_LoLeg/L_Foot",
@@ -62880,9 +61676,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_Foot",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Body/M_HipSwivel/M_BodyGimbal/L_Hip/L_UpLegSwing/L_UpLeg/L_LoLeg/L_Foot/L_Ball",
@@ -62984,9 +61778,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_Ball",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/L_Leg",
@@ -63088,9 +61880,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "L_Leg",
-   "kind": "control"
+   ]
   },
   {
    "path": "/Biped/Rig/Main/Shot/Aux/Controls/M_Look",
@@ -63192,9 +61982,7 @@
     1.0,
     1.0,
     1.0
-   ],
-   "element": "M_Look",
-   "kind": "control"
+   ]
   }
  ],
  "channels": [
@@ -63215,8 +62003,7 @@
    "clamp": [
     0.0,
     2.0
-   ],
-   "element": "space"
+   ]
   },
   {
    "control": 111,
@@ -63235,8 +62022,7 @@
    "clamp": [
     0.0,
     2.0
-   ],
-   "element": "space_2"
+   ]
   },
   {
    "control": 112,
@@ -63257,8 +62043,7 @@
    "clamp": [
     0.0,
     4.0
-   ],
-   "element": "space_3"
+   ]
   },
   {
    "control": 113,
@@ -63277,8 +62062,7 @@
    "clamp": [
     0.0,
     2.0
-   ],
-   "element": "space_4"
+   ]
   },
   {
    "control": 114,
@@ -63292,8 +62076,7 @@
    "clamp": [
     0.0,
     1.0
-   ],
-   "element": "ikfk"
+   ]
   },
   {
    "control": 114,
@@ -63307,8 +62090,7 @@
    "clamp": [
     0.0,
     1.0
-   ],
-   "element": "pvPin"
+   ]
   },
   {
    "control": 114,
@@ -63318,8 +62100,7 @@
    "range": [
     0.0001,
     2.0
-   ],
-   "element": "softStretch"
+   ]
   },
   {
    "control": 114,
@@ -63333,8 +62114,7 @@
    "clamp": [
     0.0,
     1.0
-   ],
-   "element": "stretch"
+   ]
   },
   {
    "control": 114,
@@ -63344,8 +62124,7 @@
    "range": [
     0.0,
     2.0
-   ],
-   "element": "stretchBottom"
+   ]
   },
   {
    "control": 114,
@@ -63355,8 +62134,7 @@
    "range": [
     0.0,
     2.0
-   ],
-   "element": "stretchTop"
+   ]
   },
   {
    "control": 114,
@@ -63366,8 +62144,7 @@
    "range": [
     -180.0,
     180.0
-   ],
-   "element": "twist"
+   ]
   },
   {
    "control": 141,
@@ -63386,8 +62163,7 @@
    "clamp": [
     0.0,
     2.0
-   ],
-   "element": "space_5"
+   ]
   },
   {
    "control": 157,
@@ -63408,8 +62184,7 @@
    "clamp": [
     0.0,
     4.0
-   ],
-   "element": "space_6"
+   ]
   },
   {
    "control": 158,
@@ -63428,8 +62203,7 @@
    "clamp": [
     0.0,
     2.0
-   ],
-   "element": "space_7"
+   ]
   },
   {
    "control": 159,
@@ -63448,8 +62222,7 @@
    "clamp": [
     0.0,
     2.0
-   ],
-   "element": "space_8"
+   ]
   },
   {
    "control": 160,
@@ -63463,8 +62236,7 @@
    "clamp": [
     0.0,
     1.0
-   ],
-   "element": "ikfk_2"
+   ]
   },
   {
    "control": 160,
@@ -63478,8 +62250,7 @@
    "clamp": [
     0.0,
     1.0
-   ],
-   "element": "pvPin_2"
+   ]
   },
   {
    "control": 160,
@@ -63489,8 +62260,7 @@
    "range": [
     0.0001,
     2.0
-   ],
-   "element": "softStretch_2"
+   ]
   },
   {
    "control": 160,
@@ -63504,8 +62274,7 @@
    "clamp": [
     0.0,
     1.0
-   ],
-   "element": "stretch_2"
+   ]
   },
   {
    "control": 160,
@@ -63515,8 +62284,7 @@
    "range": [
     0.0,
     2.0
-   ],
-   "element": "stretchBottom_2"
+   ]
   },
   {
    "control": 160,
@@ -63526,8 +62294,7 @@
    "range": [
     0.0,
     2.0
-   ],
-   "element": "stretchTop_2"
+   ]
   },
   {
    "control": 160,
@@ -63537,8 +62304,7 @@
    "range": [
     -180.0,
     180.0
-   ],
-   "element": "twist_2"
+   ]
   },
   {
    "control": 161,
@@ -63552,8 +62318,7 @@
    "clamp": [
     -90.0,
     90.0
-   ],
-   "element": "footRock"
+   ]
   },
   {
    "control": 161,
@@ -63567,8 +62332,7 @@
    "clamp": [
     -120.0,
     120.0
-   ],
-   "element": "footRoll"
+   ]
   },
   {
    "control": 161,
@@ -63582,8 +62346,7 @@
    "clamp": [
     0.0,
     1.0
-   ],
-   "element": "ikfk_3"
+   ]
   },
   {
    "control": 161,
@@ -63597,8 +62360,7 @@
    "clamp": [
     0.0,
     1.0
-   ],
-   "element": "pvPin_3"
+   ]
   },
   {
    "control": 161,
@@ -63608,8 +62370,7 @@
    "range": [
     0.0001,
     2.0
-   ],
-   "element": "softStretch_3"
+   ]
   },
   {
    "control": 161,
@@ -63623,8 +62384,7 @@
    "clamp": [
     0.0,
     1.0
-   ],
-   "element": "stretch_3"
+   ]
   },
   {
    "control": 161,
@@ -63634,8 +62394,7 @@
    "range": [
     0.0,
     2.0
-   ],
-   "element": "stretchBottom_3"
+   ]
   },
   {
    "control": 161,
@@ -63645,8 +62404,7 @@
    "range": [
     0.0,
     2.0
-   ],
-   "element": "stretchTop_3"
+   ]
   },
   {
    "control": 161,
@@ -63660,8 +62418,7 @@
    "clamp": [
     0.0,
     120.0
-   ],
-   "element": "toePlantAngle"
+   ]
   },
   {
    "control": 161,
@@ -63671,8 +62428,7 @@
    "range": [
     -180.0,
     180.0
-   ],
-   "element": "twist_3"
+   ]
   },
   {
    "control": 165,
@@ -63682,8 +62438,7 @@
    "range": [
     -10.0,
     10.0
-   ],
-   "element": "breathing_belly"
+   ]
   },
   {
    "control": 165,
@@ -63693,8 +62448,7 @@
    "range": [
     -10.0,
     10.0
-   ],
-   "element": "breathing_chest"
+   ]
   },
   {
    "control": 165,
@@ -63704,8 +62458,7 @@
    "range": [
     -10.0,
     10.0
-   ],
-   "element": "breathing_shoulders"
+   ]
   },
   {
    "control": 166,
@@ -63719,8 +62472,7 @@
    "clamp": [
     0.0,
     1.0
-   ],
-   "element": "autoClav"
+   ]
   },
   {
    "control": 167,
@@ -63739,8 +62491,7 @@
    "clamp": [
     0.0,
     2.0
-   ],
-   "element": "space_9"
+   ]
   },
   {
    "control": 173,
@@ -63754,8 +62505,7 @@
    "clamp": [
     0.0,
     1.0
-   ],
-   "element": "autoClav_2"
+   ]
   },
   {
    "control": 174,
@@ -63774,8 +62524,7 @@
    "clamp": [
     0.0,
     2.0
-   ],
-   "element": "space_10"
+   ]
   },
   {
    "control": 180,
@@ -63794,8 +62543,7 @@
    "clamp": [
     0.0,
     2.0
-   ],
-   "element": "space_11"
+   ]
   },
   {
    "control": 182,
@@ -63814,8 +62562,7 @@
    "clamp": [
     0.0,
     2.0
-   ],
-   "element": "space_12"
+   ]
   },
   {
    "control": 189,
@@ -63829,8 +62576,7 @@
    "clamp": [
     -10.0,
     10.0
-   ],
-   "element": "nostrilFlare"
+   ]
   },
   {
    "control": 189,
@@ -63844,8 +62590,7 @@
    "clamp": [
     0.0,
     5.0
-   ],
-   "element": "sneerFollow"
+   ]
   },
   {
    "control": 194,
@@ -63859,8 +62604,7 @@
    "clamp": [
     -10.0,
     10.0
-   ],
-   "element": "nostrilFlare_2"
+   ]
   },
   {
    "control": 194,
@@ -63874,8 +62618,7 @@
    "clamp": [
     0.0,
     5.0
-   ],
-   "element": "sneerFollow_2"
+   ]
   },
   {
    "control": 202,
@@ -63889,8 +62632,7 @@
    "clamp": [
     0.0,
     1.0
-   ],
-   "element": "convergence"
+   ]
   },
   {
    "control": 202,
@@ -63904,8 +62646,7 @@
    "clamp": [
     0.0,
     10.0
-   ],
-   "element": "drag"
+   ]
   },
   {
    "control": 202,
@@ -63919,8 +62660,7 @@
    "clamp": [
     0.0,
     10.0
-   ],
-   "element": "socketFollow"
+   ]
   },
   {
    "control": 206,
@@ -63930,8 +62670,7 @@
    "range": [
     0.0,
     1.0
-   ],
-   "element": "irisHeight"
+   ]
   },
   {
    "control": 206,
@@ -63941,8 +62680,7 @@
    "range": [
     0.0,
     1.0
-   ],
-   "element": "irisRadius"
+   ]
   },
   {
    "control": 206,
@@ -63952,8 +62690,7 @@
    "range": [
     0.0,
     1.0
-   ],
-   "element": "irisWidth"
+   ]
   },
   {
    "control": 206,
@@ -63963,8 +62700,7 @@
    "range": [
     0.0,
     1.0
-   ],
-   "element": "pupilHeight"
+   ]
   },
   {
    "control": 206,
@@ -63974,8 +62710,7 @@
    "range": [
     0.0,
     1.0
-   ],
-   "element": "pupilOffsetX"
+   ]
   },
   {
    "control": 206,
@@ -63985,8 +62720,7 @@
    "range": [
     0.0,
     1.0
-   ],
-   "element": "pupilOffsetY"
+   ]
   },
   {
    "control": 206,
@@ -63996,8 +62730,7 @@
    "range": [
     0.0,
     1.0
-   ],
-   "element": "pupilRadius"
+   ]
   },
   {
    "control": 206,
@@ -64007,8 +62740,7 @@
    "range": [
     0.0,
     1.0
-   ],
-   "element": "pupilWidth"
+   ]
   },
   {
    "control": 290,
@@ -64022,8 +62754,7 @@
    "clamp": [
     0.0,
     1.0
-   ],
-   "element": "autoSquash"
+   ]
   },
   {
    "control": 290,
@@ -64037,8 +62768,7 @@
    "clamp": [
     -10.0,
     10.0
-   ],
-   "element": "socketLift"
+   ]
   },
   {
    "control": 290,
@@ -64052,8 +62782,7 @@
    "clamp": [
     0.0,
     10.0
-   ],
-   "element": "squash"
+   ]
   },
   {
    "control": 291,
@@ -64067,8 +62796,7 @@
    "clamp": [
     0.0,
     1.0
-   ],
-   "element": "autoSquash_2"
+   ]
   },
   {
    "control": 291,
@@ -64082,8 +62810,7 @@
    "clamp": [
     -10.0,
     10.0
-   ],
-   "element": "cheekLift"
+   ]
   },
   {
    "control": 291,
@@ -64097,8 +62824,7 @@
    "clamp": [
     0.0,
     10.0
-   ],
-   "element": "squash_2"
+   ]
   },
   {
    "control": 297,
@@ -64108,8 +62834,7 @@
    "range": [
     0.0,
     1.0
-   ],
-   "element": "irisHeight_2"
+   ]
   },
   {
    "control": 297,
@@ -64119,8 +62844,7 @@
    "range": [
     0.0,
     1.0
-   ],
-   "element": "irisRadius_2"
+   ]
   },
   {
    "control": 297,
@@ -64130,8 +62854,7 @@
    "range": [
     0.0,
     1.0
-   ],
-   "element": "irisWidth_2"
+   ]
   },
   {
    "control": 297,
@@ -64141,8 +62864,7 @@
    "range": [
     0.0,
     1.0
-   ],
-   "element": "pupilHeight_2"
+   ]
   },
   {
    "control": 297,
@@ -64152,8 +62874,7 @@
    "range": [
     0.0,
     1.0
-   ],
-   "element": "pupilOffsetX_2"
+   ]
   },
   {
    "control": 297,
@@ -64163,8 +62884,7 @@
    "range": [
     0.0,
     1.0
-   ],
-   "element": "pupilOffsetY_2"
+   ]
   },
   {
    "control": 297,
@@ -64174,8 +62894,7 @@
    "range": [
     0.0,
     1.0
-   ],
-   "element": "pupilRadius_2"
+   ]
   },
   {
    "control": 297,
@@ -64185,8 +62904,7 @@
    "range": [
     0.0,
     1.0
-   ],
-   "element": "pupilWidth_2"
+   ]
   },
   {
    "control": 381,
@@ -64200,8 +62918,7 @@
    "clamp": [
     0.0,
     1.0
-   ],
-   "element": "autoSquash_3"
+   ]
   },
   {
    "control": 381,
@@ -64215,8 +62932,7 @@
    "clamp": [
     -10.0,
     10.0
-   ],
-   "element": "socketLift_2"
+   ]
   },
   {
    "control": 381,
@@ -64230,8 +62946,7 @@
    "clamp": [
     0.0,
     10.0
-   ],
-   "element": "squash_3"
+   ]
   },
   {
    "control": 382,
@@ -64245,8 +62960,7 @@
    "clamp": [
     0.0,
     1.0
-   ],
-   "element": "autoSquash_4"
+   ]
   },
   {
    "control": 382,
@@ -64260,8 +62974,7 @@
    "clamp": [
     -10.0,
     10.0
-   ],
-   "element": "cheekLift_2"
+   ]
   },
   {
    "control": 382,
@@ -64275,8 +62988,7 @@
    "clamp": [
     0.0,
     10.0
-   ],
-   "element": "squash_4"
+   ]
   },
   {
    "control": 448,
@@ -64290,8 +63002,7 @@
    "clamp": [
     -10.0,
     10.0
-   ],
-   "element": "suckPuff"
+   ]
   },
   {
    "control": 450,
@@ -64305,8 +63016,7 @@
    "clamp": [
     -10.0,
     10.0
-   ],
-   "element": "suckPuff_2"
+   ]
   },
   {
    "control": 458,
@@ -64320,8 +63030,7 @@
    "clamp": [
     0.0,
     1.0
-   ],
-   "element": "earFollow"
+   ]
   },
   {
    "control": 497,
@@ -64335,8 +63044,7 @@
    "clamp": [
     -10.0,
     10.0
-   ],
-   "element": "cornerPinch"
+   ]
   },
   {
    "control": 497,
@@ -64350,8 +63058,7 @@
    "clamp": [
     0.0,
     1.0
-   ],
-   "element": "earFollow_2"
+   ]
   },
   {
    "control": 497,
@@ -64365,8 +63072,7 @@
    "clamp": [
     -10.0,
     10.0
-   ],
-   "element": "pin"
+   ]
   },
   {
    "control": 498,
@@ -64380,8 +63086,7 @@
    "clamp": [
     -10.0,
     10.0
-   ],
-   "element": "cornerPinch_2"
+   ]
   },
   {
    "control": 498,
@@ -64395,8 +63100,7 @@
    "clamp": [
     0.0,
     1.0
-   ],
-   "element": "earFollow_3"
+   ]
   },
   {
    "control": 498,
@@ -64410,8 +63114,7 @@
    "clamp": [
     -10.0,
     10.0
-   ],
-   "element": "pin_2"
+   ]
   },
   {
    "control": 604,
@@ -64425,8 +63128,7 @@
    "clamp": [
     -90.0,
     90.0
-   ],
-   "element": "footRock_2"
+   ]
   },
   {
    "control": 604,
@@ -64440,8 +63142,7 @@
    "clamp": [
     -120.0,
     120.0
-   ],
-   "element": "footRoll_2"
+   ]
   },
   {
    "control": 604,
@@ -64455,8 +63156,7 @@
    "clamp": [
     0.0,
     1.0
-   ],
-   "element": "ikfk_4"
+   ]
   },
   {
    "control": 604,
@@ -64470,8 +63170,7 @@
    "clamp": [
     0.0,
     1.0
-   ],
-   "element": "pvPin_4"
+   ]
   },
   {
    "control": 604,
@@ -64481,8 +63180,7 @@
    "range": [
     0.0001,
     2.0
-   ],
-   "element": "softStretch_4"
+   ]
   },
   {
    "control": 604,
@@ -64496,8 +63194,7 @@
    "clamp": [
     0.0,
     1.0
-   ],
-   "element": "stretch_4"
+   ]
   },
   {
    "control": 604,
@@ -64507,8 +63204,7 @@
    "range": [
     0.0,
     2.0
-   ],
-   "element": "stretchBottom_4"
+   ]
   },
   {
    "control": 604,
@@ -64518,8 +63214,7 @@
    "range": [
     0.0,
     2.0
-   ],
-   "element": "stretchTop_4"
+   ]
   },
   {
    "control": 604,
@@ -64533,8 +63228,7 @@
    "clamp": [
     0.0,
     120.0
-   ],
-   "element": "toePlantAngle_2"
+   ]
   },
   {
    "control": 604,
@@ -64544,8 +63238,7 @@
    "range": [
     -180.0,
     180.0
-   ],
-   "element": "twist_4"
+   ]
   },
   {
    "control": 605,
@@ -64559,8 +63252,7 @@
    "clamp": [
     0.0,
     1.0
-   ],
-   "element": "lookAt"
+   ]
   },
   {
    "control": 605,
@@ -64578,8 +63270,7 @@
    "clamp": [
     0.0,
     1.0
-   ],
-   "element": "space_13"
+   ]
   }
  ],
  "limbs": [
@@ -64803,7 +63494,5 @@
     "/Biped/Rig/Main/Shot/Aux/Controls/R_ArmPV.avars:tz"
    ]
   }
- ],
- "space": "usd",
- "root": "UsdSpace"
+ ]
 }

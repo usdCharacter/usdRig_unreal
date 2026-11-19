@@ -16,8 +16,11 @@
 #include "InputAction.h"
 #include "InputMappingContext.h"
 #include "InputModifiers.h"
+#include "AssetRegistry/AssetRegistryModule.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "Misc/App.h"
 #include "Misc/CommandLine.h"
+#include "Misc/ConfigCacheIni.h"
 #include "Misc/Paths.h"
 #include "RigExecCharacter.h"
 #include "RigExecComponent.h"
@@ -86,11 +89,79 @@ ARigExecBipedCharacter::ARigExecBipedCharacter()
 		FSoftObjectPath(TEXT("/Game/Characters/Mannequins/Anims/Unarmed/ABP_Unarmed.ABP_Unarmed_C")));
 }
 
+bool ARigExecBipedCharacter::bRigAsync = true;
+int32 ARigExecBipedCharacter::RigRateFar = 2;
+int32 ARigExecBipedCharacter::RigRateLobby = 3;
+
+TArray<ARigExecBipedCharacter::FChoice>
+ARigExecBipedCharacter::FindCharacters()
+{
+	TArray<FChoice> Out;
+	TArray<FAssetData> Assets;
+	IAssetRegistry& Registry = FModuleManager::LoadModuleChecked<FAssetRegistryModule>("AssetRegistry").Get();
+#if WITH_EDITOR
+	// An editor build scans the content while it starts; a packaged game
+	// ships its registry ready.
+	static bool bScanned = false;
+	if (!bScanned)
+	{
+		Registry.ScanPathsSynchronous({TEXT("/Game/RigExec")}, false);
+		bScanned = true;
+	}
+#endif
+	Registry.GetAssetsByClass(URigExecCharacter::StaticClass()->GetClassPathName(), Assets);
+	for (const FAssetData& Asset : Assets)
+	{
+		FString Label = Asset.AssetName.ToString();
+		Label.RemoveFromStart(TEXT("RXC_"));
+		Out.Add({Label.ToUpper(), Asset.GetSoftObjectPath()});
+	}
+	Out.Sort([](const FChoice& A, const FChoice& B) {
+		const bool bA = A.Label == TEXT("BIPED"), bB = B.Label == TEXT("BIPED");
+		return bA != bB ? bA : A.Label < B.Label;
+	});
+	return Out;
+}
+
+FSoftObjectPath
+ARigExecBipedCharacter::ChosenCharacter()
+{
+	const TArray<FChoice> Choices = FindCharacters();
+	FString Wanted;
+	if (FParse::Value(FCommandLine::Get(), TEXT("RigExecCharacter="), Wanted))
+	{
+		for (const FChoice& Choice : Choices)
+		{
+			if (Choice.Label.Equals(Wanted, ESearchCase::IgnoreCase))
+			{
+				return Choice.Asset;
+			}
+		}
+	}
+	return FSoftObjectPath();
+}
+
+void
+ARigExecBipedCharacter::ChooseCharacter(const FSoftObjectPath& Asset)
+{
+	if (GConfig)
+	{
+		GConfig->SetString(TEXT("RigExecBiped.Settings"), TEXT("Character"), *Asset.ToString(), GGameUserSettingsIni);
+		GConfig->Flush(false, GGameUserSettingsIni);
+	}
+}
+
 void
 ARigExecBipedCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	bDemo = FParse::Param(FCommandLine::Get(), TEXT("RigExecDemo"));
+	const FSoftObjectPath Chosen = bPreview ? PreviewAsset : ChosenCharacter();
+	if (Chosen.IsValid())
+	{
+		CharacterAsset = TSoftObjectPtr<URigExecCharacter>(Chosen);
+	}
+	UE_LOG(LogRigExecBiped, Log, TEXT("%s %s"), bPreview ? TEXT("previewing") : TEXT("playing as"), *CharacterAsset.ToString());
+	bDemo = !bPreview && FParse::Param(FCommandLine::Get(), TEXT("RigExecDemo"));
 	bShowSource |= FParse::Param(FCommandLine::Get(), TEXT("RigExecShowSource"));
 
 	if (USkeletalMesh* Manny = SourceMesh.LoadSynchronous())
@@ -126,7 +197,27 @@ ARigExecBipedCharacter::BeginPlay()
 	// The eye materials go on before a subdivision surface gathers the meshes.
 	Eyes->Rig = Rig;
 	Eyes->Bind();
+	if (!bPreview)
+	{
+		BeginCinematicSetup();
+	}
+}
+
+void
+ARigExecBipedCharacter::BecomePlayable()
+{
+	bPreview = false;
+	bDemo = FParse::Param(FCommandLine::Get(), TEXT("RigExecDemo"));
+	PlayTime = 0.0f;
 	BeginCinematicSetup();
+}
+
+void
+ARigExecBipedCharacter::BecomePreview()
+{
+	bPreview = true;
+	bDemo = false;
+	PreviewAsset = CharacterAsset.ToSoftObjectPath();
 }
 
 void
@@ -140,6 +231,7 @@ ARigExecBipedCharacter::BeginCinematicSetup()
 	LookTarget = Rig->FindControlIndex(TEXT("M_Look"));
 	LeftEye = Rig->FindControlIndex(TEXT("L_Eye"));
 	RightEye = Rig->FindControlIndex(TEXT("R_Eye"));
+	Chin = Rig->FindControlIndex(TEXT("M_Chin"));
 	LeftCorner = Rig->FindControlIndex(TEXT("L_Mouth"));
 	RightCorner = Rig->FindControlIndex(TEXT("R_Mouth"));
 	UpLip = Rig->FindControlIndex(TEXT("M_UpLip"));
@@ -254,17 +346,43 @@ ARigExecBipedCharacter::FaceCentre() const
 	return Rig->GetComponentTransform().TransformPosition((L + R) * 0.5);
 }
 
+float
+ARigExecBipedCharacter::FaceScale() const
+{
+	// Measured once, from the first frame the rig has: the chin moves with
+	// the jaw, and the framing should not breathe with the mouth.
+	if (CachedFaceScale > 0.0f)
+	{
+		return CachedFaceScale;
+	}
+	if (LeftEye == INDEX_NONE || RightEye == INDEX_NONE || Chin == INDEX_NONE)
+	{
+		return 1.0f;
+	}
+	const FVector L = Rig->GetRigFrame(Rig->GetControlPath(LeftEye)).GetLocation();
+	const FVector R = Rig->GetRigFrame(Rig->GetControlPath(RightEye)).GetLocation();
+	const FVector C = Rig->GetRigFrame(Rig->GetControlPath(Chin)).GetLocation();
+	const double EyesToChin = FVector::Dist((L + R) * 0.5, C) * Rig->GetComponentScale().Z;
+	if (EyesToChin <= 1.0)
+	{
+		return 1.0f;
+	}
+	CachedFaceScale = FMath::Clamp(float(EyesToChin / 11.15), 0.6f, 3.0f);
+	return CachedFaceScale;
+}
+
 void
 ARigExecBipedCharacter::PoseFace(float Lids, float JawDegrees, float Smile)
 {
-	// A full upper blink is the lid control 2.735 down (usdRig's blink
-	// test); the jaw opens about its X.
+	// A full upper blink is the lid control 2.0 down: where the upper lid
+	// meets the lower one on every rig here. Past it a lid without collision
+	// keeps turning through the lower lid. The jaw opens about its X.
 	for (const int32 Lid : {LeftLid, RightLid})
 	{
 		if (Lid != INDEX_NONE)
 		{
 			FMatrix Value = FMatrix::Identity;
-			Value.M[3][1] = -2.735 * FMath::Clamp(Lids, 0.0f, 1.0f);
+			Value.M[3][1] = -2.0 * FMath::Clamp(Lids, 0.0f, 1.0f);
 			Rig->SetControlValueMatrix(Lid, Value);
 		}
 	}
@@ -274,13 +392,16 @@ ARigExecBipedCharacter::PoseFace(float Lids, float JawDegrees, float Smile)
 	}
 	// The smile: the mouth corners out (their X, mirrored side to side, so
 	// the same value on both) and up (Y); the upper lip lifted a little to
-	// show the teeth (M_UpLip's Y points down, its sides' up).
-	auto Move = [this](int32 Control, double X, double Y) {
+	// show the teeth (M_UpLip's Y points down, its sides' up). The values are
+	// centimetres on the biped's face, so they grow with a bigger face (the
+	// lids need not: 2.0 down is shut on every rig).
+	const double K = FaceScale();
+	auto Move = [this, K](int32 Control, double X, double Y) {
 		if (Control != INDEX_NONE)
 		{
 			FMatrix Value = FMatrix::Identity;
-			Value.M[3][0] = X;
-			Value.M[3][1] = Y;
+			Value.M[3][0] = X * K;
+			Value.M[3][1] = Y * K;
 			Rig->SetControlValueMatrix(Control, Value);
 		}
 	};
@@ -350,6 +471,7 @@ ARigExecBipedCharacter::StartCinematic()
 			Light->RegisterComponent();
 			FaceCamera->AddInstanceComponent(Light);
 			FaceLights.Add(Light);
+			FaceLightCandelas.Add(Candelas);
 		};
 		AddLight(TEXT("Key"), FVector(10.0, -55.0, 45.0), FLinearColor(1.0f, 0.9f, 0.8f), 14.0f, true);
 		AddLight(TEXT("Fill"), FVector(0.0, 60.0, -5.0), FLinearColor(0.75f, 0.85f, 1.0f), 4.0f, false);
@@ -427,6 +549,10 @@ ARigExecBipedCharacter::Back()
 	if (Hud && Hud->IsMenuOpen())
 	{
 		Hud->MenuBack();
+	}
+	else if (Hud && Hud->HandleBack())
+	{
+		// The level's HUD took it (the studio: a name being typed, a menu).
 	}
 	else if (bCinematic)
 	{
@@ -565,9 +691,17 @@ ARigExecBipedCharacter::DriveCinematic(float DeltaSeconds)
 		const FVector Up(0.0, 0.0, 1.0);
 		const FVector Right = FVector::CrossProduct(Up, CameraForward);
 		const float Push = FMath::InterpEaseInOut(0.0f, 1.0f, FMath::Clamp(T / 9.0f, 0.0f, 1.0f), 2.0f);
-		const float Distance = FMath::Lerp(115.0f, 78.0f, Push);
-		const FVector Eye = CameraFace + CameraForward * Distance + Right * (Distance * 0.16f) + Up * 2.0f;
-		const FVector Aim = CameraFace - Up * 4.0f;
+		// Framed on the biped's face; a bigger face, the camera further back.
+		const float K = FaceScale();
+		const float Distance = FMath::Lerp(115.0f, 78.0f, Push) * K;
+		const FVector Eye = CameraFace + CameraForward * Distance + Right * (Distance * 0.16f) + Up * (2.0f * K);
+		const FVector Aim = CameraFace - Up * (4.0f * K);
+		// The lights ride the camera: as far again from the face, as bright.
+		for (int32 Each = 0; Each < FaceLights.Num() && Each < FaceLightCandelas.Num(); ++Each)
+		{
+			FaceLights[Each]->SetIntensity(FaceLightCandelas[Each] * K * K);
+			FaceLights[Each]->SetAttenuationRadius(400.0f * K);
+		}
 		FaceCamera->SetActorLocationAndRotation(Eye, (Aim - Eye).Rotation());
 		UCameraComponent* Lens = FaceCamera->GetCameraComponent();
 		Lens->PostProcessSettings.bOverride_DepthOfFieldFocalDistance = true;
@@ -698,15 +832,16 @@ ARigExecBipedCharacter::DrivePortrait(float Before)
 	TurnEyes(Shot.Angle - Shot.HeadYaw * 1.35f, 3.0f - Shot.HeadPitch * 1.35f);
 
 	const FVector Face = FaceCentre();
+	const float K = FaceScale();
 	const FVector Up(0.0, 0.0, 1.0);
 	const FVector Left = -FVector::CrossProduct(Up, CameraForward);
 	auto Round = [&](float Degrees) {
 		const float R = FMath::DegreesToRadians(Degrees);
 		return CameraForward * FMath::Cos(R) + Left * FMath::Sin(R);
 	};
-	const float Distance = 175.0f;
-	const FVector Eye = Face + Round(Shot.Angle) * Distance + Up * 3.0f;
-	const FVector Aim = Face - Up * Shot.AimDown;
+	const float Distance = 175.0f * K;
+	const FVector Eye = Face + Round(Shot.Angle) * Distance + Up * (3.0f * K);
+	const FVector Aim = Face - Up * (Shot.AimDown * K);
 	FaceCamera->SetActorLocationAndRotation(Eye, (Aim - Eye).Rotation());
 	UCameraComponent* Lens = FaceCamera->GetCameraComponent();
 	Lens->SetFieldOfView(Shot.Fov);
@@ -717,9 +852,9 @@ ARigExecBipedCharacter::DrivePortrait(float Before)
 	// Short lighting: the key on the side turned away from the camera, the
 	// fill low from the camera's side, the rim behind on the key's.
 	const float Side = Shot.Angle >= 0.0f ? 1.0f : -1.0f;
-	FaceLights[0]->SetWorldLocation(Face + Round(-38.0f * Side) * 80.0f + Up * 50.0f);
-	FaceLights[1]->SetWorldLocation(Face + Round(Shot.Angle + 20.0f * Side) * 95.0f - Up * 8.0f);
-	FaceLights[2]->SetWorldLocation(Face - CameraForward * 55.0f - Left * (45.0f * Side) + Up * 35.0f);
+	FaceLights[0]->SetWorldLocation(Face + (Round(-38.0f * Side) * 80.0f + Up * 50.0f) * K);
+	FaceLights[1]->SetWorldLocation(Face + (Round(Shot.Angle + 20.0f * Side) * 95.0f - Up * 8.0f) * K);
+	FaceLights[2]->SetWorldLocation(Face + (-CameraForward * 55.0f - Left * (45.0f * Side) + Up * 35.0f) * K);
 
 	// A shot near the end of each angle, then done.
 	for (int32 Each = 0; Each < Count; ++Each)
@@ -754,10 +889,56 @@ ARigExecBipedCharacter::ToggleSource()
 	ApplySourceVisibility();
 }
 
+namespace
+{
+UEnhancedInputLocalPlayerSubsystem*
+InputOf(AController* Controller)
+{
+	APlayerController* Player = Cast<APlayerController>(Controller);
+	return Player ? ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(Player->GetLocalPlayer()) : nullptr;
+}
+} // namespace
+
+void
+ARigExecBipedCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+	// Taken again after being left (its input component, and so this mapping,
+	// may outlive the swap): put its keys back.
+	if (Mapping)
+	{
+		if (UEnhancedInputLocalPlayerSubsystem* Input = InputOf(NewController))
+		{
+			Input->AddMappingContext(Mapping, 0);
+		}
+	}
+}
+
+void
+ARigExecBipedCharacter::UnPossessed()
+{
+	if (Mapping)
+	{
+		if (UEnhancedInputLocalPlayerSubsystem* Input = InputOf(GetController()))
+		{
+			Input->RemoveMappingContext(Mapping);
+		}
+	}
+	Super::UnPossessed();
+}
+
 void
 ARigExecBipedCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+	// Set up again (a pawn possessed a second time): the old mapping goes first.
+	if (Mapping)
+	{
+		if (UEnhancedInputLocalPlayerSubsystem* Input = InputOf(GetController()))
+		{
+			Input->RemoveMappingContext(Mapping);
+		}
+	}
 	// The actions and their keys are made here rather than as assets, so the
 	// example carries no input content of its own.
 	MoveAction = NewObject<UInputAction>(this, TEXT("IA_Move"));
@@ -830,6 +1011,13 @@ ARigExecBipedCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	Mapping->MapKey(MenuDownAction, EKeys::Down);
 	Mapping->MapKey(MenuDownAction, EKeys::Gamepad_DPad_Down);
 	Mapping->MapKey(MenuDownAction, EKeys::S);
+	// Across, for the lobby's row of characters.
+	Mapping->MapKey(MenuUpAction, EKeys::Left);
+	Mapping->MapKey(MenuUpAction, EKeys::A);
+	Mapping->MapKey(MenuUpAction, EKeys::Gamepad_DPad_Left);
+	Mapping->MapKey(MenuDownAction, EKeys::Right);
+	Mapping->MapKey(MenuDownAction, EKeys::D);
+	Mapping->MapKey(MenuDownAction, EKeys::Gamepad_DPad_Right);
 	Mapping->MapKey(MenuSelectAction, EKeys::Enter);
 	Mapping->MapKey(MenuSelectAction, EKeys::SpaceBar);
 	Mapping->MapKey(MenuSelectAction, EKeys::Gamepad_FaceButton_Bottom);
@@ -901,7 +1089,7 @@ void
 ARigExecBipedCharacter::Move(const FInputActionValue& Value)
 {
 	const FVector2D Axis = Value.Get<FVector2D>();
-	if (!Controller || bCinematic || InMenu())
+	if (!Controller || bCinematic || bStudio || InMenu())
 	{
 		return;
 	}
@@ -914,7 +1102,7 @@ void
 ARigExecBipedCharacter::Look(const FInputActionValue& Value)
 {
 	const FVector2D Axis = Value.Get<FVector2D>();
-	if (bCinematic || InMenu())
+	if (bCinematic || bStudio || InMenu())
 	{
 		return;
 	}
@@ -925,7 +1113,7 @@ ARigExecBipedCharacter::Look(const FInputActionValue& Value)
 void
 ARigExecBipedCharacter::JumpPressed()
 {
-	if (!bCinematic && !InMenu())
+	if (!bCinematic && !bStudio && !InMenu())
 	{
 		Jump();
 	}
@@ -941,6 +1129,21 @@ void
 ARigExecBipedCharacter::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
+	// Level of detail: every frame for the close-up, less often from afar.
+	if (Rig && !bStudio)
+	{
+		// (The studio sets its own: see ARigExecStudioHUD::Tick.)
+		Rig->bEvaluateAsync = bRigAsync;
+		// Behind a menu or the lobby the player's own rig is not seen: rest
+		// it. The studio is posing it: every frame.
+		const int32 Rate = bPreview ? RigRateLobby : (bCinematic || bPortrait) ? 1 : InMenu() ? 8 : RigRateFar;
+		Rig->EvaluateEvery = FMath::Clamp(Rate, 1, 8);
+	}
+	// The menu (or the lobby) holds the player's demo clock.
+	if (InMenu())
+	{
+		return;
+	}
 	const float Before = PlayTime;
 	PlayTime += DeltaSeconds;
 	if (bDemo)
@@ -981,8 +1184,9 @@ ARigExecBipedCharacter::DriveDemo(float Before)
 	}
 	if (FMath::FloorToInt(PlayTime) != FMath::FloorToInt(Before))
 	{
-		UE_LOG(LogRigExecBiped, Log, TEXT("demo t=%.0f speed=%.0f: retarget %s, %.2f ms, error %.3f deg"), PlayTime,
-		       GetVelocity().Size2D(), *Retarget->Status, Retarget->LastMilliseconds, Retarget->LastErrorDegrees);
+		UE_LOG(LogRigExecBiped, Log, TEXT("demo t=%.0f speed=%.0f: frame %.1f ms, rig run %.1f ms, publish %.1f ms, rate 1/%d, retarget %.2f ms, error %.3f deg"),
+		       PlayTime, GetVelocity().Size2D(), FApp::GetDeltaTime() * 1000.0, Rig->LastExecuteMs, Rig->LastPublishMs,
+		       Rig->EvaluateEvery, Retarget->LastMilliseconds, Retarget->LastErrorDegrees);
 	}
 }
 
