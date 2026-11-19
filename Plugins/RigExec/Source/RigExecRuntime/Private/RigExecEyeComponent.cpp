@@ -111,6 +111,26 @@ URigExecEyeComponent::Bind()
 		{
 			UMaterialInstanceDynamic* Look = UMaterialInstanceDynamic::Create(Masters[Eye.Index], this);
 			Look->SetScalarParameterValue(TEXT("RefractionMode"), float(RefractionMode));
+			// The character's own eye: its iris and sclera images and settings.
+			Rig->ApplyMeshLook(Eye.Mesh, Slot, Look);
+			if (Slot == 0)
+			{
+				// The dials scale this eye's own sizes, not the defaults.
+				Eye.Base[GIrisSlot] = IrisRadius;
+				if (const FRigExecSurfaceLook* Own = Rig->GetMeshLook(Eye.Mesh, 0))
+				{
+					for (int32 Dial = 0; Dial < 8; ++Dial)
+					{
+						if (GDials[Dial].Parameter)
+						{
+							if (const float* Value = Own->ParamScalars.Find(GDials[Dial].Parameter))
+							{
+								Eye.Base[Dial] = *Value;
+							}
+						}
+					}
+				}
+			}
 			Rig->SetMeshMaterial(Eye.Mesh, Slot, Look);
 			Eye.Looks.Add(Look);
 			Held.Add(Look);
@@ -206,8 +226,7 @@ URigExecEyeComponent::Update()
 				continue;
 			}
 			Eye.Sent[Slot] = Dial[Slot];
-			const float Base1 = Slot == GIrisSlot ? IrisRadius : 1.0f;
-			const float Value = GDials[Slot].bScale ? Base1 * (1.0f + Dial[Slot]) : Dial[Slot];
+			const float Value = GDials[Slot].bScale ? Eye.Base[Slot] * (1.0f + Dial[Slot]) : Eye.Base[Slot] + Dial[Slot];
 			for (UMaterialInstanceDynamic* Look : Eye.Looks)
 			{
 				Look->SetScalarParameterValue(GDials[Slot].Parameter, Value);

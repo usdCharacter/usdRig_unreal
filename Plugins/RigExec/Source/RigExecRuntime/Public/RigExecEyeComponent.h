@@ -86,6 +86,9 @@ private:
 		TArray<TObjectPtr<UMaterialInstanceDynamic>> Looks;
 		/** The dials last sent, so unchanged ones are not sent again. */
 		float Sent[8] = {-1e30f, -1e30f, -1e30f, -1e30f, -1e30f, -1e30f, -1e30f, -1e30f};
+		/** What each dial scales (or offsets from): the eye's own look values
+		 * (its material's IrisWidth, LimbusRadius, ...), else the defaults. */
+		float Base[8] = {1, 1, 1, 1, 0, 0, 1, 1};
 	};
 	TArray<FEye> Eyes;
 	/** Keeps the material instances alive. */

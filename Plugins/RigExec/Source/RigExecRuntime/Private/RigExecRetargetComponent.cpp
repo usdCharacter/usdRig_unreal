@@ -143,11 +143,44 @@ URigExecRetargetComponent::MannequinToBiped()
 		Add(TEXT("clavicle"), TEXT("Shldr"), TEXT("upperarm"), TEXT("UpArm"));
 		Add(TEXT("upperarm"), TEXT("UpArm"), TEXT("lowerarm"), TEXT("LoArm"));
 		Add(TEXT("lowerarm"), TEXT("LoArm"), TEXT("hand"), TEXT("Hand"));
-		Add(TEXT("hand"), TEXT("Hand"), nullptr, nullptr);
+		// The hand points at its middle knuckle and rolls so its index and
+		// pinky knuckles line up: that lines the palm up for the fingers.
+		Add(TEXT("hand"), TEXT("Hand"), TEXT("middle_01"), TEXT("MiddleBase"));
+		Out.Last().SourceSideFrom = FName(*Bone(TEXT("pinky_01")));
+		Out.Last().SourceSideTo = FName(*Bone(TEXT("index_01")));
+		Out.Last().TargetSideFrom = S + TEXT("PinkyBase");
+		Out.Last().TargetSideTo = S + TEXT("IndexBase");
 		Add(TEXT("thigh"), TEXT("UpLeg"), TEXT("calf"), TEXT("LoLeg"));
 		Add(TEXT("calf"), TEXT("LoLeg"), TEXT("foot"), TEXT("Foot"));
 		Add(TEXT("foot"), TEXT("Foot"), TEXT("ball"), TEXT("Ball"));
 		Add(TEXT("ball"), TEXT("Ball"), nullptr, nullptr);
+	}
+	// The fingers, after the hands. The Mannequin's four fingers each have a
+	// metacarpal and three joints, like the rig's Meta, Base, Mid and Tip; its
+	// thumb has three joints, the rig's Base, Mid and Tip (the rig's ThumbMeta
+	// and PinkyCup are the palm's own cupping and keep their rest).
+	for (const TCHAR* Side : {TEXT("l"), TEXT("r")})
+	{
+		const FString S = Side == FString(TEXT("l")) ? TEXT("L_") : TEXT("R_");
+		auto Add = [&](const FString& Bone, const FString& Control, const FString& AimBone, const FString& AimControl)
+		{
+			const FString BoneName = Bone + TEXT("_") + Side, ControlName = S + Control;
+			const FString AimBoneName = AimBone + TEXT("_") + Side, AimControlName = S + AimControl;
+			Out.Add(B(*BoneName, *ControlName, AimBone.IsEmpty() ? nullptr : *AimBoneName,
+			          AimControl.IsEmpty() ? nullptr : *AimControlName));
+		};
+		for (const TCHAR* Finger : {TEXT("index"), TEXT("middle"), TEXT("ring"), TEXT("pinky")})
+		{
+			const FString F = Finger;
+			const FString C = F.Left(1).ToUpper() + F.Mid(1);
+			Add(F + TEXT("_metacarpal"), C + TEXT("Meta"), F + TEXT("_01"), C + TEXT("Base"));
+			Add(F + TEXT("_01"), C + TEXT("Base"), F + TEXT("_02"), C + TEXT("Mid"));
+			Add(F + TEXT("_02"), C + TEXT("Mid"), F + TEXT("_03"), C + TEXT("Tip"));
+			Add(F + TEXT("_03"), C + TEXT("Tip"), FString(), FString());
+		}
+		Add(TEXT("thumb_01"), TEXT("ThumbBase"), TEXT("thumb_02"), TEXT("ThumbMid"));
+		Add(TEXT("thumb_02"), TEXT("ThumbMid"), TEXT("thumb_03"), TEXT("ThumbTip"));
+		Add(TEXT("thumb_03"), TEXT("ThumbTip"), FString(), FString());
 	}
 	return Out;
 }
@@ -296,12 +329,23 @@ URigExecRetargetComponent::Bind()
 		FBound& Out = Bound[K];
 		// The nearest mapped ancestor's turn.
 		FQuat Above = FQuat::Identity;
+		Out.Follow = INDEX_NONE;
 		for (int32 Up = Ref.GetParentIndex(Out.Bone); Up != INDEX_NONE; Up = Ref.GetParentIndex(Up))
 		{
 			const int32 J = Bound.IndexOfByPredicate([Up](const FBound& X) { return X.Bone == Up; });
 			if (J != INDEX_NONE && J < K)
 			{
 				Above = Lined[J];
+				// Is the parent bone's control above this one in the rig?
+				bool bUnder = false;
+				for (int32 C = Target->GetControlParent(Out.Control); C != INDEX_NONE && !bUnder; C = Target->GetControlParent(C))
+				{
+					bUnder = C == Bound[J].Control;
+				}
+				if (!bUnder)
+				{
+					Out.Follow = Bound[J].Control;
+				}
 				break;
 			}
 		}
@@ -315,6 +359,25 @@ URigExecRetargetComponent::Bind()
 			if (!From.IsNearlyZero() && !To.IsNearlyZero())
 			{
 				Turn = FQuat::FindBetweenVectors(From, To);
+				// Then the roll about it, from the side pair.
+				const int32 SideFrom = Bones[E].SourceSideFrom.IsNone() ? INDEX_NONE : Ref.FindBoneIndex(Bones[E].SourceSideFrom);
+				const int32 SideTo = Bones[E].SourceSideTo.IsNone() ? INDEX_NONE : Ref.FindBoneIndex(Bones[E].SourceSideTo);
+				const int32 SideFromControl = Bones[E].TargetSideFrom.IsEmpty() ? INDEX_NONE : Target->FindControlIndex(Bones[E].TargetSideFrom);
+				const int32 SideToControl = Bones[E].TargetSideTo.IsEmpty() ? INDEX_NONE : Target->FindControlIndex(Bones[E].TargetSideTo);
+				if (SideFrom != INDEX_NONE && SideTo != INDEX_NONE && SideFromControl != INDEX_NONE && SideToControl != INDEX_NONE)
+				{
+					const FVector Axis = To.GetSafeNormal();
+					const FVector SourceSide = FVector::VectorPlaneProject(
+						Turn.RotateVector(Above.RotateVector(Facing.RotateVector(SourcePosition(SideTo) - SourcePosition(SideFrom)))), Axis);
+					const FVector TargetSide = FVector::VectorPlaneProject(
+						TargetPosition(SideToControl) - TargetPosition(SideFromControl), Axis);
+					if (!SourceSide.IsNearlyZero() && !TargetSide.IsNearlyZero())
+					{
+						const double Angle = FMath::Atan2(FVector::DotProduct(Axis, FVector::CrossProduct(SourceSide, TargetSide)),
+						                                  FVector::DotProduct(SourceSide, TargetSide));
+						Turn = (FQuat(Axis, Angle) * Turn).GetNormalized();
+					}
+				}
 			}
 		}
 		Lined[K] = (Turn * Above).GetNormalized();
@@ -330,6 +393,15 @@ URigExecRetargetComponent::Bind()
 		for (int32 C = B.Control; C != INDEX_NONE && !InChain[C]; C = Target->GetControlParent(C))
 		{
 			InChain[C] = true;
+		}
+	}
+	// Fingers on their helpers, and everything under them, wait for the hands.
+	Deferred.Init(false, N);
+	for (int32 C = 0; C < N; ++C)
+	{
+		for (int32 Up = C; Up != INDEX_NONE && !Deferred[C]; Up = Target->GetControlParent(Up))
+		{
+			Deferred[C] = BoundOf[Up] != INDEX_NONE && Bound[BoundOf[Up]].Follow != INDEX_NONE;
 		}
 	}
 	Wanted.SetNum(N);
@@ -366,28 +438,33 @@ URigExecRetargetComponent::Drive()
 	// Each frame worked out from the root down: a control's offset is what
 	// the rig last put between its value and its parent's frame (constant
 	// for a plain hierarchy, and kept up when a constraint moves it).
-	for (int32 C = 0; C < N; ++C)
+	auto DriveControl = [&](int32 C)
 	{
-		if (!InChain[C])
-		{
-			continue;
-		}
 		const int32 Parent = Target->GetControlParent(C);
-		const FMatrix ParentWanted = Parent >= 0 ? Wanted[Parent] : FMatrix::Identity;
+		FMatrix ParentWanted = Parent >= 0 ? Wanted[Parent] : FMatrix::Identity;
 		FMatrix Now, ParentNow = FMatrix::Identity;
 		const bool bNow = Target->GetControlAssetFrame(C, Now);
 		if (Parent >= 0 && !Target->GetControlAssetFrame(Parent, ParentNow))
 		{
 			ParentNow = RestFrames[Parent];
 		}
+		// A helper the rig attaches to another control moves with it.
+		const int32 Follow = BoundOf[C] != INDEX_NONE ? Bound[BoundOf[C]].Follow : INDEX_NONE;
+		FMatrix FollowNow;
+		if (Follow != INDEX_NONE && Target->GetControlAssetFrame(Follow, FollowNow))
+		{
+			ParentWanted = ParentNow * FollowNow.Inverse() * Wanted[Follow];
+		}
 		const FMatrix Value = Target->GetControlValueMatrix(C);
-		const FMatrix Offset = Value.Inverse() * (bNow ? Now : RestFrames[C]) * ParentNow.Inverse();
+		// The offset from the run that made Now: with the values it ran on.
+		const FMatrix Ran = bNow ? Target->GetLandedControlValueMatrix(C) : Value;
+		const FMatrix Offset = Ran.Inverse() * (bNow ? Now : RestFrames[C]) * ParentNow.Inverse();
 		const FMatrix Base = Value * Offset * ParentWanted;
 		const int32 K = BoundOf[C];
 		if (K == INDEX_NONE)
 		{
 			Wanted[C] = Base;
-			continue;
+			return;
 		}
 		const FBound& B = Bound[K];
 		const FQuat Bone = (Facing * ToAsset(Pose[B.Bone].GetRotation())).GetNormalized();
@@ -413,18 +490,31 @@ URigExecRetargetComponent::Drive()
 			}
 		}
 		Target->SetControlValueMatrix(C, NewValue);
+	};
+	for (const bool bLater : {false, true})
+	{
+		for (int32 C = 0; C < N; ++C)
+		{
+			if (InChain[C] && Deferred[C] == bLater)
+			{
+				DriveControl(C);
+			}
+		}
 	}
 	Target->Evaluate();
-	// How closely the rig followed.
+	// How closely the rig followed: the landed run against what it was asked
+	// (a run off the game thread lands a frame later).
+	const auto& Asked = Target->bEvaluateAsync && LandedWanted.Num() == Wanted.Num() ? LandedWanted : Wanted;
 	double Worst = 0.0;
 	for (const FBound& B : Bound)
 	{
 		FMatrix Got;
-		if (Target->GetControlAssetFrame(B.Control, Got))
+		if (Target->GetControlAssetFrame(B.Control, Got) && Asked.IsValidIndex(B.Control))
 		{
-			Worst = FMath::Max(Worst, FMath::RadiansToDegrees(Split(Got).Rotation.AngularDistance(Split(Wanted[B.Control]).Rotation)));
+			Worst = FMath::Max(Worst, FMath::RadiansToDegrees(Split(Got).Rotation.AngularDistance(Split(Asked[B.Control]).Rotation)));
 		}
 	}
+	LandedWanted = Wanted;
 	LastErrorDegrees = float(Worst);
 	LastMilliseconds = float((FPlatformTime::Seconds() - Start) * 1000.0);
 }
@@ -440,6 +530,21 @@ URigExecRetargetComponent::SetExtraTurn(const FString& Control, const FQuat& Tur
 	{
 		ExtraTurns.Add(Control, Turn.GetNormalized());
 	}
+}
+
+bool
+URigExecRetargetComponent::DriveOnce()
+{
+	if (!bBound)
+	{
+		bBound = Bind();
+		if (!bBound)
+		{
+			return false;
+		}
+	}
+	Drive();
+	return true;
 }
 
 void

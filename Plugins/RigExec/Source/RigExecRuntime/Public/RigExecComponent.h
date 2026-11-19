@@ -4,8 +4,10 @@
 
 #include "Components/SceneComponent.h"
 #include "CoreMinimal.h"
+#include <string>
 #include "Engine/EngineTypes.h"
 
+#include "RigExecCharacter.h"
 #include "RigExecComponent.generated.h"
 
 class UControlRigComponent;
@@ -131,6 +133,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "RigExec")
 	bool bPullControlRig = true;
 
+	/** Keep a limb's idle IK/FK half selectable: its controls stay drawn,
+	 * dimmed, on the limb, and selecting one switches the limb to it,
+	 * matched. Off hides the idle half. */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "RigExec")
+	bool bShowIdleLimbHalf = true;
+
 	/** Direct control access, for drivers that bypass Control Rig. Controls
 	 * are indexed in the controls description's order, parents first;
 	 * matrices are USD row-vector, in asset space and rig units. */
@@ -142,6 +150,10 @@ public:
 	const FString& GetControlPath(int32 Control) const;
 	/** The control's value as last sent (`bDefault`: its rest value). */
 	FMatrix GetControlValueMatrix(int32 Control, bool bDefault = false) const;
+	/** The value the last landed run evaluated with: what pairs with the
+	 * frames GetControlAssetFrame gives (a run off the game thread lands
+	 * after newer values were sent). */
+	FMatrix GetLandedControlValueMatrix(int32 Control) const;
 	/** The control's posed frame from the last evaluation; false when the
 	 * rig publishes none for it. */
 	bool GetControlAssetFrame(int32 Control, FMatrix& Out) const;
@@ -150,6 +162,30 @@ public:
 	int32 SetControlValueMatrix(int32 Control, const FMatrix& Value);
 	/** Rig units to centimetres. */
 	double GetCentimetresPerUnit() const { return CentimetresPerUnit; }
+	/** The control's Control Rig element name (its touch regions and picker
+	 * buttons name it). */
+	FName GetControlElement(int32 Control) const;
+	/** The control's nine transform avars (tx ty tz rx ry rz sx sy sz, raw
+	 * avar values) as last sent, or its rest values; false for a null. */
+	bool GetControlAvars(int32 Control, double Out[9], bool bDefault = false) const;
+	/** Which of the nine the control exposes (bit A for avar A). */
+	uint16 GetControlAvarMask(int32 Control) const;
+	/** Sends raw avar values; the ones the control does not expose are
+	 * ignored. Returns how many changed; Evaluate to see them. For drivers
+	 * with no Control Rig (a game). */
+	int32 SetControlAvars(int32 Control, const double In[9]);
+
+	/** The rig's channels: every non-transform input the controls file
+	 * describes (IK/FK dials, spaces, switches), with their values as last
+	 * sent. For drivers with no Control Rig. */
+	int32 GetChannelCount() const { return ChannelMaps.Num(); }
+	int32 FindChannelIndex(const FString& Path) const;
+	const FString& GetChannelPath(int32 Channel) const;
+	double GetChannelValue(int32 Channel) const;
+	double GetChannelDefault(int32 Channel) const;
+	/** A dial's value names (a space switch's spaces), or empty. */
+	const TArray<FString>& GetChannelLabels(int32 Channel) const;
+	bool SetChannelValue(int32 Channel, double Value);
 
 	/** The matrix primvars the last evaluation published -- a surface
 	 * projector's frame and its packed shader dials -- as
@@ -193,14 +229,23 @@ public:
 	FString FindLimbSwitchFor(FName Element) const;
 	/** Whether the limb switched by `SwitchPath` is on its IK half now. */
 	bool IsLimbIk(const FString& SwitchPath) const;
+	/** The switch of the limb `Element` belongs to when `Element` is on the
+	 * half that limb is NOT driving with (an FK control while it is in IK,
+	 * the IK control, pole or foot roll while in FK) -- drawn on the limb,
+	 * driving nothing. Selecting one switches the limb to it, matched, as
+	 * usdview's _SwitchPresentedLimbs. Empty otherwise, and mid-blend. */
+	UFUNCTION(BlueprintCallable, Category = "RigExec")
+	FString FindPresentedLimbFor(FName Element) const;
 	/** The space channel on the Control Rig control `Element` (its
 	 * avars:space) and the label of each space, or false when it has none
 	 * or only one. */
 	bool FindSpaceChannel(FName Element, FName& OutChannel, TArray<FString>& OutLabels) const;
-	/** Moves `Element` to space `Index` without moving it: the space flips,
-	 * the control is put back on the frame it had, and the rig evaluates.
+	/** Moves `Element` to space `Index` without moving it: the space flips
+	 * and the control takes the values the rig published for that space
+	 * (`<control>.spaces:matchValues`), as usdview's spaceMatch.Plan.
 	 * Writes through the Control Rig with undo, so call it inside a
 	 * transaction. */
+	UFUNCTION(BlueprintCallable, Category = "RigExec")
 	bool SwitchSpace(FName Element, int32 Index);
 
 	/** The posed frame of the rig control or joint at `Path`, in the
@@ -217,6 +262,11 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "RigExec|Touch")
 	FString GetTouchRegionName(int32 Region) const;
+
+	/** The drawn mesh `Region` is painted on, or -1. */
+	int32 GetTouchRegionMesh(int32 Region) const;
+	/** How many faces `Region` paints. */
+	int32 GetTouchRegionFaceCount(int32 Region) const;
 
 	/** The Control Rig control a click in `Region` selects, or None. */
 	UFUNCTION(BlueprintCallable, Category = "RigExec|Touch")
@@ -276,6 +326,33 @@ public:
 	UPROPERTY(EditAnywhere, Category = "RigExec|Render")
 	bool bDrawOnGPU = true;
 
+	/** Run the rig on the task system, off the game thread: each run lands
+	 * a frame later, when the next input write settles it, so the game
+	 * thread does not wait for it. Readers see the last landed run. */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "RigExec|Performance")
+	bool bEvaluateAsync = true;
+
+	/** Evaluate only every Nth request (1 = every frame); the inputs that
+	 * arrive in between wait for the next run. A lower rate for a character
+	 * seen from afar. */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "RigExec|Performance", meta = (ClampMin = "1", ClampMax = "8"))
+	int32 EvaluateEvery = 1;
+
+	/** The last run's time in the runtime, and in publishing its points. */
+	UPROPERTY(VisibleInstanceOnly, Transient, Category = "RigExec|Performance")
+	float LastExecuteMs = 0.0f;
+	UPROPERTY(VisibleInstanceOnly, Transient, Category = "RigExec|Performance")
+	float LastPublishMs = 0.0f;
+
+	/** Waits for a run in flight and publishes it. */
+	void Settle();
+	/** Publishes a run off the game thread that has already finished, without
+	 * waiting; true when one landed. A driver that evaluates only when it
+	 * changed something calls this each frame, so its last change shows. */
+	bool LandIfDone();
+	/** A run is in flight off the game thread. */
+	bool IsRunPending() const;
+
 	/** On the GPU, write motion vectors from the pose's movement, so TSR and
 	 * motion blur see the character deform (the CPU fallback draws without
 	 * them). */
@@ -329,7 +406,13 @@ private:
 		 * hint and the change test. */
 		double Values[9] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0};
 		double Defaults[9] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0};
+		/** Values as the run in flight, and the last landed one, saw them. */
+		double Launched[9] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0};
+		double Landed[9] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0};
 	};
+	/** Values -> Launched for every control, as a run starts. */
+	void SnapshotLaunched();
+	FMatrix ValueMatrix(const FControlMap& Map, const double* V) const;
 	struct FChannelMap
 	{
 		FName Element;
@@ -359,6 +442,36 @@ private:
 	int32 SendControl(FControlMap& Map, const FMatrix& Value, bool bForce);
 	/** Builds the dynamic meshes from the stage's data and the rig's points. */
 	void BuildMeshes(const FRigExecMeshSet& Set);
+	/** A finished run: snapshot what readers ask for, move the meshes. */
+	void Publish(bool bExecuted);
+	/** An input write: to the reader, or queued while a run is in flight. */
+	bool WriteInput(const char* Name, double Value, std::string* Why);
+	void FlushInputs();
+	TMap<FString, double> QueuedInputs;
+	int32 SkippedEvaluations = 0;
+	/** A look's colour image: the character's baked texture, else the file
+	 * loaded once (a stage read live in the editor). */
+	class UTexture* SurfaceTexture(const struct FRigExecSurfaceLook& Look);
+	UPROPERTY(Transient)
+	TMap<FString, TObjectPtr<class UTexture2D>> LiveTextures;
+	/** A baked image (an index into the character's textures), else the file. */
+	class UTexture* LookTexture(int32 Baked, const FString& File);
+	/** Each drawn mesh's looks, by slot, as loaded. */
+	TArray<TArray<FRigExecSurfaceLook>> MeshLooks;
+
+public:
+	/** Sets a look's shader parameters (images and numbers) on a material. */
+	void ApplyLookParameters(class UMaterialInstanceDynamic* Instance, const FRigExecSurfaceLook& Look);
+	/** The same for mesh `Mesh`'s slot `Slot`, as the stage bound it: what a
+	 * component replacing that slot's material (the eyes) keeps. */
+	void ApplyMeshLook(int32 Mesh, int32 Slot, class UMaterialInstanceDynamic* Instance);
+	/** Mesh `Mesh`'s slot `Slot` look as loaded, or null. */
+	const FRigExecSurfaceLook* GetMeshLook(int32 Mesh, int32 Slot) const
+	{
+		return MeshLooks.IsValidIndex(Mesh) && MeshLooks[Mesh].IsValidIndex(Slot) ? &MeshLooks[Mesh][Slot] : nullptr;
+	}
+
+private:
 	/** Where the rig was loaded from, for the log. */
 	FString SourceName;
 	/** Moves every control's offset so its gizmo sits on the frame the rig
@@ -371,9 +484,19 @@ private:
 	/** The same, with the USD-space root's global already in hand (read once
 	 * per placement rather than once per control). */
 	FMatrix ToUnreal(const FMatrix& Asset, const FMatrix& RootGlobal) const;
-	/** Puts a control on an asset-space frame (its translation only, when
-	 * `bTranslateOnly`) and evaluates, so what hangs below follows. */
-	bool PutControl(const FString& Path, const FMatrix& Asset, bool bTranslateOnly);
+	/** Sets the transform avars `Avars` names (".avars:tx" .. ":rz" -> raw
+	 * avar value) on the Control Rig control at `Path`, every other channel
+	 * as it is, with undo. False when it has no control. */
+	bool SetControlAvars(const FString& Path, const TMap<FString, double>& Avars);
+	/** A channel's value now: the Control Rig's when there is one, else as
+	 * last sent. */
+	double ChannelNow(const FString& Path) const;
+	/** Writes a channel: through the Control Rig with undo when there is
+	 * one, else straight to the rig. */
+	void WriteChannel(const FString& Path, double Value);
+	/** Whether switching writes through a Control Rig (the editor) or
+	 * straight to the rig (a game, which has none). */
+	class UControlRig* SwitchRig() const;
 	/** One IK/FK limb, as its RigExecIkFkMatchConstraint describes it. The
 	 * rig computes the match (the runtime's GetIkFkMatches); a switch writes
 	 * those values to the incoming half's writable channels. */
@@ -395,6 +518,19 @@ private:
 	};
 	TArray<FLimbMap> LimbMaps;
 	bool bPlaced = false;
+	/** Evaluate on the game thread whatever bEvaluateAsync says: a switch
+	 * reads what its own writes computed. */
+	bool bEvaluateNow = false;
+	/** Runs published, and the one the gizmos were last placed from: a run
+	 * landing after the drag stopped still re-places them. */
+	int32 PublishCount = 0;
+	int32 PlacedPublish = -1;
+	/** Each faded control's shape colour as the Control Rig built it, kept
+	 * across Loads (the dimmed one is all the hierarchy holds meanwhile). */
+	TMap<FName, FLinearColor> ShapeColors;
+	TWeakObjectPtr<class UControlRig> ShapeColorsRig;
+	/** Shows or dims the faded controls (a limb's idle half). */
+	void UpdateFadedControls(class URigHierarchy* Hierarchy);
 	/** A full resync is due (RequestResync). */
 	bool bResync = false;
 #if WITH_EDITOR

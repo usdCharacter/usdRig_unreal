@@ -23,6 +23,33 @@ struct RIGEXECRUNTIME_API FRigExecSurfaceLook
 
 	UPROPERTY(EditAnywhere, Category = "RigExec")
 	float Metallic = 0.0f;
+
+	/** The image on diffuseColor (a UsdUVTexture), resolved on disk, or empty. */
+	UPROPERTY(VisibleAnywhere, Category = "RigExec")
+	FString ColorTextureFile;
+
+	/** That image as baked into the character: an index into
+	 * URigExecCharacter::Textures, or -1. */
+	UPROPERTY(VisibleAnywhere, Category = "RigExec")
+	int32 ColorTexture = -1;
+
+	/** A shader that is not a UsdPreviewSurface (the Squarebit Eye, say): its
+	 * image and number inputs, named as material parameters ("irisMap" ->
+	 * "IrisMap"). The images as files, then as indices into
+	 * URigExecCharacter::Textures once baked. */
+	UPROPERTY(VisibleAnywhere, Category = "RigExec")
+	TMap<FString, FString> ParamTextureFiles;
+	UPROPERTY(VisibleAnywhere, Category = "RigExec")
+	TMap<FString, int32> ParamTextures;
+	UPROPERTY(VisibleAnywhere, Category = "RigExec")
+	TMap<FString, float> ParamScalars;
+	UPROPERTY(VisibleAnywhere, Category = "RigExec")
+	TMap<FString, FLinearColor> ParamColors;
+
+	/** The surface's opacity. Under its opacityThreshold (a cutout, such as
+	 * skin a garment covers) the faces are left out of the mesh. */
+	UPROPERTY(EditAnywhere, Category = "RigExec")
+	float Opacity = 1.0f;
 };
 
 /** One deformed mesh as the stage describes it. Its points come from the
@@ -107,12 +134,20 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = "RigExec")
 	int32 RigExecBytes = 0;
 
+	/** The surface images the looks use (FRigExecSurfaceLook::ColorTexture),
+	 * imported into this asset's package when it is baked. */
+	UPROPERTY(VisibleAnywhere, Category = "RigExec")
+	TArray<TObjectPtr<class UTexture2D>> Textures;
+
 	/** The .rigexec file's bytes. */
 	TArray<uint8> Program;
 	/** export_controls.py's description, with the Control Rig element names. */
 	FString Controls;
 	/** export_picker.py's layout, or empty. */
 	FString Picker;
+	/** export_stack.py's layer and deformer stacks (the editor's Stack
+	 * panel), or empty. Editor data: left out of a cooked game. */
+	FString Stack;
 	FRigExecMeshSet MeshSet;
 
 	virtual void Serialize(FArchive& Ar) override;

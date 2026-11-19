@@ -4,7 +4,11 @@ namespace
 {
 // Bumped whenever the payload layout changes; an older asset is refused at
 // load and has to be baked again.
-constexpr int32 GCharacterVersion = 1;
+// 2: looks carry a colour texture. 3: and shader parameters. 4: and colours.
+// 5: and opacity. 6: the layer and deformer stacks.
+constexpr int32 GCharacterVersion = 6;
+// The version being read, for the looks' layout.
+thread_local int32 GReadingVersion = GCharacterVersion;
 } // namespace
 
 FArchive&
@@ -21,6 +25,22 @@ operator<<(FArchive& Ar, FRigExecMeshSource& M)
 	for (FRigExecSurfaceLook& Look : M.Slots)
 	{
 		Ar << Look.Color << Look.Roughness << Look.Metallic;
+		if (!Ar.IsLoading() || GReadingVersion >= 2)
+		{
+			Ar << Look.ColorTextureFile << Look.ColorTexture;
+		}
+		if (!Ar.IsLoading() || GReadingVersion >= 3)
+		{
+			Ar << Look.ParamTextureFiles << Look.ParamTextures << Look.ParamScalars;
+			if (!Ar.IsLoading() || GReadingVersion >= 4)
+			{
+				Ar << Look.ParamColors;
+			}
+			if (!Ar.IsLoading() || GReadingVersion >= 5)
+			{
+				Ar << Look.Opacity;
+			}
+		}
 	}
 	return Ar;
 }
@@ -53,7 +73,7 @@ URigExecCharacter::Serialize(FArchive& Ar)
 	Super::Serialize(Ar);
 	int32 Version = GCharacterVersion;
 	Ar << Version;
-	if (Ar.IsLoading() && Version != GCharacterVersion)
+	if (Ar.IsLoading() && Version != GCharacterVersion && (Version < 1 || Version > GCharacterVersion))
 	{
 		UE_LOG(LogTemp, Error, TEXT("%s was baked by another RigExec version (%d, expected %d); bake it again"),
 		       *GetPathName(), Version, GCharacterVersion);
@@ -61,5 +81,13 @@ URigExecCharacter::Serialize(FArchive& Ar)
 		return;
 	}
 	// TArray<uint8> serializes in bulk.
+	GReadingVersion = Ar.IsLoading() ? Version : GCharacterVersion;
 	Ar << Program << Controls << Picker << MeshSet;
+	if (!Ar.IsLoading() || Version >= 6)
+	{
+		// Only the editor's Stack panel reads it, so a cooked game carries none.
+		FString None;
+		Ar << (Ar.IsCooking() ? None : Stack);
+	}
+	GReadingVersion = GCharacterVersion;
 }

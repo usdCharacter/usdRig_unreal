@@ -1,5 +1,9 @@
 #include "RigExecRuntimeLibrary.h"
 
+#include "Engine/Texture2D.h"
+#include "ImageCore.h"
+#include "ImageUtils.h"
+
 #include "HAL/PlatformTime.h"
 #include "Misc/FileHelper.h"
 #include "Modules/ModuleManager.h"
@@ -325,6 +329,14 @@ URigExecRuntimeLibrary::BakeCharacter(const FString& RigExecFile, const FString&
 		}
 	}
 
+	// Biped.rigexec -> Biped_stack.json (export_stack.py), when there is one.
+	FString Stack;
+	{
+		const FString RigExecPath = Full(RigExecFile);
+		FFileHelper::LoadFileToString(Stack, *(FPaths::Combine(FPaths::GetPath(RigExecPath), FPaths::GetBaseFilename(RigExecPath)) +
+		                                       TEXT("_stack.json")));
+	}
+
 	const FString PackageName = FPackageName::ObjectPathToPackageName(AssetPath);
 	const FString Name = FPackageName::GetShortName(PackageName);
 	UPackage* Package = CreatePackage(*PackageName);
@@ -342,7 +354,83 @@ URigExecRuntimeLibrary::BakeCharacter(const FString& RigExecFile, const FString&
 	Character->Program = MoveTemp(Bytes);
 	Character->Controls = MoveTemp(Controls);
 	Character->Picker = MoveTemp(Picker);
+	Character->Stack = MoveTemp(Stack);
 	Character->MeshSet = MoveTemp(Set);
+	// Each surface image becomes a texture in this package, with its source,
+	// so it cooks with the character and a packaged game needs no files.
+	Character->Textures.Reset();
+	{
+		// One texture per image file (and colour space).
+		TMap<FString, int32> Imported;
+		auto Import = [&](const FString& File, bool bLinear, bool bNormal = false) -> int32
+		{
+			const FString Key = File + (bLinear ? TEXT("|linear") : TEXT("")) + (bNormal ? TEXT("|normal") : TEXT(""));
+			if (const int32* Found = Imported.Find(Key))
+			{
+				return *Found;
+			}
+			FImage Image;
+			if (!FImageUtils::LoadImage(*File, Image))
+			{
+				UE_LOG(LogTemp, Warning, TEXT("BakeCharacter: cannot read the image %s"), *File);
+				Imported.Add(Key, INDEX_NONE);
+				return INDEX_NONE;
+			}
+			FString TextureName = TEXT("T_") + FPaths::GetBaseFilename(File) + (bLinear ? TEXT("_Linear") : TEXT(""));
+			for (TCHAR& Ch : TextureName)
+			{
+				if (!FChar::IsAlnum(Ch) && Ch != TEXT('_'))
+				{
+					Ch = TEXT('_');
+				}
+			}
+			UTexture2D* Texture = FindObject<UTexture2D>(Package, *TextureName);
+			if (!Texture)
+			{
+				Texture = NewObject<UTexture2D>(Package, *TextureName, RF_Public);
+			}
+			if (bNormal)
+			{
+				Texture->Source.Init(Image);
+				Texture->SRGB = false;
+				Texture->CompressionSettings = TC_Normalmap;
+			}
+			else if (bLinear)
+			{
+				// Linear data, as a shader sampling it linearly expects: decode
+				// the sRGB picture into half floats.
+				FImage Linear;
+				Image.CopyTo(Linear, ERawImageFormat::RGBA16F, EGammaSpace::Linear);
+				Texture->Source.Init(Linear);
+				Texture->SRGB = false;
+				Texture->CompressionSettings = TC_HDR_Compressed;
+			}
+			else
+			{
+				Texture->Source.Init(Image);
+				Texture->SRGB = true;
+			}
+			Texture->PostEditChange();
+			const int32 Index = Character->Textures.Add(Texture);
+			Imported.Add(Key, Index);
+			return Index;
+		};
+		for (FRigExecMeshSource& Mesh : Character->MeshSet.Meshes)
+		{
+			for (FRigExecSurfaceLook& Look : Mesh.Slots)
+			{
+				Look.ColorTexture = Look.ColorTextureFile.IsEmpty() ? INDEX_NONE : Import(Look.ColorTextureFile, false);
+				Look.ParamTextures.Reset();
+				for (const TPair<FString, FString>& File : Look.ParamTextureFiles)
+				{
+					// The eye shader reads its iris as linear data.
+					const bool bLinear = File.Key.EndsWith(TEXT("IrisMap"));
+					const bool bNormal = File.Key.EndsWith(TEXT("NormalTexture"));
+					Look.ParamTextures.Add(File.Key, Import(File.Value, bLinear, bNormal));
+				}
+			}
+		}
+	}
 	Character->MeshCount = Character->MeshSet.Meshes.Num();
 	Character->TouchRegionCount = Character->MeshSet.Regions.Num();
 	Character->RigExecBytes = Character->Program.Num();

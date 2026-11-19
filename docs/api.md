@@ -50,11 +50,12 @@ editor too.
 | `int32 PullControls()` | ✓ | Reads the Control Rig into avars and evaluates if anything moved, then re-places the control offsets. Returns the number of avars that changed. Called every tick |
 | `TArray<UDynamicMeshComponent*> GetMeshes() const` | ✓ | The meshes `Load` built, in the rig's mesh order |
 | `FVector GetVertex(int32 Mesh, int32 Index) const` | ✓ | A vertex as last placed, in Unreal space (for tests) |
-| `bool SwitchLimb(const FString& SwitchPath)` | ✓ | Hands the limb switched by `SwitchPath` (`….avars:ikfk`) to its other half without moving it, then flips the switch. It writes through the Control Rig with undo, so wrap it in a transaction. Returns false if there is no such limb |
+| `bool SwitchLimb(const FString& SwitchPath)` | ✓ | Hands the limb switched by `SwitchPath` (`….avars:ikfk`) to its other half without moving it, then flips the switch. With a Control Rig it writes through it with undo, so wrap it in a transaction; with none (a game) it writes straight to the rig and evaluates. Returns false if there is no such limb |
 | `FString FindLimbSwitchFor(FName Element) const` | C++ | The switch (`….avars:ikfk`) of the limb a Control Rig control belongs to: the switch's control, an FK or IK control, the pole, or anything under the IK control. Empty when it is on no limb |
 | `bool IsLimbIk(const FString& SwitchPath) const` | C++ | Whether that limb is on its IK half now |
 | `bool FindSpaceChannel(FName Element, FName& OutChannel, TArray<FString>& OutLabels) const` | C++ | The control's space channel and its space names, from the controls file. False when it has fewer than two spaces |
-| `bool SwitchSpace(FName Element, int32 Index)` | C++ | Moves the control to that space without moving it. It writes through the Control Rig with undo, so wrap it in a transaction |
+| `bool SwitchSpace(FName Element, int32 Index)` | ✓ | Moves the control to that space without moving it, using the values the rig publishes for each space (`<control>.spaces:matchValues`). With a Control Rig it writes through it with undo, so wrap it in a transaction; with none it writes straight to the rig |
+| `FString FindPresentedLimbFor(FName Element) const` | ✓ | The switch of the limb `Element` belongs to when it is on the half the limb is not driving with (what selecting it switches, matched). Empty otherwise |
 | `FTransform GetRigFrame(const FString& Path) const` | ✓ | The posed frame of a control or joint, in the Control Rig's space. Identity if the path is unknown |
 | `FName FindControlElement(const FString& Path) const` | C++ | The Control Rig control for a rig control |
 | `FName FindChannelElement(const FString& AttrPath) const` | C++ | The Control Rig control or channel for a rig attribute |
@@ -76,6 +77,17 @@ space, rig units.
 | `bool GetControlAssetFrame(int32 Control, FMatrix& Out) const` | Its posed frame from the last evaluation |
 | `int32 SetControlValueMatrix(int32 Control, const FMatrix& Value)` | Sends a value as the control's avars, decomposed in its rotation order. Returns how many avars changed; `Evaluate` to see them |
 | `TArray<TPair<FString, double>> GetLimbFkSwitches() const` | Each IK/FK limb's switch and its FK value |
+| `FName GetControlElement(int32)` | Its Control Rig element name (what touch regions and picker buttons name) |
+| `bool GetControlAvars(int32 Control, double Out[9], bool bDefault = false) const`, `uint16 GetControlAvarMask(int32) const` | Its nine transform avars (tx ty tz rx ry rz sx sy sz, raw values) as last sent or at rest, and which of them it exposes (bit A for avar A) |
+| `int32 SetControlAvars(int32 Control, const double In[9])` | Sends raw avar values; ones the control does not expose are ignored. Returns how many changed |
+| `int32 GetChannelCount()`, `int32 FindChannelIndex(const FString& Path)`, `GetChannelPath`, `GetChannelValue`, `GetChannelDefault`, `GetChannelLabels` | The non-transform channels the controls file describes (IK/FK dials, spaces, switches) and their values as last sent |
+| `bool SetChannelValue(int32 Channel, double Value)` | Sends one; `SetChannel` by path also updates the value these report |
+| `FMatrix GetLandedControlValueMatrix(int32) const` | The value the last landed run evaluated with: what pairs with `GetControlAssetFrame` |
+
+Picking and posing with none of Control Rig, as the example's animation
+studio does ([game.md](game.md#the-animation-studio)): `IsLimbIk`,
+`FindPresentedLimbFor`, `SwitchLimb` and `SwitchSpace` read and write these
+channels when the component has no Control Rig.
 | `double GetCentimetresPerUnit() const` | Rig units to centimetres |
 
 ## `URigExecCharacter`
@@ -101,7 +113,10 @@ animated `USkeletalMeshComponent` (see [game.md](game.md#the-retargeter)).
 | `bForceFk`, `bEnabled` | Hand the limbs to FK; switch it off |
 | `Status`, `LastMilliseconds`, `LastErrorDegrees` | What it is doing, a frame's cost, and how closely the rig followed |
 
-`Rebind()` binds again on the next tick.
+`Rebind()` binds again on the next tick. `DriveOnce()` binds if it has not,
+then carries the source's current pose onto the rig once and evaluates,
+enabled or not: a bake poses the source at each sample time and calls it
+(the animation studio bakes its default clips this way).
 
 ### Example: posing without Control Rig
 
@@ -142,6 +157,7 @@ added by hand.
 | `int32 GetTouchRegionCount() const` | ✓ | Regions read at load, numbered across the meshes |
 | `FString GetTouchRegionName(int32 Region) const` | ✓ | The region prim's name, for example `R_LoArm_touch` |
 | `FName GetTouchRegionControl(int32 Region) const` | ✓ | The Control Rig control the region selects |
+| `int32 GetTouchRegionMesh(int32 Region) const`, `int32 GetTouchRegionFaceCount(int32 Region) const` | C++ | The drawn mesh the region paints, and how many faces |
 | `int32 PickTouchRegion(FVector RayOrigin, FVector RayDirection, double& OutDistance)` | ✓ | The region a world-space ray first hits on the *posed* skin, or -1 if it misses or hits unpainted skin. The bounding-volume tree it uses is rebuilt lazily after the rig moves |
 | `TArray<int32> GetTouchRegionsOf(const TArray<FName>& Controls) const` | C++ | Regions whose control is in the list |
 | `void SetTouchHighlight(int32 Hover, int32 Lead, const TArray<int32>& Selected)` | ✓ | Lights the hover, lead and selected regions (−1/empty for none) by writing their faces' vertex colours, and only for regions whose state changed. The tint rides the skin as it poses, and reaches a subdivision surface that draws the meshes |

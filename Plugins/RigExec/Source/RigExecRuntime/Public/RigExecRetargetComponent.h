@@ -34,6 +34,17 @@ struct RIGEXECRUNTIME_API FRigExecRetargetBone
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "RigExec")
 	FString TargetAim;
 
+	/** A second pair, across the aim, that lines up the roll about it too
+	 * (a hand's index and pinky knuckles line up its palm). */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "RigExec")
+	FName SourceSideFrom;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "RigExec")
+	FName SourceSideTo;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "RigExec")
+	FString TargetSideFrom;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "RigExec")
+	FString TargetSideTo;
+
 	/** Carry the bone's movement too, scaled by the two pelvis heights. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "RigExec")
 	bool bTranslate = false;
@@ -110,6 +121,12 @@ public:
 	void SetExtraTurn(const FString& Control, const FQuat& Turn);
 	void ClearExtraTurns() { ExtraTurns.Reset(); }
 
+	/** Binds if it has not, then carries the source's current pose onto the
+	 * rig once and evaluates: what a tick does, on demand, whether enabled
+	 * or not. A bake poses the source at each sample and calls this. False
+	 * while it cannot bind. */
+	bool DriveOnce();
+
 	virtual void BeginPlay() override;
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
 	                           FActorComponentTickFunction* ThisTickFunction) override;
@@ -128,12 +145,19 @@ private:
 		FQuat TargetRest = FQuat::Identity;
 		FVector SourceRestPosition = FVector::ZeroVector;
 		bool bTranslate = false;
+		/** A driven control whose rig parent is not under the control of the
+		 * bone's parent (a finger on a helper the rig attaches to the hand):
+		 * that control, so the helper is carried with it. */
+		int32 Follow = INDEX_NONE;
 	};
 	TArray<FBound> Bound;
 	/** Each control's entry in Bound, or -1. */
 	TArray<int32> BoundOf;
 	/** Whether a control is driven or above one, so its frame is worked out. */
 	TArray<bool> InChain;
+	/** Whether a control is at or below a Follow entry, so it is worked out
+	 * once the rest are. */
+	TArray<bool> Deferred;
 	TArray<FMatrix> RestFrames;
 	/** The turn from the source's facing onto the rig's. */
 	FQuat Facing = FQuat::Identity;
@@ -141,6 +165,8 @@ private:
 	bool bBound = false;
 	/** Frames asked for last time, for the error check. */
 	TArray<FMatrix> Wanted;
+	/** What the run now landing was asked for. */
+	TArray<FMatrix> LandedWanted;
 	/** SetExtraTurn's turns, by control name. */
 	TMap<FString, FQuat> ExtraTurns;
 };

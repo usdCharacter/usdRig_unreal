@@ -1,7 +1,10 @@
-usdRig commit: 3159dca2a38df1cab5d684376488f9ccfc1bdc12
+usdRig commit: 0fea7734f9edcc723e62ace3dff123a1b2a798c0
 headers:
   rigExecBinary/external.h
+  rigExecBinary/moverDefinition.h
   rigExecBinary/wireTypes.h
+  rigExecGraph/opGraph.h
+  rigExecGraph/windowHistory.h
   rigExecRuntime/runtime.h
   rigExecRuntime/runtimeMath.h
   rigExecRuntime/values.h

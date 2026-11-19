@@ -1,4 +1,4 @@
-// rigExecRuntime: zero-USD .rigexec playback (M2).
+// rigExecRuntime: zero-USD .rigexec playback.
 // Opens a baked .rigexec file (one FlatBuffer, rigExecBinary/format.h),
 // replays its cluster DAG over the inputs the caller sets, and publishes
 // joint matrices and deformed points -- no USD headers, no USD library. The
@@ -13,14 +13,17 @@
 // hands it a dispatcher (SetTaskDispatch), which then runs the clusters the
 // DAG allows in parallel (the OpenUSD side passes a WorkDispatcher, Godot
 // its WorkerThreadPool). A classicLinear or dualQuaternion skin of at least
-// 4,096 points then splits at a grain of 512 on a local join. The host
-// dispatcher is not re-entered: the skin is already running on one of its
-// tasks. Successful points match the serial loop, including NaN payloads.
+// 4,096 points then splits at a grain of 512: the skin's task drains the
+// ranges itself and hands the dispatcher helper tasks that claim from the
+// same atomic counter. It never waits on the dispatcher, only on ranges
+// already claimed, and the helpers join with Execute's wait. Successful
+// points match the serial loop, including NaN payloads.
 // The reader holds no locks: one reader per thread, or external synchronization.
 #ifndef RIGEXEC_RUNTIME_H
 #define RIGEXEC_RUNTIME_H
 
 #include "rigExecBinary/external.h"
+#include "rigExecBinary/moverDefinition.h"
 #include "rigExecRuntime/runtimeMath.h"
 #include "rigExecRuntime/values.h"
 
@@ -47,16 +50,16 @@ struct RigExecRuntimeJointMatrix {
 // One provider's current Base/Final SSA frames and stable path metadata.
 struct RigExecRuntimeProviderFrames {
     std::string path;
-    uint8_t kind=0;
+    uint8_t kind = 0;
     // Exact publication membership: Other=0, Joint=1, Control=2, Both=3.
-    uint8_t publicationRole=0;
-    uint32_t baseVersion=0,finalVersion=0;
-    RrPointFrame base,final;
+    uint8_t publicationRole = 0;
+    uint32_t baseVersion = 0, finalVersion = 0;
+    RrPointFrame base, final;
 };
 
 struct RigExecRuntimeSolverFrames {
     std::string path;
-    uint32_t aggregate=0;
+    uint32_t aggregate = 0;
     std::vector<RrPointFrame> frames;
 };
 
@@ -71,21 +74,48 @@ struct RigExecRuntimeSolverFrames {
 // frame being drawn and read Vector() there. Assigning Vector() into a
 // std::vector is the owned copy, when a host still wants one. Do not
 // memcpy this object. See docs/specs/runtime-execute-buffers.md.
-template <class T>
-class RigExecSharedArray {
+template <class T> class RigExecSharedArray {
 public:
-    RigExecSharedArray() : _data(Empty()) {}
+    RigExecSharedArray() : _data(Empty())
+    {
+    }
     explicit RigExecSharedArray(std::shared_ptr<const std::vector<T>> data)
-        : _data(data ? std::move(data) : Empty()) {}
+        : _data(data ? std::move(data) : Empty())
+    {
+    }
 
-    size_t size() const { return _data->size(); }
-    bool empty() const { return _data->empty(); }
-    const T &operator[](size_t index) const { return (*_data)[index]; }
-    const T *data() const { return _data->data(); }
-    const T *begin() const { return data(); }
-    const T *end() const { return data() + size(); }
-    const std::vector<T> &Vector() const { return *_data; }
-    std::shared_ptr<const std::vector<T>> Share() const { return _data; }
+    size_t size() const
+    {
+        return _data->size();
+    }
+    bool empty() const
+    {
+        return _data->empty();
+    }
+    const T &operator[](size_t index) const
+    {
+        return (*_data)[index];
+    }
+    const T *data() const
+    {
+        return _data->data();
+    }
+    const T *begin() const
+    {
+        return data();
+    }
+    const T *end() const
+    {
+        return data() + size();
+    }
+    const std::vector<T> &Vector() const
+    {
+        return *_data;
+    }
+    std::shared_ptr<const std::vector<T>> Share() const
+    {
+        return _data;
+    }
     // Drops this view's retainer and returns it. Execute does this when it
     // replaces a frame the caller did not keep, so the storage can be reused.
     std::shared_ptr<const std::vector<T>> Release()
@@ -105,15 +135,23 @@ public:
     }
 
 private:
-    static std::shared_ptr<const std::vector<T>> Empty()
-    {
-        static const std::shared_ptr<const std::vector<T>> empty =
-            std::make_shared<const std::vector<T>>();
-        return empty;
-    }
+    static std::shared_ptr<const std::vector<T>> Empty();
 
     std::shared_ptr<const std::vector<T>> _data;
 };
+
+// The one empty vector every empty view of element type T shares. Namespace
+// scope, initialized at load: no function-local static guard on a worker.
+template <class T>
+inline const std::shared_ptr<const std::vector<T>> RigExecSharedArrayEmpty =
+    std::make_shared<const std::vector<T>>();
+
+template <class T>
+inline std::shared_ptr<const std::vector<T>>
+RigExecSharedArray<T>::Empty()
+{
+    return RigExecSharedArrayEmpty<T>;
+}
 
 // A deformed-points output: the moved property's path plus its points.
 // points shares the buffer the chain published.
@@ -127,6 +165,14 @@ struct RigExecRuntimePoints {
 struct RigExecRuntimeMatrixPrimvar {
     std::string path;
     RrMat4d matrix;
+};
+
+// A scalar-primvar output: a property chain's float or double
+// `<prim>.primvars:<name>` result, which playback publishes as a constant
+// float primvar on its prim.
+struct RigExecRuntimeScalarPrimvar {
+    std::string path;
+    float value = 0.0f;
 };
 
 // A weight-frame output: the volume weight's path plus its placement.
@@ -173,8 +219,7 @@ struct RigExecRuntimeCounters {
 // getters publish its outputs. A fresh reader executes its defaults, which
 // reproduce the rig at the bake time. Any failure returns false with a
 // reason; the reader keeps its last good state.
-class RigExecRuntimeReader
-{
+class RigExecRuntimeReader {
 public:
     ~RigExecRuntimeReader();
 
@@ -186,8 +231,18 @@ public:
     // rule of the format broken, the step graph's among them), or on
     // tables whose cross-references do not close (versions, input reads,
     // cone sizes).
-    static std::unique_ptr<RigExecRuntimeReader> Open(
-        const uint8_t *bytes, size_t size, std::string *error);
+    static std::unique_ptr<RigExecRuntimeReader>
+    Open(const uint8_t *bytes, size_t size, std::string *error);
+
+    // Bind a host's USD-free modules at Open. Unused definitions are allowed;
+    // duplicate names, incomplete callbacks and failed preparation are errors.
+    // Module code must stay loaded for the reader's lifetime.
+    static std::unique_ptr<RigExecRuntimeReader>
+    Open(const uint8_t *bytes, size_t size,
+         const RigExecMoverDefinition *movers, size_t moverCount,
+         std::string *error);
+    bool InstallMoverDefinitions(const RigExecMoverDefinition *movers,
+                                 size_t moverCount, std::string *error);
 
     // The inputs: every attribute a read of the rig walks, sorted by path.
     size_t GetInputCount() const;
@@ -279,6 +334,29 @@ public:
     // Replays the cluster DAG over the inputs. False naming the first
     // failing step; outputs keep their previous values.
     bool Execute(std::string *error);
+
+    // Windowed operations (secondary motion, cloth) solve from the inputs
+    // they captured at earlier ticks as well as the current one
+    // (docs/concepts/secondary-motion.md). The reader keeps those ticks:
+    // a game loop calls PushHistory after each Execute that advanced a
+    // frame; a stage sampler that jumps in time calls ClearHistory and
+    // ExecuteHistory at each of the GetHistoryDepth frames before the new
+    // one, oldest first, with that frame's inputs set. Fed the same
+    // frames, the reader matches the USD evaluators bit for bit. A drag
+    // is an Execute with no push: the history stays the frames before.
+    //
+    // How many windowed operations the file holds (0 for most rigs).
+    size_t GetWindowedOperationCount() const;
+    // How many earlier ticks a complete history reaches back.
+    size_t GetHistoryDepth() const;
+    // The last Execute's captures become the newest history tick.
+    void PushHistory();
+    // Runs a history tick at the inputs as set now: only the windowed
+    // operations and what they depend on, publishing nothing; its captures
+    // become the newest history tick. False naming the failing step.
+    bool ExecuteHistory(std::string *error);
+    // Forgets every history tick: the next Execute starts from rest.
+    void ClearHistory();
     /// Runs Execute's ready clusters through \p dispatch and joins with
     /// \p wait -- RigExecOpCallbacks' shape; both or neither, empty restores
     /// serial. A successful run's results, diagnostics and counts are
@@ -298,8 +376,11 @@ public:
     // Every plugin mover type the file holds, sorted, each once.
     std::vector<std::string> GetExternalMoverTypes() const;
     // Installs \p kernel for \p type and prepares each of its revisions.
+    // Installation or replacement takes effect on the next Execute, including
+    // when no input values changed. Only dependent operations are invalidated.
+    // A replaced revision's own history packets are cleared.
     // False with the reason when the file holds no such type or a
-    // revision's epoch bytes do not prepare; those revisions keep passing
+    // revision's compiled data bytes do not prepare; those revisions keep passing
     // their points through.
     bool SetExternalKernel(const std::string &type,
                            const RigExecExternalKernel &kernel,
@@ -421,6 +502,12 @@ public:
         return _matrixPrimvars;
     }
 
+    // The file's compiled scalar primvars (File.scalar_primvar_chains, the
+    // evaluator's GetScalarPrimvarTargets) as the last Execute computed
+    // them, in path order; a double result as a float. A chain that did not
+    // publish this run is not listed.
+    std::vector<RigExecRuntimeScalarPrimvar> GetScalarPrimvars() const;
+
     // Volume weight placements, in path order.
     const std::vector<RigExecRuntimeWeightFrame> &GetWeightFrames() const
     {
@@ -435,8 +522,7 @@ public:
     }
 
     // Constraint-driven provider transforms, in path order.
-    const std::vector<RigExecRuntimeProviderXform> &GetProviderXforms()
-        const
+    const std::vector<RigExecRuntimeProviderXform> &GetProviderXforms() const
     {
         return _providerXforms;
     }
@@ -447,13 +533,22 @@ public:
         return _diagnostics;
     }
 
-    RigExecRuntimeCounters GetCounters() const { return _counters; }
+    RigExecRuntimeCounters GetCounters() const
+    {
+        return _counters;
+    }
 
     // Family outputs for the parity tests: the SSA version pools, the
     // rest -> pose matrices, and the weight packets.
     const std::vector<RrPointFrame> &GetFinFrames() const;
     const std::vector<RrPointFrame> &GetBaseFrames() const;
-    std::vector<RigExecRuntimeProviderFrames> GetProviderFramePublications() const;
+    std::vector<RigExecRuntimeProviderFrames>
+    GetProviderFramePublications() const;
+    // One slot of that list without building it: the publication role and
+    // the final frame it reports. Slots are fixed per file; false when
+    // \p slot is out of range.
+    bool GetProviderFinalFrame(size_t slot, uint8_t *publicationRole,
+                               RrPointFrame *final) const;
     // Empty when solver guides were disabled in the captured export context.
     std::vector<RigExecRuntimeSolverFrames> GetSolverFramePublications() const;
     const std::vector<RrMat4d> &GetFinalMatrices() const;
@@ -461,10 +556,35 @@ public:
     const std::vector<RrWeightPacket> &GetWeightPackets() const;
 
 private:
+    // Non-aggregate: brace-initialisation cannot build it, so only a member
+    // can pass one to the tagged constructor.
+    struct _OpenTag {
+        explicit _OpenTag(int)
+        {
+        }
+    };
+
+public:
+    // Open() is the only caller. The tag is the gate; the constructor stays
+    // public so std::make_unique can reach it.
+    explicit RigExecRuntimeReader(_OpenTag);
+
+private:
     friend class RigExecRuntimeStageArrayInputs;
     RigExecRuntimeReader();
 
     std::unique_ptr<RrProgram> _program;
+
+    // History ticks run on a second program opened from the same bytes,
+    // never on this one, so a run here sees only what changed against the
+    // last run here -- as the USD evaluators' history leaves their live
+    // program. Each tick copies the inputs as set here and this reader's
+    // history into it, and its captures come back as the newest tick. The
+    // bytes are kept only for a file with windowed operations; the program
+    // opens at the first ExecuteHistory.
+    std::shared_ptr<const std::vector<uint8_t>> _historyBytes;
+    std::unique_ptr<RigExecRuntimeReader> _history;
+    bool _RunHistoryTick(std::string *error);
 
     // What the input getters answer past the count: a Double +0.0, every
     // other member zero.
@@ -477,6 +597,12 @@ private:
     std::vector<RigExecRuntimeWeightFrame> _weightFrames;
     std::vector<RigExecRuntimeWeightField> _weightFields;
     std::vector<RigExecRuntimeProviderXform> _providerXforms;
+    struct PublicationOrder {
+        std::vector<uint32_t> keys, nextKeys;
+        std::vector<size_t> positions;
+    };
+    PublicationOrder _jointOrder, _pointOrder, _matrixOrder, _weightFrameOrder,
+        _weightOrder, _providerOrder;
     std::vector<std::string> _diagnostics;
     RigExecRuntimeCounters _counters;
 };
@@ -484,12 +610,11 @@ private:
 // Serial and parallel skin on one synthetic mesh, including a NaN payload.
 // False when the bytes differ. The microsecond pointers receive the best of
 // three runs of a 26,276-point SIMD skin; null skips the timing write.
-bool RrGeoCompareSkinSplitForTesting(std::string *error,
-                                     double *linearSerialUs,
+bool RrGeoCompareSkinSplitForTesting(std::string *error, double *linearSerialUs,
                                      double *linearParallelUs,
                                      double *dualSerialUs,
                                      double *dualParallelUs);
 
-}  // namespace rigExec
+} // namespace rigExec
 
-#endif  // RIGEXEC_RUNTIME_H
+#endif // RIGEXEC_RUNTIME_H

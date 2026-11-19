@@ -3,20 +3,24 @@
 //
 // A plugin mover assembles its payload from the stage, which playback does
 // not have. Export therefore asks the plugin to split its assembled payload
-// into EPOCH bytes, written once per revision, and FRAME bytes. Playback
+// into Compiled data bytes, written once per revision, and FRAME bytes. Playback
 // hands both back to the plugin's kernel together with the points the
 // mover's binding reads at a declared phase, which the runtime evaluates
 // itself -- so a posed playback moves those -- and with the preceding
 // points to revise. The bytes are the plugin's own format: the engine never
 // interprets them. The file holds one ExternalMover entry per plugin
-// revision (rigexec.fbs): its type, its epoch bytes and the frame bytes of
+// revision (rigexec.fbs): its type, its compiled data bytes and the frame bytes of
 // the bake's run.
+// The serialized schema retains the field name `epoch` for compiled data;
+// this naming does not change the binary format or the payload tags.
 //
 // Everything here is plain data and function pointers: a runtime without
 // USD can carry a kernel, and a runtime with no kernel for a type passes
 // that type's movers through with a warning.
 #ifndef RIGEXEC_BINARY_EXTERNAL_H
 #define RIGEXEC_BINARY_EXTERNAL_H
+
+#include "rigExecGraph/windowHistory.h"
 
 #include <cstddef>
 #include <cstdint>
@@ -80,11 +84,11 @@ struct RigExecExternalProviders {
 
 /// A plugin mover's playback kernel.
 struct RigExecExternalKernel {
-    /// Decodes one revision's epoch bytes into immutable state, once per
-    /// opened file. Null, with a reason, when the bytes are not ones this
+    /// Decodes one revision's compiled data bytes into immutable state on each
+    /// kernel registration. Null, with a reason, when the bytes are not ones this
     /// kernel can read; the revision then passes its points through.
     std::shared_ptr<const void> (*prepare)(
-        const uint8_t *epoch, size_t epochSize, std::string *error) = nullptr;
+        const uint8_t *compiledRig, size_t compiledRigSize, std::string *error) = nullptr;
     /// Revises \p xyz (\p pointCount triples, the preceding revision's
     /// points) in place to the full-strength candidate; the runtime applies
     /// the mover's envelope afterwards. Must not change the point count or
@@ -107,7 +111,25 @@ struct RigExecExternalKernel {
                                const RigExecExternalProviders &providers,
                                float *xyz, size_t pointCount) = nullptr;
 
+    /// Optional, for a windowed mover (rigExecGraph/windowHistory.h),
+    /// both or neither: the packet this tick captures, from apply's
+    /// arguments and the preceding points, and the solve over the earlier
+    /// ticks' packets, oldest first, then this tick's, into \p xyz. The
+    /// runtime keeps the ticks; the kernel keeps nothing between calls.
+    bool (*captureWindow)(const void *state,
+                          const RigExecExternalPhasedPoints *phased,
+                          size_t phasedCount,
+                          const RigExecExternalInputValue *inputs,
+                          size_t inputCount, const float *xyz,
+                          size_t pointCount,
+                          RigExecWindowPacket *packet) = nullptr;
+    bool (*applyWindow)(const void *state,
+                        const RigExecWindowPacket *const *ticks,
+                        size_t tickCount, float *xyz,
+                        size_t pointCount) = nullptr;
+
     bool IsSet() const { return prepare && (apply || applyWithProviders); }
+    bool IsWindowed() const { return captureWindow && applyWindow; }
 };
 
 /// The revision op a plugin mover is written with (RigExecRevisionOp::

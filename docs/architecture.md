@@ -222,9 +222,25 @@ about 14 ms a pose.
 ### IK/FK visibility
 
 A control with a `fade` in the controls file (a limb's IK or FK half) is
-shown only while its fade channel is above zero (inverted for the other
-half). This matches the display opacity usdview uses, so only the half that
-drives the limb is grabbable. During a hand-over both halves stay visible.
+drawn at full colour while its fade channel is above zero (inverted for the
+other half), as usdview's display opacity does. The idle half is not hidden:
+the rig publishes its frames on the limb, so it is drawn there, dimmed, and
+stays selectable. Selecting one of its controls switches the limb to it,
+matched (usdview's `_SwitchPresentedLimbs`, here `RigExecAutoMatch.cpp`): an
+FK control while the limb is in IK, or the IK control, pole or anything under
+the IK control while it is in FK. Each switch is one undo entry ("Match
+Limb"). It only happens at either end of the dial, never mid-blend.
+`bShowIdleLimbHalf` off hides the idle half instead, and turns this off.
+
+### Placing gizmos after an off-thread run
+
+With `bEvaluateAsync` a run lands a tick or more after the values it was
+launched with. Gizmos are placed whenever a value changes and again whenever
+a run lands, so the last run of a drag still places them. Each offset is built
+from the value that run evaluated (`Landed`), not the value sent since, so the
+dragged control is never held back on an older frame. Switching a limb or a
+space evaluates on the game thread (`bEvaluateNow`): the match it reads is
+for the pose on screen, never a run still in flight.
 
 ## Controls
 
@@ -457,7 +473,8 @@ put each half on the limb's current joints (`GetIkFkMatches`: 11 for IK,
   for IK, the IK control's translate and rotate, the pole's translate and the
   two stretch scales; for FK, each FK control's translate and rotate and the
   stretch scales, with pin and twist cleared.
-- The rig evaluates, and the Control Rig's controls are put on the frames the
-  rig now publishes for them, root to end. The stretch, pin and twist
-  channels are set on the Control Rig too, so they key and stay.
+- They go straight onto the Control Rig's controls (a control's local is
+  its avars matrix), with every other channel of that control left as it
+  was. The stretch, pin and twist channels are set on the Control Rig too,
+  so they key and stay.
 - Then the switch channel flips.

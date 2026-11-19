@@ -1,15 +1,19 @@
-// Registers the RigExec Picker tab (Window > RigExec Picker), the hover
+// Registers the RigExec Picker and Stack tabs (Window > RigExec Picker, RigExec
+// Stack), the hover
 // picker over the level viewport (Tools > RigExec > Hover Picker, or P over
 // the viewport), the right-click marking menu for controls, and the TouchPose
 // viewport mode (Tools > RigExec > Touch Pose).
 #include "Framework/Docking/TabManager.h"
 #include "HAL/IConsoleManager.h"
 #include "Modules/ModuleManager.h"
+#include "RigExecAutoMatch.h"
 #include "RigExecComponentDetails.h"
 #include "RigExecHoverPicker.h"
 #include "RigExecMarkingMenu.h"
 #include "RigExecTouchPose.h"
 #include "SRigExecPicker.h"
+#include "SRigExecStack.h"
+#include "Styling/AppStyle.h"
 #include "ToolMenus.h"
 #include "Widgets/Docking/SDockTab.h"
 #include "WorkspaceMenuStructure.h"
@@ -23,6 +27,10 @@ static FAutoConsoleCommand GOpenPicker(TEXT("RigExec.OpenPicker"), TEXT("Opens t
                                        FConsoleCommandDelegate::CreateLambda([]() {
 	                                       FGlobalTabmanager::Get()->TryInvokeTab(GPickerTab);
                                        }));
+
+static FAutoConsoleCommand GOpenStack(TEXT("RigExec.OpenStack"),
+                                      TEXT("Opens the RigExec Stack tab: the deformer and layer stacks of the selected character."),
+                                      FConsoleCommandDelegate::CreateLambda([]() { SRigExecStack::OpenTab(); }));
 
 static FAutoConsoleCommand GTouchPoseCommand(
 	TEXT("RigExec.TouchPose"),
@@ -50,6 +58,13 @@ public:
 		    .SetDisplayName(LOCTEXT("PickerTab", "RigExec Picker"))
 		    .SetTooltipText(LOCTEXT("PickerTip", "Select and switch a RigExec character's controls."))
 		    .SetGroup(WorkspaceMenu::GetMenuStructure().GetLevelEditorCategory());
+		FGlobalTabmanager::Get()
+		    ->RegisterNomadTabSpawner(SRigExecStack::TabId,
+		                              FOnSpawnTab::CreateLambda([](const FSpawnTabArgs&) { return SRigExecStack::SpawnTab(); }))
+		    .SetDisplayName(LOCTEXT("StackTab", "RigExec Stack"))
+		    .SetTooltipText(LOCTEXT("StackTip", "A RigExec character's deformer stack, layer stack and execution order."))
+		    .SetIcon(FSlateIcon(FAppStyle::GetAppStyleSetName(), "LevelEditor.Tabs.Layers"))
+		    .SetGroup(WorkspaceMenu::GetMenuStructure().GetLevelEditorCategory());
 		UToolMenus::RegisterStartupCallback(FSimpleMulticastDelegate::FDelegate::CreateRaw(this, &FRigExecEditorModule::AddMenu));
 		// The Rig component's render-path banner and the CPU-fallback toast.
 		FRigExecComponentDetails::Register();
@@ -59,6 +74,8 @@ public:
 		// The right-click marking menu for controls; installed after the
 		// hover picker so it stands first in line.
 		FRigExecMarkingMenu::Startup();
+		// Picking a control of a limb's idle IK/FK half switches it, matched.
+		FRigExecAutoMatch::Startup();
 	}
 
 	/** Tools > RigExec > Picker, Hover Picker and Touch Pose. */
@@ -72,6 +89,10 @@ public:
 		                     FSlateIcon(), FUIAction(FExecuteAction::CreateLambda([]() {
 			                     FGlobalTabmanager::Get()->TryInvokeTab(GPickerTab);
 		                     })));
+		Section.AddMenuEntry("RigExecStack", LOCTEXT("StackEntry", "Stack"),
+		                     LOCTEXT("StackEntryTip", "See the selected character's deformer stack, layer stack and execution order."),
+		                     FSlateIcon(FAppStyle::GetAppStyleSetName(), "LevelEditor.Tabs.Layers"),
+		                     FUIAction(FExecuteAction::CreateLambda([]() { SRigExecStack::OpenTab(); })));
 		Section.AddMenuEntry(
 			"RigExecHoverPicker", LOCTEXT("HoverPickerEntry", "Hover Picker"),
 			LOCTEXT("HoverPickerEntryTip",
@@ -91,6 +112,7 @@ public:
 
 	virtual void ShutdownModule() override
 	{
+		FRigExecAutoMatch::Shutdown();
 		FRigExecTouchPose::Shutdown();
 		FRigExecHoverPicker::Shutdown();
 		FRigExecMarkingMenu::Shutdown();
@@ -100,6 +122,7 @@ public:
 		if (FSlateApplication::IsInitialized())
 		{
 			FGlobalTabmanager::Get()->UnregisterNomadTabSpawner(GPickerTab);
+			FGlobalTabmanager::Get()->UnregisterNomadTabSpawner(SRigExecStack::TabId);
 		}
 	}
 };

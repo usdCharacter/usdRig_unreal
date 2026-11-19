@@ -14,7 +14,7 @@ public class RigExecRuntime : ModuleRules
 		// Meshes are drawn as dynamic meshes built from the stage's own
 		// topology, so vertex i is the rig's point i.
 		PrivateDependencyModuleNames.AddRange(new string[] {
-			"GeometryCore", "GeometryFramework", "USDUtilities", "USDClasses", "Json", "RigExecLib",
+			"GeometryCore", "GeometryFramework", "ImageCore", "USDUtilities", "USDClasses", "Json", "RigExecLib",
 			// The GPU skin: its vertex factory, buffers and compute shader.
 			"RenderCore", "RHI", "RigExecShaders" });
 

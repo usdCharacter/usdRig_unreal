@@ -20,6 +20,8 @@
 #include "Tasks/Task.h"
 #include "ProfilingDebugging/CpuProfilerTrace.h"
 #include "Materials/MaterialInstanceDynamic.h"
+#include "Engine/Texture2D.h"
+#include "ImageUtils.h"
 #include "Misc/FileHelper.h"
 #include "Misc/Paths.h"
 #include "UDynamicMesh.h"
@@ -192,23 +194,136 @@ ReadLook(const pxr::UsdShadeMaterial& Material)
 	FLook Look;
 	const pxr::UsdShadeShader Surface = Material ? Material.ComputeSurfaceSource() : pxr::UsdShadeShader();
 	pxr::TfToken Id;
-	if (!Surface || !Surface.GetShaderId(&Id) || Id != pxr::TfToken("UsdPreviewSurface"))
+	if (!Surface)
 	{
+		return Look;
+	}
+	if (!Surface.GetShaderId(&Id) || Id != pxr::TfToken("UsdPreviewSurface"))
+	{
+		// Another shader: keep its image and number inputs as parameters of
+		// the same names, for a material that knows them (the eye's).
+		for (const pxr::UsdShadeInput& Input : Surface.GetInputs())
+		{
+			FString Name = UTF8_TO_TCHAR(Input.GetBaseName().GetString().c_str());
+			if (Name.IsEmpty())
+			{
+				continue;
+			}
+			Name[0] = FChar::ToUpper(Name[0]);
+			// An image fed by a UsdUVTexture node: its file.
+			pxr::UsdShadeConnectableAPI InputSource;
+			pxr::TfToken InputSourceName;
+			pxr::UsdShadeAttributeType InputSourceType;
+			if (Input.GetConnectedSource(&InputSource, &InputSourceName, &InputSourceType))
+			{
+				const pxr::UsdShadeShader Texture(InputSource.GetPrim());
+				const pxr::UsdShadeInput FileInput = Texture ? Texture.GetInput(pxr::TfToken("file")) : pxr::UsdShadeInput();
+				pxr::SdfAssetPath File;
+				if (FileInput && FileInput.Get(&File))
+				{
+					const std::string& Resolved = File.GetResolvedPath();
+					const std::string& Path = Resolved.empty() ? File.GetAssetPath() : Resolved;
+					if (!Path.empty())
+					{
+						Look.ParamTextureFiles.Add(Name, UTF8_TO_TCHAR(Path.c_str()));
+					}
+				}
+				continue;
+			}
+			pxr::VtValue Value;
+			if (!Input.Get(&Value))
+			{
+				continue;
+			}
+			if (Value.IsHolding<pxr::SdfAssetPath>())
+			{
+				const pxr::SdfAssetPath& File = Value.UncheckedGet<pxr::SdfAssetPath>();
+				const std::string& Resolved = File.GetResolvedPath();
+				const std::string& Path = Resolved.empty() ? File.GetAssetPath() : Resolved;
+				if (!Path.empty())
+				{
+					Look.ParamTextureFiles.Add(Name, UTF8_TO_TCHAR(Path.c_str()));
+				}
+			}
+			else if (Value.IsHolding<float>())
+			{
+				Look.ParamScalars.Add(Name, Value.UncheckedGet<float>());
+			}
+			else if (Value.IsHolding<double>())
+			{
+				Look.ParamScalars.Add(Name, float(Value.UncheckedGet<double>()));
+			}
+			else if (Value.IsHolding<pxr::GfVec3f>())
+			{
+				const pxr::GfVec3f& C = Value.UncheckedGet<pxr::GfVec3f>();
+				Look.ParamColors.Add(Name, FLinearColor(C[0], C[1], C[2]));
+			}
+		}
 		return Look;
 	}
 	pxr::GfVec3f Color;
 	float Value = 0.0f;
-	if (Surface.GetInput(pxr::TfToken("diffuseColor")).Get(&Color))
+	const pxr::UsdShadeInput Diffuse = Surface.GetInput(pxr::TfToken("diffuseColor"));
+	if (Diffuse && Diffuse.Get(&Color))
 	{
 		Look.Color = FLinearColor(Color[0], Color[1], Color[2]);
 	}
-	if (Surface.GetInput(pxr::TfToken("roughness")).Get(&Value))
+	// An image on the colour: a UsdUVTexture's file, resolved on disk. The
+	// texture carries the colour, so the tint is white.
+	pxr::UsdShadeConnectableAPI Source;
+	pxr::TfToken SourceName;
+	pxr::UsdShadeAttributeType SourceType;
+	if (Diffuse && Diffuse.GetConnectedSource(&Source, &SourceName, &SourceType))
+	{
+		const pxr::UsdShadeShader Texture(Source.GetPrim());
+		pxr::TfToken TextureId;
+		pxr::SdfAssetPath File;
+		const pxr::UsdShadeInput FileInput = Texture ? Texture.GetInput(pxr::TfToken("file")) : pxr::UsdShadeInput();
+		if (FileInput && Texture.GetShaderId(&TextureId) && TextureId == pxr::TfToken("UsdUVTexture") && FileInput.Get(&File))
+		{
+			const std::string& Resolved = File.GetResolvedPath();
+			Look.ColorTextureFile = UTF8_TO_TCHAR((Resolved.empty() ? File.GetAssetPath() : Resolved).c_str());
+			Look.Color = FLinearColor::White;
+		}
+	}
+	// A normal map, kept as the surface material's NormalTexture.
+	if (const pxr::UsdShadeInput Normal = Surface.GetInput(pxr::TfToken("normal")))
+	{
+		pxr::UsdShadeConnectableAPI NormalSource;
+		pxr::TfToken NormalOut;
+		pxr::UsdShadeAttributeType NormalType;
+		if (Normal.GetConnectedSource(&NormalSource, &NormalOut, &NormalType))
+		{
+			const pxr::UsdShadeShader Map(NormalSource.GetPrim());
+			const pxr::UsdShadeInput MapFile = Map ? Map.GetInput(pxr::TfToken("file")) : pxr::UsdShadeInput();
+			pxr::SdfAssetPath File;
+			if (MapFile && MapFile.Get(&File))
+			{
+				const std::string& Resolved = File.GetResolvedPath();
+				Look.ParamTextureFiles.Add(TEXT("NormalTexture"),
+				                           UTF8_TO_TCHAR((Resolved.empty() ? File.GetAssetPath() : Resolved).c_str()));
+			}
+		}
+	}
+	// An input the material does not author is invalid, and reading one throws.
+	if (const pxr::UsdShadeInput Rough = Surface.GetInput(pxr::TfToken("roughness")); Rough && Rough.Get(&Value))
 	{
 		Look.Roughness = Value;
 	}
-	if (Surface.GetInput(pxr::TfToken("metallic")).Get(&Value))
+	if (const pxr::UsdShadeInput Metal = Surface.GetInput(pxr::TfToken("metallic")); Metal && Metal.Get(&Value))
 	{
 		Look.Metallic = Value;
+	}
+	// A cutout: opacity under its threshold hides the faces outright.
+	if (const pxr::UsdShadeInput Opacity = Surface.GetInput(pxr::TfToken("opacity")); Opacity && Opacity.Get(&Value))
+	{
+		float Threshold = 0.0f;
+		const pxr::UsdShadeInput Cut = Surface.GetInput(pxr::TfToken("opacityThreshold"));
+		if (Cut)
+		{
+			Cut.Get(&Threshold);
+		}
+		Look.Opacity = (Threshold > 0.0f && Value < Threshold) ? 0.0f : Value;
 	}
 	return Look;
 }
@@ -513,11 +628,21 @@ struct URigExecComponent::FRigExecFrames
 	std::vector<rigExec::RigExecRuntimeProviderFrames> Published;
 	TMap<FString, int32> Index;
 	bool bStale = true;
+	/** The last published run's matrix primvars, read without the reader. */
+	std::vector<rigExec::RigExecRuntimeMatrixPrimvar> Primvars;
+	bool bHavePrimvars = false;
+	/** A run in flight on the task system (bEvaluateAsync). */
+	UE::Tasks::FTask Pending;
+	bool bPending = false;
+	bool bOk = true;
+	std::string Error;
+	float ExecuteMs = 0.0f;
 	TSharedRef<FRigExecDispatch, ESPMode::ThreadSafe> Dispatch = MakeShared<FRigExecDispatch, ESPMode::ThreadSafe>();
 };
 
 URigExecComponent::~URigExecComponent()
 {
+	Settle();
 	delete Reader;
 	delete Touch;
 	delete FrameCache;
@@ -526,6 +651,8 @@ URigExecComponent::~URigExecComponent()
 bool
 URigExecComponent::Load()
 {
+	// Never touch the reader while a run is in flight.
+	Settle();
 	Bytes.Reset();
 	bPlaced = false;
 	// The rig, its controls and its meshes: from the baked character, or
@@ -717,6 +844,86 @@ URigExecComponent::ReadStageMeshes(const FString& StagePath, const TArray<FStrin
 #endif
 }
 
+UTexture*
+URigExecComponent::LookTexture(int32 Baked, const FString& File)
+{
+	if (Character && Character->Textures.IsValidIndex(Baked) && Character->Textures[Baked])
+	{
+		return Character->Textures[Baked];
+	}
+	if (File.IsEmpty())
+	{
+		return nullptr;
+	}
+	if (TObjectPtr<UTexture2D>* Cached = LiveTextures.Find(File))
+	{
+		return *Cached;
+	}
+	UTexture2D* Image = FPaths::FileExists(File) ? FImageUtils::ImportFileAsTexture2D(File) : nullptr;
+	LiveTextures.Add(File, Image);
+	return Image;
+}
+
+void
+URigExecComponent::ApplyLookParameters(UMaterialInstanceDynamic* Instance, const FRigExecSurfaceLook& Look)
+{
+	if (!Instance)
+	{
+		return;
+	}
+	for (const TPair<FString, float>& Scalar : Look.ParamScalars)
+	{
+		Instance->SetScalarParameterValue(FName(*Scalar.Key), Scalar.Value);
+	}
+	for (const TPair<FString, FLinearColor>& Color : Look.ParamColors)
+	{
+		Instance->SetVectorParameterValue(FName(*Color.Key), Color.Value);
+	}
+	for (const TPair<FString, FString>& File : Look.ParamTextureFiles)
+	{
+		const int32* Baked = Look.ParamTextures.Find(File.Key);
+		if (UTexture* Image = LookTexture(Baked ? *Baked : INDEX_NONE, File.Value))
+		{
+			Instance->SetTextureParameterValue(FName(*File.Key), Image);
+		}
+	}
+}
+
+void
+URigExecComponent::ApplyMeshLook(int32 Mesh, int32 Slot, UMaterialInstanceDynamic* Instance)
+{
+	if (MeshLooks.IsValidIndex(Mesh) && MeshLooks[Mesh].IsValidIndex(Slot))
+	{
+		ApplyLookParameters(Instance, MeshLooks[Mesh][Slot]);
+	}
+}
+
+UTexture*
+URigExecComponent::SurfaceTexture(const FRigExecSurfaceLook& Look)
+{
+	// Baked into the character asset: cooks into a packaged game.
+	if (Character && Character->Textures.IsValidIndex(Look.ColorTexture) && Character->Textures[Look.ColorTexture])
+	{
+		return Character->Textures[Look.ColorTexture];
+	}
+	if (Look.ColorTextureFile.IsEmpty())
+	{
+		return nullptr;
+	}
+	// Read live from a stage: load the image once, transiently.
+	if (TObjectPtr<UTexture2D>* Cached = LiveTextures.Find(Look.ColorTextureFile))
+	{
+		return *Cached;
+	}
+	UTexture2D* Image = FPaths::FileExists(Look.ColorTextureFile) ? FImageUtils::ImportFileAsTexture2D(Look.ColorTextureFile) : nullptr;
+	if (!Image)
+	{
+		UE_LOG(LogRigExec, Warning, TEXT("cannot read the surface image %s"), *Look.ColorTextureFile);
+	}
+	LiveTextures.Add(Look.ColorTextureFile, Image);
+	return Image;
+}
+
 void
 URigExecComponent::BuildMeshes(const FRigExecMeshSet& Set)
 {
@@ -738,6 +945,7 @@ URigExecComponent::BuildMeshes(const FRigExecMeshSet& Set)
 	Meshes.Reset();
 	PointSlots.Reset();
 	MeshPaths.Reset();
+	MeshLooks.Reset();
 	MeshDrawn.Reset();
 	++LoadCount;
 	delete Touch;
@@ -781,6 +989,13 @@ URigExecComponent::BuildMeshes(const FRigExecMeshSet& Set)
 		for (int32 Face = 0; Face < Counts.Num(); ++Face)
 		{
 			const int32 Count = Counts[Face];
+			// Faces of a cutout material (opacity zero) are not drawn at all.
+			const int32 FaceSlot = Source.FaceSlots.IsValidIndex(Face) ? Source.FaceSlots[Face] : 0;
+			if (Source.Slots.IsValidIndex(FaceSlot) && Source.Slots[FaceSlot].Opacity <= 0.0f)
+			{
+				Cursor += Count;
+				continue;
+			}
 			for (int32 Corner = 1; Corner + 1 < Count && Cursor + Corner + 1 < Indices.Num(); ++Corner)
 			{
 				const int32 A = Indices[Cursor];
@@ -856,6 +1071,11 @@ URigExecComponent::BuildMeshes(const FRigExecMeshSet& Set)
 			Instance->SetVectorParameterValue(TEXT("BaseColor"), Look.Color);
 			Instance->SetScalarParameterValue(TEXT("Roughness"), Look.Roughness);
 			Instance->SetScalarParameterValue(TEXT("Metallic"), Look.Metallic);
+			if (UTexture* Image = SurfaceTexture(Look))
+			{
+				Instance->SetTextureParameterValue(TEXT("BaseColorTexture"), Image);
+			}
+			ApplyLookParameters(Instance, Look);
 			Component->SetMaterial(Index, Instance);
 		}
 		if (GetOwner())
@@ -866,6 +1086,7 @@ URigExecComponent::BuildMeshes(const FRigExecMeshSet& Set)
 		Meshes.Add(Component);
 		PointSlots.Add(*Slot);
 		MeshPaths.Add(Source.Path);
+		MeshLooks.Add(Source.Slots);
 		MeshDrawn.Add(true);
 		FRigExecTouch::FMesh& Touched = Touch->Meshes.AddDefaulted_GetRef();
 		Touched.Path = Source.Path;
@@ -892,17 +1113,165 @@ URigExecComponent::SetChannel(const FString& Channel, float Value)
 		return false;
 	}
 	std::string Why;
-	if (!Reader->SetInput(TCHAR_TO_UTF8(*Channel), double(Value), &Why))
+	if (!WriteInput(TCHAR_TO_UTF8(*Channel), double(Value), &Why))
 	{
 		UE_LOG(LogRigExec, Warning, TEXT("%s: %s"), *Channel, UTF8_TO_TCHAR(Why.c_str()));
 		return false;
 	}
+	// A described channel remembers what it was sent, so a reader of it
+	// (an IK/FK switch with no Control Rig) sees the value.
+	const int32 K = FindChannelIndex(Channel);
+	if (K != INDEX_NONE)
+	{
+		ChannelMaps[K].Value = double(Value);
+	}
 	return true;
+}
+
+int32
+URigExecComponent::FindChannelIndex(const FString& Path) const
+{
+	return ChannelMaps.IndexOfByPredicate([&Path](const FChannelMap& M) { return M.Path == Path; });
+}
+
+const FString&
+URigExecComponent::GetChannelPath(int32 Channel) const
+{
+	static const FString None;
+	return ChannelMaps.IsValidIndex(Channel) ? ChannelMaps[Channel].Path : None;
+}
+
+double
+URigExecComponent::GetChannelValue(int32 Channel) const
+{
+	return ChannelMaps.IsValidIndex(Channel) ? ChannelMaps[Channel].Value : 0.0;
+}
+
+double
+URigExecComponent::GetChannelDefault(int32 Channel) const
+{
+	return ChannelMaps.IsValidIndex(Channel) ? ChannelMaps[Channel].Default : 0.0;
+}
+
+const TArray<FString>&
+URigExecComponent::GetChannelLabels(int32 Channel) const
+{
+	static const TArray<FString> None;
+	return ChannelMaps.IsValidIndex(Channel) ? ChannelMaps[Channel].Labels : None;
+}
+
+bool
+URigExecComponent::SetChannelValue(int32 Channel, double Value)
+{
+	if (!Reader || !ChannelMaps.IsValidIndex(Channel))
+	{
+		return false;
+	}
+	FChannelMap& Map = ChannelMaps[Channel];
+	if (FMath::Abs(Map.Value - Value) <= 1e-7)
+	{
+		return true;
+	}
+	std::string Why;
+	if (!WriteInput(TCHAR_TO_UTF8(*Map.Path), Value, &Why))
+	{
+		UE_LOG(LogRigExec, Warning, TEXT("%s: %s"), *Map.Path, UTF8_TO_TCHAR(Why.c_str()));
+		return false;
+	}
+	Map.Value = Value;
+	return true;
+}
+
+FName
+URigExecComponent::GetControlElement(int32 Control) const
+{
+	return ControlMaps.IsValidIndex(Control) ? ControlMaps[Control].Element : NAME_None;
+}
+
+bool
+URigExecComponent::GetControlAvars(int32 Control, double Out[9], bool bDefault) const
+{
+	if (!ControlMaps.IsValidIndex(Control) || ControlMaps[Control].bNull)
+	{
+		return false;
+	}
+	FMemory::Memcpy(Out, bDefault ? ControlMaps[Control].Defaults : ControlMaps[Control].Values, sizeof(double) * 9);
+	return true;
+}
+
+uint16
+URigExecComponent::GetControlAvarMask(int32 Control) const
+{
+	uint16 Mask = 0;
+	for (int32 A = 0; ControlMaps.IsValidIndex(Control) && !ControlMaps[Control].bNull && A < 9; ++A)
+	{
+		Mask |= ControlMaps[Control].Channels[A] ? uint16(1u << A) : 0;
+	}
+	return Mask;
+}
+
+int32
+URigExecComponent::SetControlAvars(int32 Control, const double In[9])
+{
+	if (!Reader || !ControlMaps.IsValidIndex(Control) || ControlMaps[Control].bNull)
+	{
+		return 0;
+	}
+	FControlMap& Map = ControlMaps[Control];
+	int32 Changed = 0;
+	for (int32 A = 0; A < 9; ++A)
+	{
+		if (!Map.Channels[A] || !FMath::IsFinite(In[A]) || FMath::Abs(In[A] - Map.Values[A]) <= 1e-7)
+		{
+			continue;
+		}
+		std::string Why;
+		if (WriteInput(TCHAR_TO_UTF8(*(Map.Path + GTransformAvars[A])), In[A], &Why))
+		{
+			Map.Values[A] = In[A];
+			++Changed;
+		}
+	}
+	return Changed;
+}
+
+UControlRig*
+URigExecComponent::SwitchRig() const
+{
+	return ControlRig ? ControlRig->GetControlRig() : nullptr;
+}
+
+double
+URigExecComponent::ChannelNow(const FString& Path) const
+{
+	const UControlRig* Rig = SwitchRig();
+	const FName Element = FindChannelElement(Path);
+	const FRigElementKey Key(Element, ERigElementType::Control);
+	if (Rig && !Element.IsNone() && Rig->GetHierarchy()->Contains(Key))
+	{
+		return Rig->GetHierarchy()->GetControlValue(Key).Get<float>();
+	}
+	return GetChannelValue(FindChannelIndex(Path));
+}
+
+void
+URigExecComponent::WriteChannel(const FString& Path, double Value)
+{
+	UControlRig* Rig = SwitchRig();
+	const FName Element = FindChannelElement(Path);
+	if (Rig && !Element.IsNone() && Rig->GetHierarchy()->Contains(FRigElementKey(Element, ERigElementType::Control)))
+	{
+		Rig->SetControlValue<float>(Element, float(Value), true, FRigControlModifiedContext(EControlRigSetKey::DoNotCare), true);
+		return;
+	}
+	SetChannelValue(FindChannelIndex(Path), Value);
 }
 
 void
 URigExecComponent::ClearChannels()
 {
+	// Never touch the reader while a run is in flight.
+	Settle();
 	if (Reader)
 	{
 		Reader->ResetInputs();
@@ -922,26 +1291,147 @@ float
 URigExecComponent::Evaluate()
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE(RigExec_Evaluate);
-	if (!Reader)
+	if (!Reader || !FrameCache)
 	{
 		return -1.0f;
 	}
-	std::string Error;
+	// A lower rate: skip this one, the inputs wait for the next.
+	if (EvaluateEvery > 1 && (++SkippedEvaluations % EvaluateEvery) != 0)
+	{
+		return LastExecuteMs;
+	}
+	if (bEvaluateAsync && !bEvaluateNow)
+	{
+		// Off the game thread. A run still going keeps going: the inputs
+		// written meanwhile wait for the next one, and the game does not wait
+		// at all, so a heavy rig lowers its own rate, not the frame rate.
+		// Readers use the last landed run.
+		if (FrameCache->bPending && !FrameCache->Pending.IsCompleted())
+		{
+			return LastExecuteMs;
+		}
+		Settle();
+		SnapshotLaunched();
+		FRigExecFrames* Frames = FrameCache;
+		rigExec::RigExecRuntimeReader* Run = Reader;
+		Frames->bPending = true;
+		Frames->Pending = UE::Tasks::Launch(UE_SOURCE_LOCATION,
+		                                    [Frames, Run]()
+		                                    {
+			                                    TRACE_CPUPROFILER_EVENT_SCOPE(RigExec_Execute);
+			                                    const double Start = FPlatformTime::Seconds();
+			                                    Frames->Error.clear();
+			                                    Frames->bOk = Run->Execute(&Frames->Error);
+			                                    Frames->ExecuteMs = float((FPlatformTime::Seconds() - Start) * 1000.0);
+		                                    });
+		return LastExecuteMs;
+	}
+	// On the game thread: a run still in flight lands first, and the inputs
+	// queued behind it go in, so this run sees every write made so far.
+	Settle();
 	const double Start = FPlatformTime::Seconds();
+	SnapshotLaunched();
 	bool bExecuted;
 	{
 		TRACE_CPUPROFILER_EVENT_SCOPE(RigExec_Execute);
-		bExecuted = Reader->Execute(&Error);
+		FrameCache->Error.clear();
+		bExecuted = Reader->Execute(&FrameCache->Error);
 	}
-	if (FrameCache)
+	FrameCache->ExecuteMs = float((FPlatformTime::Seconds() - Start) * 1000.0);
+	Publish(bExecuted);
+	return float((FPlatformTime::Seconds() - Start) * 1000.0);
+}
+
+void
+URigExecComponent::Settle()
+{
+	if (FrameCache && FrameCache->bPending)
 	{
-		FrameCache->bStale = true;
+		TRACE_CPUPROFILER_EVENT_SCOPE(RigExec_Settle);
+		FrameCache->Pending.Wait();
+		FrameCache->bPending = false;
+		Publish(FrameCache->bOk);
 	}
+	FlushInputs();
+}
+
+bool
+URigExecComponent::LandIfDone()
+{
+	if (FrameCache && FrameCache->bPending && FrameCache->Pending.IsCompleted())
+	{
+		Settle();
+		return true;
+	}
+	return false;
+}
+
+bool
+URigExecComponent::IsRunPending() const
+{
+	return FrameCache && FrameCache->bPending;
+}
+
+bool
+URigExecComponent::WriteInput(const char* Name, double Value, std::string* Why)
+{
+	// A run is in flight: the write waits for the next one rather than the
+	// game waiting for this one. The latest value per input wins.
+	if (FrameCache && FrameCache->bPending)
+	{
+		QueuedInputs.Add(FString(UTF8_TO_TCHAR(Name)), Value);
+		return true;
+	}
+	return Reader && Reader->SetInput(Name, Value, Why);
+}
+
+void
+URigExecComponent::FlushInputs()
+{
+	if (!Reader || QueuedInputs.IsEmpty())
+	{
+		return;
+	}
+	for (const TPair<FString, double>& Input : QueuedInputs)
+	{
+		std::string Why;
+		if (!Reader->SetInput(TCHAR_TO_UTF8(*Input.Key), Input.Value, &Why))
+		{
+			UE_LOG(LogRigExec, Warning, TEXT("%s: %s"), *Input.Key, UTF8_TO_TCHAR(Why.c_str()));
+		}
+	}
+	QueuedInputs.Reset();
+}
+
+void
+URigExecComponent::Publish(bool bExecuted)
+{
+	const double Start = FPlatformTime::Seconds();
+	LastExecuteMs = FrameCache->ExecuteMs;
 	if (!bExecuted)
 	{
-		UE_LOG(LogRigExec, Error, TEXT("evaluation failed: %s"), UTF8_TO_TCHAR(Error.c_str()));
-		return -1.0f;
+		UE_LOG(LogRigExec, Error, TEXT("evaluation failed: %s"), UTF8_TO_TCHAR(FrameCache->Error.c_str()));
+		return;
 	}
+	for (FControlMap& Map : ControlMaps)
+	{
+		FMemory::Memcpy(Map.Landed, Map.Launched, sizeof(Map.Launched));
+	}
+	++PublishCount;
+	// What readers ask for between runs, taken now so they never touch the
+	// reader while another run is in flight.
+	FrameCache->Primvars = Reader->GetMatrixPrimvars();
+	FrameCache->bHavePrimvars = true;
+	FrameCache->Published = Reader->GetProviderFramePublications();
+	if (FrameCache->Index.Num() != int32(FrameCache->Published.size()))
+	{
+		FrameCache->Index.Reset();
+		for (int32 I = 0; I < int32(FrameCache->Published.size()); ++I)
+		{
+			FrameCache->Index.Add(UTF8_TO_TCHAR(FrameCache->Published[size_t(I)].path.c_str()), I);
+		}
+	}
+	FrameCache->bStale = false;
 	const auto& Points = Reader->GetPoints();
 	FRigExecMeshSet Units;
 	Units.bZUp = bStageZUp;
@@ -987,6 +1477,7 @@ URigExecComponent::Evaluate()
 		}
 	}
 	LastPoseTime = FPlatformTime::Seconds();
+	LastPublishMs = float((FPlatformTime::Seconds() - Start) * 1000.0);
 	// The skin moved: picks need a new tree. The highlight is in the
 	// meshes' colours and moves with them.
 	if (Touch)
@@ -996,7 +1487,6 @@ URigExecComponent::Evaluate()
 			Touched.bTreeDirty = true;
 		}
 	}
-	return float((FPlatformTime::Seconds() - Start) * 1000.0);
 }
 
 bool
@@ -1096,6 +1586,8 @@ URigExecComponent::GetVertex(int32 Mesh, int32 Index) const
 bool
 URigExecComponent::LoadControls(const FString& Text, const FString& Source)
 {
+	// Never touch the reader while a run is in flight.
+	Settle();
 	ControlMaps.Reset();
 	ChannelMaps.Reset();
 	TSharedPtr<FJsonObject> Root;
@@ -1262,6 +1754,12 @@ URigExecComponent::LoadControls(const FString& Text, const FString& Source)
 			}
 		}
 	}
+	// The values the loaded pose was evaluated with.
+	for (FControlMap& Map : ControlMaps)
+	{
+		FMemory::Memcpy(Map.Launched, Map.Values, sizeof(Map.Values));
+		FMemory::Memcpy(Map.Landed, Map.Values, sizeof(Map.Values));
+	}
 	return true;
 }
 
@@ -1305,7 +1803,7 @@ URigExecComponent::PullControls()
 			return;
 		}
 		std::string Why;
-		if (Reader->SetInput(TCHAR_TO_UTF8(*Path), Value, &Why))
+		if (WriteInput(TCHAR_TO_UTF8(*Path), Value, &Why))
 		{
 			Held = Value;
 			++Changed;
@@ -1335,9 +1833,51 @@ URigExecComponent::PullControls()
 			Send(Map.Path, Map.Value, double(Hierarchy->GetControlValue(Key).Get<float>()));
 		}
 	}
-	// A limb's IK controls show only while it is in IK and its FK ones
-	// only in FK, as the viewport fade does in usdview: shown while the
-	// fade is above zero, so a hand-over keeps both halves grabbable.
+	UpdateFadedControls(Hierarchy);
+	if (Changed > 0 || bForce)
+	{
+		Evaluate();
+	}
+	// A run that finished off the game thread lands now, without waiting:
+	// the gizmos are placed from it below.
+	if (FrameCache && FrameCache->bPending && FrameCache->Pending.IsCompleted())
+	{
+		Settle();
+	}
+	if (bForce)
+	{
+		RefreshTouchColors();
+	}
+	// The gizmos follow the rig for the animator; a game draws none. They
+	// are placed whenever a value moved and again whenever a run lands: a
+	// run off the game thread lands after the values it was launched with,
+	// so the last one of a drag lands after the drag -- placing only on a
+	// change left the gizmos one run behind until the next edit, which
+	// then snapped them.
+	const bool bGame = GetWorld() && GetWorld()->IsGameWorld();
+	if ((Changed > 0 || !bPlaced || PlacedPublish != PublishCount) && !bGame)
+	{
+		PlaceControls();
+		bPlaced = true;
+		PlacedPublish = PublishCount;
+	}
+	return Changed;
+}
+
+void
+URigExecComponent::UpdateFadedControls(URigHierarchy* Hierarchy)
+{
+	// A limb's controls fade with its IK/FK dial, as the viewport fade does
+	// in usdview. The idle half is drawn on the limb (the rig publishes its
+	// frames there), so it stays selectable, dimmed, and selecting one
+	// switches the limb to it (FindPresentedLimbFor); with
+	// bShowIdleLimbHalf off it is hidden instead.
+	UControlRig* Rig = ControlRig ? ControlRig->GetControlRig() : nullptr;
+	if (ShapeColorsRig.Get() != Rig)
+	{
+		ShapeColors.Reset();
+		ShapeColorsRig = Rig;
+	}
 	for (FControlMap& Map : ControlMaps)
 	{
 		if (Map.FadeChannel < 0 || Map.bNull || !ChannelMaps.IsValidIndex(Map.FadeChannel))
@@ -1346,29 +1886,30 @@ URigExecComponent::PullControls()
 		}
 		const double Weight = ChannelMaps[Map.FadeChannel].Value;
 		const double Opacity = Map.bFadeInvert ? 1.0 - Weight : Weight;
-		const int8 Shown = Opacity > 1e-3 ? 1 : 0;
-		if (Shown != Map.Shown)
+		// 1 driving, 0 hidden, 2 idle and dimmed.
+		const int8 Shown = Opacity > 1e-3 ? 1 : (bShowIdleLimbHalf ? 2 : 0);
+		if (Shown == Map.Shown)
 		{
-			Map.Shown = Shown;
-			Hierarchy->SetControlVisibility(FRigElementKey(Map.Element, ERigElementType::Control), Shown != 0);
+			continue;
 		}
+		const FRigElementKey Key(Map.Element, ERigElementType::Control);
+		FRigControlElement* Element = Hierarchy->Find<FRigControlElement>(Key);
+		if (!Element)
+		{
+			continue;
+		}
+		Map.Shown = Shown;
+		const FLinearColor Built = ShapeColors.FindOrAdd(Map.Element, Element->Settings.ShapeColor);
+		const FLinearColor Color =
+			Shown == 2 ? FLinearColor(Built.R * 0.35f, Built.G * 0.35f, Built.B * 0.35f, Built.A * 0.5f) : Built;
+		if (Element->Settings.ShapeColor != Color)
+		{
+			FRigControlSettings Settings = Element->Settings;
+			Settings.ShapeColor = Color;
+			Hierarchy->SetControlSettings(Element, Settings, false, true, false);
+		}
+		Hierarchy->SetControlVisibility(Key, Shown != 0);
 	}
-	if (Changed > 0 || bForce)
-	{
-		Evaluate();
-	}
-	if (bForce)
-	{
-		RefreshTouchColors();
-	}
-	// The gizmos follow the rig for the animator; a game draws none.
-	const bool bGame = GetWorld() && GetWorld()->IsGameWorld();
-	if ((Changed > 0 || !bPlaced) && !bGame)
-	{
-		PlaceControls();
-		bPlaced = true;
-	}
-	return Changed;
 }
 
 int32
@@ -1384,7 +1925,7 @@ URigExecComponent::SendControl(FControlMap& Map, const FMatrix& Value, bool bFor
 			return;
 		}
 		std::string Why;
-		if (Reader->SetInput(TCHAR_TO_UTF8(*Path), V, &Why))
+		if (WriteInput(TCHAR_TO_UTF8(*Path), V, &Why))
 		{
 			Held = V;
 			++Changed;
@@ -1481,7 +2022,31 @@ URigExecComponent::GetControlValueMatrix(int32 Control, bool bDefault) const
 		return FMatrix::Identity;
 	}
 	const FControlMap& Map = ControlMaps[Control];
-	const double* V = bDefault ? Map.Defaults : Map.Values;
+	return ValueMatrix(Map, bDefault ? Map.Defaults : Map.Values);
+}
+
+FMatrix
+URigExecComponent::GetLandedControlValueMatrix(int32 Control) const
+{
+	if (!ControlMaps.IsValidIndex(Control) || ControlMaps[Control].bNull)
+	{
+		return FMatrix::Identity;
+	}
+	return ValueMatrix(ControlMaps[Control], ControlMaps[Control].Landed);
+}
+
+void
+URigExecComponent::SnapshotLaunched()
+{
+	for (FControlMap& Map : ControlMaps)
+	{
+		FMemory::Memcpy(Map.Launched, Map.Values, sizeof(Map.Values));
+	}
+}
+
+FMatrix
+URigExecComponent::ValueMatrix(const FControlMap& Map, const double* V) const
+{
 	// The inverse of SendControl: the rotations applied in the control's
 	// order (row vectors, first axis first), each row scaled, then moved.
 	const TCHAR* Name = GOrders[Map.Order];
@@ -1602,7 +2167,22 @@ URigExecComponent::PlaceControls()
 			Hierarchy->SetLocalTransform(Key, FTransform(Frames[C].GetValue() * ParentInverse), false, true);
 			continue;
 		}
-		const FMatrix Value = Hierarchy->GetLocalTransform(Key).ToMatrixWithScale();
+		// The frame is the rig's for the values the last landed run saw. A
+		// value sent since (a drag ahead of a run off the game thread) must
+		// not be paired with it, or the gizmo is held on the old frame and
+		// the drag fights it: the offset comes from the landed value, so the
+		// gizmo shows the frame moved on by what changed since.
+		FMatrix Value = Hierarchy->GetLocalTransform(Key).ToMatrixWithScale();
+		if (FMemory::Memcmp(Map.Landed, Map.Values, sizeof(Map.Values)) != 0)
+		{
+			FMatrix Now = ValueMatrix(Map, Map.Values), Then = ValueMatrix(Map, Map.Landed);
+			for (int32 K = 0; K < 3; ++K)
+			{
+				Now.M[3][K] *= CentimetresPerUnit;
+				Then.M[3][K] *= CentimetresPerUnit;
+			}
+			Value = Value * Now.Inverse() * Then;
+		}
 		Hierarchy->SetControlOffsetTransform(Key, FTransform(Value.Inverse() * Frames[C].GetValue() * ParentInverse),
 		                                     false, true);
 	}
@@ -1691,6 +2271,7 @@ URigExecComponent::RequestResync()
 void
 URigExecComponent::OnUnregister()
 {
+	Settle();
 #if WITH_EDITOR
 	FEditorDelegates::PostUndoRedo.Remove(UndoRedoHandle);
 	UndoRedoHandle.Reset();
@@ -1750,8 +2331,9 @@ URigExecComponent::AssetFrame(const FString& Path, FMatrix& Out) const
 	{
 		return false;
 	}
-	// The last Execute's frames, gathered once however many controls ask.
-	if (FrameCache->bStale)
+	// The last published run's frames; gathered here only before any run
+	// has been published (Publish takes them otherwise).
+	if (FrameCache->bStale && !FrameCache->bPending)
 	{
 		FrameCache->Published = Reader->GetProviderFramePublications();
 		if (FrameCache->Index.Num() != int32(FrameCache->Published.size()))
@@ -1792,9 +2374,10 @@ TArray<FString>
 URigExecComponent::GetMatrixPrimvarPaths() const
 {
 	TArray<FString> Out;
-	if (Reader)
+	if (Reader && FrameCache)
 	{
-		for (const rigExec::RigExecRuntimeMatrixPrimvar& Primvar : Reader->GetMatrixPrimvars())
+		const auto& Primvars = FrameCache->bHavePrimvars ? FrameCache->Primvars : Reader->GetMatrixPrimvars();
+		for (const rigExec::RigExecRuntimeMatrixPrimvar& Primvar : Primvars)
 		{
 			Out.Add(UTF8_TO_TCHAR(Primvar.path.c_str()));
 		}
@@ -1810,7 +2393,8 @@ URigExecComponent::GetMatrixPrimvar(const FString& Path, FMatrix& Out) const
 		return false;
 	}
 	const FTCHARToUTF8 Wanted(*Path);
-	for (const rigExec::RigExecRuntimeMatrixPrimvar& Primvar : Reader->GetMatrixPrimvars())
+	const auto& Primvars = FrameCache && FrameCache->bHavePrimvars ? FrameCache->Primvars : Reader->GetMatrixPrimvars();
+	for (const rigExec::RigExecRuntimeMatrixPrimvar& Primvar : Primvars)
 	{
 		if (Primvar.path == Wanted.Get())
 		{
@@ -1932,31 +2516,6 @@ URigExecComponent::ParentGlobal(const URigHierarchy* Hierarchy, int32 C) const
 	return UsdRootGlobal();
 }
 
-bool
-URigExecComponent::PutControl(const FString& Path, const FMatrix& Asset, bool bTranslateOnly)
-{
-	UControlRig* Rig = ControlRig ? ControlRig->GetControlRig() : nullptr;
-	const FName Element = FindControlElement(Path);
-	if (!Rig || Element.IsNone())
-	{
-		return false;
-	}
-	// The control's value is its frame without its offset; the mirrored
-	// global never becomes an FTransform.
-	URigHierarchy* Hierarchy = Rig->GetHierarchy();
-	const FRigElementKey Key(Element, ERigElementType::Control);
-	const FMatrix Local = ToUnreal(Asset) * Hierarchy->GetGlobalControlOffsetTransform(Key).ToMatrixWithScale().Inverse();
-	FTransform Value(Local);
-	if (bTranslateOnly)
-	{
-		Value = Hierarchy->GetLocalTransform(Key);
-		Value.SetTranslation(Local.GetOrigin());
-	}
-	Rig->SetControlLocalTransform(Element, Value, true, FRigControlModifiedContext(EControlRigSetKey::DoNotCare), true);
-	PullControls();
-	return true;
-}
-
 FString
 URigExecComponent::FindLimbSwitchFor(FName Element) const
 {
@@ -1980,17 +2539,48 @@ URigExecComponent::FindLimbSwitchFor(FName Element) const
 	return FString();
 }
 
+FString
+URigExecComponent::FindPresentedLimbFor(FName Element) const
+{
+	const FControlMap* Control =
+		ControlMaps.FindByPredicate([Element](const FControlMap& M) { return !M.bNull && M.Element == Element; });
+	if (!Control)
+	{
+		return FString();
+	}
+	const FString& Path = Control->Path;
+	auto Under = [&Path](const FString& Root)
+	{ return !Root.IsEmpty() && (Path == Root || Path.StartsWith(Root + TEXT("/"))); };
+	for (const FLimbMap& Limb : LimbMaps)
+	{
+		const bool bFk = Limb.FkControls.ContainsByPredicate(Under);
+		const bool bIk = Under(Limb.IkControl) || Under(Limb.Pole);
+		if ((!bFk && !bIk) || (SwitchRig() ? FindChannelElement(Limb.Switch).IsNone() : FindChannelIndex(Limb.Switch) == INDEX_NONE))
+		{
+			continue;
+		}
+		// Only at either end of the dial, as ikfkMatch.MatchHalf.Presented:
+		// mid-blend both halves drive.
+		const double Now = ChannelNow(Limb.Switch);
+		const bool bInIk = FMath::Abs(Now - Limb.IkValue) <= 1e-4;
+		const bool bInFk = FMath::Abs(Now - (1.0 - Limb.IkValue)) <= 1e-4;
+		if ((bFk && bInIk) || (bIk && bInFk))
+		{
+			return Limb.Switch;
+		}
+	}
+	return FString();
+}
+
 bool
 URigExecComponent::IsLimbIk(const FString& SwitchPath) const
 {
 	const FLimbMap* Limb = LimbMaps.FindByPredicate([&](const FLimbMap& L) { return L.Switch == SwitchPath; });
-	const UControlRig* Rig = ControlRig ? ControlRig->GetControlRig() : nullptr;
-	const FName SwitchElement = FindChannelElement(SwitchPath);
-	if (!Limb || !Rig || SwitchElement.IsNone())
+	if (!Limb)
 	{
 		return false;
 	}
-	const double Now = Rig->GetHierarchy()->GetControlValue(FRigElementKey(SwitchElement, ERigElementType::Control)).Get<float>();
+	const double Now = ChannelNow(SwitchPath);
 	return FMath::Abs(Now - Limb->IkValue) < FMath::Abs(Now - (1.0 - Limb->IkValue));
 }
 
@@ -2017,25 +2607,114 @@ URigExecComponent::FindSpaceChannel(FName Element, FName& OutChannel, TArray<FSt
 bool
 URigExecComponent::SwitchSpace(FName Element, int32 Index)
 {
-	UControlRig* Rig = ControlRig ? ControlRig->GetControlRig() : nullptr;
 	FName Channel;
 	TArray<FString> Labels;
-	if (!Rig || !FindSpaceChannel(Element, Channel, Labels) || !Labels.IsValidIndex(Index))
+	if (!Reader || !FindSpaceChannel(Element, Channel, Labels) || !Labels.IsValidIndex(Index))
 	{
 		return false;
 	}
-	// Keep the control where it was: evaluate in the new space (which
-	// re-places the controls), put the control back on its old frame, and
-	// evaluate again for whatever it carries -- the picker's space switch.
-	const FRigControlModifiedContext Context(EControlRigSetKey::DoNotCare);
-	const FTransform Before = Rig->GetControlGlobalTransform(Element);
-	Rig->SetControlValue<float>(Channel, float(Index), true, Context, true);
-	for (int32 Pass = 0; Pass < 2; ++Pass)
+	const int32 C = FindControlIndex(Element.ToString());
+	if (C == INDEX_NONE)
 	{
-		PullControls();
-		Rig->SetControlGlobalTransform(Element, Before, true, Context, true);
+		return false;
 	}
+	const FString SpacePath = ControlMaps[C].Path + TEXT(".avars:space");
+	// The rig does the solving (usdview's spaceMatch.Plan): every run, each
+	// space switch publishes the tx..rz that keep its control where it is in
+	// every space it names. Read them for the pose on screen -- evaluated on
+	// this thread, never a run still in flight -- and write the chosen
+	// space's row with the space, as one edit.
+	TGuardValue<bool> Now(bEvaluateNow, true);
 	PullControls();
+	Evaluate();
+	const std::string Path(TCHAR_TO_UTF8(*ControlMaps[C].Path));
+	const std::vector<double>* Row = nullptr;
+	const std::vector<rigExec::RigExecRuntimeSpaceMatch> Matches = Reader->GetSpaceMatches();
+	for (const rigExec::RigExecRuntimeSpaceMatch& M : Matches)
+	{
+		if (M.path == Path)
+		{
+			Row = &M.values;
+			break;
+		}
+	}
+	if (!Row || Row->size() < size_t(Index + 1) * 6)
+	{
+		UE_LOG(LogRigExec, Warning, TEXT("%s publishes no match for space %d; switching without matching"),
+		       *ControlMaps[C].Path, Index);
+		WriteChannel(SpacePath, double(Index));
+		PullControls();
+		if (!SwitchRig())
+		{
+			Evaluate();
+		}
+		return true;
+	}
+	// Scale is never written, and neither is a channel the control does not
+	// expose (locked, or written by the rig).
+	TMap<FString, double> Avars;
+	for (int32 A = 0; A < 6; ++A)
+	{
+		const double V = (*Row)[size_t(Index * 6 + A)];
+		if (ControlMaps[C].Channels[A] && FMath::IsFinite(V))
+		{
+			Avars.Add(GTransformAvars[A], V);
+		}
+	}
+	SetControlAvars(ControlMaps[C].Path, Avars);
+	WriteChannel(SpacePath, double(Index));
+	PullControls();
+	if (!SwitchRig())
+	{
+		Evaluate();
+	}
+	return true;
+}
+
+bool
+URigExecComponent::SetControlAvars(const FString& Path, const TMap<FString, double>& Avars)
+{
+	UControlRig* Rig = SwitchRig();
+	const int32 C = FindControlIndex(Path);
+	if (C == INDEX_NONE || ControlMaps[C].bNull)
+	{
+		return false;
+	}
+	const FControlMap& Map = ControlMaps[C];
+	double V[9];
+	FMemory::Memcpy(V, Map.Values, sizeof(V));
+	bool bAny = false;
+	for (int32 A = 0; A < 6; ++A)
+	{
+		if (const double* Value = Avars.Find(GTransformAvars[A]))
+		{
+			V[A] = *Value;
+			bAny = true;
+		}
+	}
+	if (!bAny)
+	{
+		return true;
+	}
+	if (!Rig)
+	{
+		// No Control Rig (a game): straight to the rig.
+		SetControlAvars(C, V);
+		return true;
+	}
+	// The control's local IS its avars matrix (centimetres). Move it by the
+	// change between the values held and the new ones, so whatever the
+	// local carries outside the avars (a locked channel) stays.
+	FMatrix Held = ValueMatrix(Map, Map.Values), Next = ValueMatrix(Map, V);
+	for (int32 K = 0; K < 3; ++K)
+	{
+		Held.M[3][K] *= CentimetresPerUnit;
+		Next.M[3][K] *= CentimetresPerUnit;
+	}
+	const FRigElementKey Key(Map.Element, ERigElementType::Control);
+	const FMatrix Local = Rig->GetHierarchy()->GetLocalTransform(Key).ToMatrixWithScale() * Held.Inverse() * Next;
+	Rig->SetControlLocalTransform(Map.Element, FTransform(Local), true,
+	                              FRigControlModifiedContext(EControlRigSetKey::DoNotCare), true);
 	return true;
 }
 
@@ -2048,10 +2727,15 @@ URigExecComponent::IsLimbSwitch(const FString& SwitchPath) const
 bool
 URigExecComponent::SwitchLimb(const FString& SwitchPath)
 {
+	// Never touch the reader while a run is in flight, and read the match
+	// from a run of this pose, evaluated on this thread.
+	TGuardValue<bool> Now(bEvaluateNow, true);
+	Settle();
 	const FLimbMap* Limb = LimbMaps.FindByPredicate([&](const FLimbMap& L) { return L.Switch == SwitchPath; });
-	UControlRig* Rig = ControlRig ? ControlRig->GetControlRig() : nullptr;
-	const FName SwitchElement = FindChannelElement(SwitchPath);
-	if (!Limb || !Rig || !Reader || SwitchElement.IsNone())
+	// Through the Control Rig in the editor; straight to the rig in a game.
+	const bool bThroughRig = SwitchRig() != nullptr;
+	if (!Limb || !Reader ||
+	    (bThroughRig ? FindChannelElement(SwitchPath).IsNone() : FindChannelIndex(SwitchPath) == INDEX_NONE))
 	{
 		return false;
 	}
@@ -2088,16 +2772,21 @@ URigExecComponent::SwitchLimb(const FString& SwitchPath)
 	// ikfkMatch.Match. IK: the IK control's translate and rotate, the
 	// pole's translate, the two stretch scales. FK: each FK control's
 	// translate and rotate, the two stretch scales, pin and twist cleared.
-	static const TCHAR* const Avars[] = {TEXT("tx"), TEXT("ty"), TEXT("tz"), TEXT("rx"), TEXT("ry"), TEXT("rz")};
-	TArray<TPair<FString, double>> Writes;
+	TMap<FString, TMap<FString, double>> Transforms;
+	TArray<TPair<FString, double>> Channels;
 	auto Put = [&](const FString& Control, int32 First, int32 Count)
 	{
+		if (Control.IsEmpty())
+		{
+			return;
+		}
+		TMap<FString, double>& Avars = Transforms.FindOrAdd(Control);
 		for (int32 I = 0; I < Count; ++I)
 		{
-			const FString Path = Control + TEXT(".avars:") + Avars[I];
+			const FString Path = Control + GTransformAvars[I];
 			if (Limb->Writable.Contains(Path))
 			{
-				Writes.Emplace(Path, (*Values)[size_t(First + I)]);
+				Avars.Add(GTransformAvars[I], (*Values)[size_t(First + I)]);
 			}
 		}
 	};
@@ -2105,17 +2794,15 @@ URigExecComponent::SwitchLimb(const FString& SwitchPath)
 	{
 		if (!Path.IsEmpty() && Limb->Writable.Contains(Path))
 		{
-			Writes.Emplace(Path, V);
+			Channels.Emplace(Path, V);
 		}
 	};
-	TArray<FString> Incoming;
 	if (bToIk)
 	{
 		Put(Limb->IkControl, 0, 6);
 		Put(Limb->Pole, 6, 3);
 		Channel(Limb->UpperScale, (*Values)[9]);
 		Channel(Limb->LowerScale, (*Values)[10]);
-		Incoming = {Limb->IkControl, Limb->Pole};
 	}
 	else
 	{
@@ -2127,46 +2814,25 @@ URigExecComponent::SwitchLimb(const FString& SwitchPath)
 		Channel(Limb->LowerScale, (*Values)[19]);
 		Channel(Limb->Pin, 0.0);
 		Channel(Limb->Twist, 0.0);
-		Incoming = Limb->FkControls;
 	}
-	// Pose the incoming half in the rig and read each control's frame back,
-	// then put the Control Rig's controls on those frames (root to end; a
-	// control placed before its child carries the child's frame along).
-	for (const TPair<FString, double>& Write : Writes)
+	// Straight onto the Control Rig's controls and channels, so they are
+	// keyed and kept: each incoming control takes the match's channels, the
+	// rest of it as it was.
+	for (const TPair<FString, TMap<FString, double>>& Control : Transforms)
 	{
-		Reader->SetInput(TCHAR_TO_UTF8(*Write.Key), Write.Value, nullptr);
+		SetControlAvars(Control.Key, Control.Value);
 	}
-	Evaluate();
-	TArray<TPair<FString, FMatrix>> Targets;
-	for (const FString& Control : Incoming)
+	for (const TPair<FString, double>& Write : Channels)
 	{
-		FMatrix Frame;
-		if (!Control.IsEmpty() && AssetFrame(Control, Frame))
-		{
-			Targets.Emplace(Control, Frame);
-		}
+		WriteChannel(Write.Key, Write.Value);
 	}
-	for (const TPair<FString, FMatrix>& Target : Targets)
-	{
-		PutControl(Target.Key, Target.Value, false);
-	}
-	// The channels that are not transforms: the Control Rig's animation
-	// channels, so they are keyed and kept.
-	const FRigControlModifiedContext Context(EControlRigSetKey::DoNotCare);
-	for (const TPair<FString, double>& Write : Writes)
-	{
-		if (Write.Key.Contains(TEXT(".avars:t")) || Write.Key.Contains(TEXT(".avars:r")))
-		{
-			continue;
-		}
-		const FName Element = FindChannelElement(Write.Key);
-		if (!Element.IsNone())
-		{
-			Rig->SetControlValue<float>(Element, float(Write.Value), true, Context, true);
-		}
-	}
-	Rig->SetControlValue<float>(SwitchElement, float(bToIk ? Limb->IkValue : 1.0 - Limb->IkValue), true, Context, true);
+	WriteChannel(SwitchPath, bToIk ? Limb->IkValue : 1.0 - Limb->IkValue);
 	PullControls();
+	if (!bThroughRig)
+	{
+		// No Control Rig to pull: the switched pose evaluates now.
+		Evaluate();
+	}
 	return true;
 }
 
@@ -2233,6 +2899,18 @@ URigExecComponent::LoadTouchRegions(const FRigExecMeshSet& Set)
 		UE_LOG(LogRigExec, Log, TEXT("%d touch regions name no Control Rig control and are skipped: %s"), Missing.Num(),
 		       *FString::Join(Missing, TEXT(", ")));
 	}
+}
+
+int32
+URigExecComponent::GetTouchRegionMesh(int32 Region) const
+{
+	return Touch && Touch->Regions.IsValidIndex(Region) ? Touch->Regions[Region].Mesh : -1;
+}
+
+int32
+URigExecComponent::GetTouchRegionFaceCount(int32 Region) const
+{
+	return Touch && Touch->Regions.IsValidIndex(Region) ? Touch->Regions[Region].Faces.Num() : 0;
 }
 
 int32

@@ -1,5 +1,6 @@
 // Editor tools for RigExec characters: the control picker (docked and over
-// the viewport), Touch Pose and the Rig component's details.
+// the viewport), Touch Pose, the Stack panel and the Rig component's and
+// character asset's details.
 using UnrealBuildTool;
 
 public class RigExecEditor : ModuleRules
@@ -13,6 +14,6 @@ public class RigExecEditor : ModuleRules
 			"UnrealEd", "LevelEditor", "ToolMenus", "WorkspaceMenuStructure", "Json",
 			"ControlRig", "RigVM", "RigExecRuntime",
 			"InteractiveToolsFramework", "EditorInteractiveToolsFramework",
-			"PropertyEditor" });
+			"PropertyEditor", "ContentBrowser", "ApplicationCore" });
 	}
 }
