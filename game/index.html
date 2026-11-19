@@ -1,0 +1,1922 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Pose and animate usdRig (RigExec) characters in Unreal Engine 5.8 with Control Rig and Sequencer">
+      
+      
+      
+        <link rel="canonical" href="https://usdcharacter.github.io/usdRig_unreal/game/">
+      
+      
+        <link rel="prev" href="../editor-workflow/">
+      
+      
+        <link rel="next" href="../troubleshooting/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/logo.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.2">
+    
+    
+      
+        <title>In a game: baking and retargeting - RigExec for Unreal</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.57a0d79d.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.fb2fffe2.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=DM+Sans:300,300i,400,400i,700,700i%7CDM+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"DM Sans";--md-code-font:"DM Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#in-a-game-baking-and-retargeting" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="RigExec for Unreal" class="md-header__button md-logo" aria-label="RigExec for Unreal" data-md-component="logo">
+      
+  <img src="../assets/images/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            RigExec for Unreal
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              In a game: baking and retargeting
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/usdCharacter/usdRig_unreal" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    usdCharacter/usdRig_unreal
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../building/" class="md-tabs__link">
+          
+  
+  
+  User guide
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../api/" class="md-tabs__link">
+          
+  
+  
+  Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../plans/touchpose-remaining/" class="md-tabs__link">
+          
+  
+  
+  Roadmap
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="RigExec for Unreal" class="md-nav__button md-logo" aria-label="RigExec for Unreal" data-md-component="logo">
+      
+  <img src="../assets/images/logo.svg" alt="logo">
+
+    </a>
+    RigExec for Unreal
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/usdCharacter/usdRig_unreal" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    usdCharacter/usdRig_unreal
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    User guide
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    User guide
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../building/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Building and installing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rig-preparation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Preparing a rig
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../editor-workflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Working in the editor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    In a game: baking and retargeting
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    In a game: baking and retargeting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#playing-the-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Playing the example
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Playing the example">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-close-up" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The close-up
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#packaging" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Packaging
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pause-menu-and-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pause menu and settings
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#splash-and-loading-screen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Splash and loading screen
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test-switches" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Test switches
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-platformer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The platformer
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-animation-studio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The animation studio
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The animation studio">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VR
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#squarebit-eye" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Squarebit Eye
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-character-asset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The character asset
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-retargeter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The retargeter
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The retargeter">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#other-animation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other animation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cost" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cost
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Limits
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Limits and troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roadmap
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Roadmap
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../plans/touchpose-remaining/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Touch Pose: remaining work
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#playing-the-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Playing the example
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Playing the example">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-close-up" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The close-up
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#packaging" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Packaging
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pause-menu-and-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pause menu and settings
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#splash-and-loading-screen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Splash and loading screen
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test-switches" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Test switches
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-platformer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The platformer
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-animation-studio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The animation studio
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The animation studio">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VR
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#squarebit-eye" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Squarebit Eye
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-character-asset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The character asset
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-retargeter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The retargeter
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The retargeter">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#other-animation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other animation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cost" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cost
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Limits
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/usdCharacter/usdRig_unreal/edit/main/docs/game.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="in-a-game-baking-and-retargeting">In a game: baking and retargeting<a class="headerlink" href="#in-a-game-baking-and-retargeting" title="Permanent link">&para;</a></h1>
+<p>A <code>.rigexec</code> has no USD in it. The only thing the editor reads from the
+stage is each mesh's topology, UVs, material looks and touch regions, once,
+at load. A <strong>RigExec Character</strong> asset holds all of that next to the rig, so a
+packaged game loads the character with no USD and no files on disk.</p>
+<p>The example project uses this to make the biped playable: a third-person
+character whose hidden UE5 Mannequin runs Epic's locomotion animation, and a
+retargeter carries that animation onto the rig every frame.</p>
+<h2 id="playing-the-example">Playing the example<a class="headerlink" href="#playing-the-example" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Examples\RigExecBiped\Setup_RigExecBiped.bat     <span class="p">&amp;</span> <span class="c1">rem once: copies the Mannequin, builds, bakes, makes the level</span>
+</code></pre></div>
+<p>Open <code>/Game/RigExec/L_RigExecGame</code> and press Play, or run it standalone:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="s2">"</span><span class="nv">%UE_ROOT%</span><span class="s2">\Engine\Binaries\Win64\UnrealEditor.exe"</span> Examples\RigExecBiped\RigExecBiped.uproject /Game/RigExec/L_RigExecGame -game
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Input</th>
+<th>Does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>WASD / left stick</td>
+<td>Move</td>
+</tr>
+<tr>
+<td>Mouse / right stick</td>
+<td>Look</td>
+</tr>
+<tr>
+<td>Space / gamepad A</td>
+<td>Jump</td>
+</tr>
+<tr>
+<td>M</td>
+<td>Show the Mannequin a metre to the side, for comparing</td>
+</tr>
+<tr>
+<td><code>-</code> / <code>=</code>, <code>0</code>–<code>2</code></td>
+<td>Subdivision level, live (with Squarebit Subdivs)</td>
+</tr>
+<tr>
+<td>Esc / gamepad B</td>
+<td>Leave the close-up; otherwise open the pause menu (in a menu: back)</td>
+</tr>
+<tr>
+<td>P / gamepad Start</td>
+<td>Pause menu</td>
+</tr>
+</tbody>
+</table>
+<h3 id="the-close-up">The close-up<a class="headerlink" href="#the-close-up" title="Permanent link">&para;</a></h3>
+<p>A glowing circle on the floor (<code>ARigExecCinematicPad</code>) starts a close-up
+when the biped steps on it:</p>
+<ol>
+<li>A hard cut to a camera on the face, with letterbox bars and its own key
+   and fill lights. The biped stops; the Mannequin's idle keeps playing.</li>
+<li>The subdivision level goes from 0 to 1 after a moment on the cage.</li>
+<li>A blink (<code>L_UpLid</code>/<code>R_UpLid</code> translated 2.735 down), then the jaw opens
+   (<code>M_Jaw</code> turned 12° about X) and settles just parted. As it settles, a
+   smile grows in: the mouth corners (<code>L_Mouth</code>/<code>R_Mouth</code>) move out and up,
+   the upper lip (<code>M_UpLip</code>, <code>L_UpLip</code>, <code>R_UpLip</code>) lifts to show the teeth,
+   and the inner brows (<code>L_InBrow</code>/<code>R_InBrow</code>) rise for a slightly
+   surprised look.</li>
+<li>An idle that runs until Esc, looking mostly down at something in front
+   of him. The eyes turn in the head (<code>L_Eye</code>/<code>R_Eye</code>, with <code>M_Look</code>'s
+   <code>lookAt</code> switched off) and reach each new spot in a few frames. The head
+   and neck set off after them about 0.2 s later, the eyes ease back as it
+   arrives, and the upper lids follow the eyes down. Blinks come every 2–5 s,
+   sometimes doubled and often with a big look.</li>
+</ol>
+<p>The head turns ride on top of the retargeted animation through
+<code>URigExecRetargetComponent::SetExtraTurn</code>. Esc cuts back to the follow
+camera, sets the level to 0 and rests the face. The pad arms again once the
+biped has stepped off it.</p>
+<p>The HUD always shows <strong>SUBD LEVEL</strong>. Keys change it at any time, and in the
+close-up the cursor shows, so its − / + buttons can be clicked. The
+Subdivs component is made by class name, so the example builds without the
+plugin and the HUD then says so. The level is capped at 2: on the biped's
+143k render vertices, level 3 takes many seconds to build.</p>
+<p>In the editor, Esc stops Play In Editor, so leave the close-up with gamepad
+B and open the menu with P, or play standalone or packaged.</p>
+<p>The glow material, <code>M_RigExecGlow</code>, is made by <code>Scripts/setup_game.py</code>
+(<code>MakeGlowMaterial</code>). It is an additive ring and a rippling fill.</p>
+<h3 id="packaging">Packaging<a class="headerlink" href="#packaging" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>package_game.bat                 <span class="p">&amp;</span> <span class="c1">rem Build\Game\Windows\RigExecBiped.exe</span>
+</code></pre></div>
+<p><code>CONFIG=Shipping</code> packages a shipping build. With the editor open, set
+<code>RIGEXEC_UAT_ARGS=-nocompileeditor</code>: the editor's Live Coding blocks
+rebuilding the editor modules, and the game build does not need them.
+The stats in the menu need a Development build. The package carries no USD
+libraries and no <code>.usda</code> files: the character is the cooked <code>RXC_Biped</code>.</p>
+<h3 id="pause-menu-and-settings">Pause menu and settings<a class="headerlink" href="#pause-menu-and-settings" title="Permanent link">&para;</a></h3>
+<p>Esc (outside the close-up), P or gamepad Start pauses the game and opens
+<strong>PAUSED</strong>: Resume, Choose Character (with more than one), Animation
+Studio (Play the Game in the studio), Settings, Quit Game. Quit closes the game (in the
+editor it ends Play In Editor). The menu works with the mouse, the arrow
+keys or W/S with Enter or Space, and the gamepad's D-pad with A and B.</p>
+<p>The FPS counter in the bottom-left corner shows frames per second, the
+frame time and the worst frame of the last second, in real time whatever
+the pause or time scale. <strong>Settings</strong> holds the testing switches:</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FPS counter</td>
+<td>The counter on or off</td>
+</tr>
+<tr>
+<td>Debug stats</td>
+<td>A panel over it: game, render and GPU time, resolution, speed, subdivision level, close-up or play, the retarget's cost and error, its status</td>
+</tr>
+<tr>
+<td>Engine stats</td>
+<td>The engine's <code>stat unit</code></td>
+</tr>
+<tr>
+<td>Subdivision panel</td>
+<td>The SUBD LEVEL panel on or off</td>
+</tr>
+<tr>
+<td>Subdivision level</td>
+<td>0, 1 or 2 (n/a without Squarebit Subdivs)</td>
+</tr>
+<tr>
+<td>Show Mannequin</td>
+<td>The Mannequin a metre to the side</td>
+</tr>
+<tr>
+<td>Time scale</td>
+<td>×1, ×0.5, ×0.25, ×0.1, for watching motion closely</td>
+</tr>
+<tr>
+<td>VSync</td>
+<td><code>r.VSync</code></td>
+</tr>
+<tr>
+<td>Frame cap</td>
+<td>Off, 30, 60, 120 (<code>t.MaxFPS</code>)</td>
+</tr>
+<tr>
+<td>Screen percentage</td>
+<td>100, 75, 50 (<code>r.ScreenPercentage</code>), to tell a GPU limit from a CPU one</td>
+</tr>
+</tbody>
+</table>
+<p>The display settings are saved in the game's <code>GameUserSettings.ini</code>. Time
+scale, the Mannequin and the level start fresh each time. Both levels have
+the menu: their HUDs share <code>ARigExecMenuHUD</code>, which draws over each level's
+own HUD.</p>
+<h3 id="splash-and-loading-screen">Splash and loading screen<a class="headerlink" href="#splash-and-loading-screen" title="Permanent link">&para;</a></h3>
+<p>The packaged game opens on a splash and a loading screen:</p>
+<ol>
+<li><code>Content/Splash/Splash.bmp</code> while the engine starts (Windows draws it
+   before the game window exists);</li>
+<li>the <strong>RigExecBipedLoadingScreen</strong> module's screen, from the moment the
+   window opens until the level and the biped have loaded: the picture,
+   <code>Content/Splash/LoadingScreen.png</code>, with a throbber and a pulsing
+   LOADING. The movie player draws it on its own thread, so it keeps moving
+   while the game thread loads. It shows again for any level opened later.</li>
+</ol>
+<p>The module loads before the engine starts (<code>PreLoadingScreen</code>), so it uses
+no assets: it decodes the PNG itself and hands Slate the pixels. Both files
+ship as loose files (<code>DirectoriesToAlwaysStageAsNonUFS</code> in
+<code>DefaultGame.ini</code>). It does nothing in the editor.</p>
+<p>The picture is a render of the biped's own face. <code>-RigExecPortrait</code> poses
+and lights it (subdivision level 2, a smile, eyes on the lens) and saves a
+few framings to <code>Saved/RigExecPortrait</code>. <code>Scripts/make_splash.py</code> lays one
+out with the title:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Build\Game\Windows\RigExecBiped.exe /Game/RigExec/L_RigExecGame -RigExecPortrait -UseFixedTimeStep -FPS=30 -windowed -resx=1280 -resy=720
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>python Scripts\make_splash.py Build\Game\Windows\RigExecBiped\Saved\RigExecPortrait\portrait_0.png Examples\RigExecBiped\Content\Splash
+</code></pre></div>
+<h3 id="test-switches">Test switches<a class="headerlink" href="#test-switches" title="Permanent link">&para;</a></h3>
+<p>The character reads these from the command line, in the editor or the
+packaged game:</p>
+<table>
+<thead>
+<tr>
+<th>Switch</th>
+<th>Does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-RigExecDemo</code></td>
+<td>Runs a circle on its own (walk, then run), jumps every 7 s, swings the camera round, and logs the retarget's cost and error each second</td>
+</tr>
+<tr>
+<td><code>-RigExecShots</code></td>
+<td>With <code>-RigExecDemo</code>: a screenshot every 2.5 s into <code>Saved/RigExecShots</code></td>
+</tr>
+<tr>
+<td><code>-RigExecQuitAfter=&lt;s&gt;</code></td>
+<td>With <code>-RigExecDemo</code>: quits after that many seconds (logs <code>RIGEXEC_DEMO_DONE</code>)</td>
+</tr>
+<tr>
+<td><code>-RigExecShowSource</code></td>
+<td>Starts with the Mannequin shown</td>
+</tr>
+<tr>
+<td><code>-RigExecFrames</code></td>
+<td>Saves every frame to <code>Saved/RigExecFrames</code>, for a video (with <code>-UseFixedTimeStep -FPS=30</code>)</td>
+</tr>
+<tr>
+<td><code>-RigExecAutoplay</code></td>
+<td>On the platformer level: the autopilot plays the course</td>
+</tr>
+<tr>
+<td><code>-RigExecPadDemo</code></td>
+<td>On <code>L_RigExecGame</code>: runs a lap onto the glowing pad, watches the close-up, steps the subdivision level 1 → 2 → 0 → 1, presses Esc, runs off and quits</td>
+</tr>
+<tr>
+<td><code>-RigExecPortrait</code></td>
+<td>On <code>L_RigExecGame</code>: poses and lights the face, saves four high-resolution framings to <code>Saved/RigExecPortrait</code>, and quits</td>
+</tr>
+</tbody>
+</table>
+<h2 id="the-platformer">The platformer<a class="headerlink" href="#the-platformer" title="Permanent link">&para;</a></h2>
+<p><code>/Game/RigExec/L_RigExecPlatformer</code> is a side-scrolling course with the biped
+as the hero. <code>ARigExecPlatformerLevel</code> builds it at load from an ASCII layout,
+which <code>Scripts/make_platformer_layout.py</code> generates. The course has ground
+with pits, bricks, <code>?</code> blocks that pay out a coin when headbutted from below,
+pipes, staircases, coin arcs, a flagpole and a castle. Its pieces are
+instanced basic shapes in flat colours, with hills, bushes and clouds behind.
+<code>ARigExecPlatformerCharacter</code> is the third-person character with:</p>
+<ul>
+<li>a side camera that leads along the course and follows the height of the
+  ground stood on, not every jump;</li>
+<li>movement locked to the course's plane;</li>
+<li>a high jump that goes higher the longer Space is held.</li>
+</ul>
+<p>A/D or the left stick runs, Space jumps. The HUD shows coins, the world and
+the time, and <strong>COURSE CLEAR!</strong> past the flag.</p>
+<p><code>-RigExecAutoplay</code> plays it with no one at the controls. The autopilot runs
+right and reads the course with traces: it jumps at a wall or step ahead,
+at a pit ahead, and under a <code>?</code> block it hasn't hit yet. Past the flag it
+walks to the castle door and, when recording, quits. To record it from the
+packaged game:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Build\Game\Windows\RigExecBiped.exe /Game/RigExec/L_RigExecPlatformer -RigExecAutoplay -RigExecFrames -UseFixedTimeStep -FPS=30 -windowed -resx=1280 -resy=720
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>ffmpeg -framerate 30 -i Build\Game\Windows\RigExecBiped\Saved\RigExecFrames\frame_<span class="nv">%0</span>5d.png -c:v libx264 -pix_fmt yuv420p -movflags +faststart platformer.mp4
+</code></pre></div>
+<p><code>-RigExecFrames</code> saves every frame; with the fixed 30 fps step, each frame is
+1/30 s of play.</p>
+<h2 id="the-animation-studio">The animation studio<a class="headerlink" href="#the-animation-studio" title="Permanent link">&para;</a></h2>
+<p>A game mode of its own, <code>ARigExecStudioGameMode</code>, in its own level
+<code>/Game/RigExec/L_RigExecStudio</code>. Choose a character, then pose and animate
+it. There is no Control Rig and no editor behind it, so it ships in the
+packaged game.</p>
+<p>Ways in:</p>
+<ul>
+<li><strong>Tools &gt; RigExec &gt; Play Animation Studio</strong> in the editor opens the level
+  and plays it. <strong>Open Animation Studio Level</strong> only opens it.</li>
+<li><strong>ANIMATION STUDIO</strong> in any level's pause menu. In the studio, the same
+  item reads <strong>PLAY THE GAME</strong>.</li>
+<li><strong>RigExecStudioGameMode</strong> as the <strong>GameMode Override</strong> of any level, in
+  World Settings.</li>
+</ul>
+<p>It opens on the character lobby. <strong>Character</strong> in the top bar goes back to
+it.</p>
+<table>
+<thead>
+<tr>
+<th>Part</th>
+<th>Does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>TouchPose</strong></td>
+<td>(Auto, Q, the default.) Hover the skin to light the control under it. Click to select it (Shift toggles, Ctrl removes), and drag to pose it. Across turns about the view's up, and up and down about its side. Controls that only move, or Move mode (W), follow the cursor; Ctrl swaps rotate and move for one drag, Alt twists about the view, Shift is fine. Controls no touch region reaches get a small dot to click instead</td>
+</tr>
+<tr>
+<td><strong>Manipulators</strong></td>
+<td>Move (W), Rotate (E) and Scale (R) put a manipulator on the selected control. Move has an arrow per axis its translate channels run along, and a centre square for the view's plane. Rotate has a ring per axis and an outer ring about the view. Scale has a handle per axis and a centre box for all three. Only the channels the control exposes get a handle, and Shift is fine. The skin still takes presses away from the handles; in Auto only the skin does</td>
+</tr>
+<tr>
+<td><strong>Hover picker</strong></td>
+<td>The character's picker (its baked layout), one tab per panel, drawn over the view. Clicking a button selects (Shift, Ctrl, Alt mirror). IK/FK buttons switch the limb and space buttons offer the spaces, both matched. The idle IK/FK half is drawn dim; picking it switches the limb to it, matched. <code>[</code> and <code>]</code> change tabs</td>
+</tr>
+<tr>
+<td><strong>Channel box</strong></td>
+<td>The selected control's translate, rotate and scale. Drag a value across to change it (Shift: fine); right-click puts it back to rest. Below: the limb's IK/FK state with a matched switch, the control's space, and its other channels</td>
+</tr>
+<tr>
+<td><strong>Timeline</strong></td>
+<td>Play and Pause (Space), step frames (← →), jump between keys (<code>,</code> <code>.</code>), Loop, Key the selection (S; nothing selected keys everything), Key All, Delete Key (Del or X), Auto Key (K, on by default: every change is keyed on the frame), the length (± 6 frames), New. The rows show every key and the selection's keys. Click a key to go to it; drag it to move it. Click or drag elsewhere to scrub</td>
+</tr>
+<tr>
+<td><strong>Library</strong></td>
+<td>Animations and poses. Click one to use it: an animation goes on the timeline, a pose is applied at the <strong>Pose mix</strong> amount and keyed when Auto Key is on. Shift-click an animation to add it at the current frame. <strong>+ Save Anim</strong> and <strong>+ Save Pose</strong> ask for a name. Your own items have an <strong>x</strong> to delete them; the defaults cannot be deleted</td>
+</tr>
+<tr>
+<td><strong>Top bar</strong></td>
+<td>Auto, Rotate, Move and Scale (Q, E, W, R), the Library and Picker panels, Zero (the selection, or everything), Undo and Redo (Ctrl+Z, Ctrl+Y), Frame the selection (F), Home (H), Character, Menu</td>
+</tr>
+<tr>
+<td><strong>Camera</strong></td>
+<td>Right-drag or Alt-drag orbits, middle-drag pans, the wheel zooms. Left-drag on empty space orbits, and a click there clears the selection. Esc clears the selection first, then opens the menu</td>
+</tr>
+</tbody>
+</table>
+<p><strong>The defaults</strong> are baked on the first visit with each character. The
+Mannequin's Idle, Walk, Jog, Jump, Punch, Dash, Land and Fall Down go through
+the character's retargeter (<code>URigExecRetargetComponent::DriveOnce</code>) one sample
+a frame at 30 fps. Every third frame is kept as a key, so the clip plays like
+the animation and its keys stay readable on the timeline. Poses are taken
+along the way: Rest, Idle, Walk Contact and Passing, and so on. The clips are
+FK, so the IK/FK switches are keyed at FK. The bake takes a few seconds and
+is kept, so later visits load it. <strong>Rebake defaults</strong> bakes again.
+(Additive animations, such as the Mannequin's hit reacts, cannot be baked
+this way and are skipped.)</p>
+<p><strong>Where things are kept</strong>: <code>Saved/RigExecStudio/&lt;Character&gt;/</code>. The baked
+defaults go in <code>Defaults/</code> (with a <code>manifest.json</code> naming the bake version),
+your animations in <code>Animations/</code> and your poses in <code>Poses/</code>. Each is a JSON
+file of the rig's own values, keyed by control path: a control key holds its
+nine transform avars, a channel key one value. Between keys, each value
+follows a smooth curve that never overshoots its keys; spaces and other
+choices hold until the next key.</p>
+<p>The rig runs on worker threads in the studio, as in the game, so the game
+thread never waits for it; while a clip plays it runs every other frame
+(the clip is 30 fps). A drag starts from the last pose that landed, and an
+IK/FK or space switch evaluates on the game thread for the pose it reads.
+The self-test runs it on the game thread, to read each pose straight away.</p>
+<p>The FPS counter (Settings &gt; FPS counter) is drawn large on a dark plate:
+bottom left in the game, at the bottom left of the view in the studio.
+Debug stats are drawn at the same size beside it.</p>
+<p><code>-RigExecStudioTest</code> drives every part in turn and checks the result: the
+bake, a clip and a pose, a rotate drag (the control turns exactly what the
+cursor asked, about the view's up), a move drag (the control follows the
+cursor), the manipulator's move arrow, view ring and scale box, keys and
+the curve between them, save and reload, matched IK/FK switches by button
+and by picking, matched space switches, TouchPose picks and a hover-picker
+button. It writes <code>Saved/RigExecStudioTest/&lt;character&gt;.txt</code> and
+screenshots, then quits:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>UnrealEditor.exe Examples\RigExecBiped\RigExecBiped.uproject /Game/RigExec/L_RigExecStudio -game -RigExecStudioTest -RigExecCharacter=Biped
+</code></pre></div>
+<p><code>-RigExecStudioDemo</code>, started from the game level, plays a scripted tour for
+a recording instead. A cursor drawn on screen clicks and drags through the
+real UI, with captions: the lobby, the game, the pause menu into the studio,
+then for each character the library, TouchPose on the face, the picker and
+manipulators on the body, keys and playback, matched IK/FK and space
+switches, and saving a pose:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>Build\Game\Windows\RigExecBiped.exe -RigExecStudioDemo -fullscreen -ResX=1920 -ResY=1080
+</code></pre></div>
+<h3 id="vr">VR<a class="headerlink" href="#vr" title="Permanent link">&para;</a></h3>
+<p>The studio plays in a PC VR headset through OpenXR: a Meta Quest over Link
+or Air Link, or any headset with an OpenXR runtime. The PC runs the game and
+the headset shows it. The project enables the <strong>OpenXR</strong> plugin. The game
+itself stays on the desktop, so in a headset the game level opens the
+studio straight away.</p>
+<p>To play:</p>
+<ol>
+<li>In the <strong>Meta Quest Link</strong> app on the PC, open <strong>Settings &gt; General</strong> and
+   choose <strong>Set Meta Quest Link as active</strong> next to <strong>OpenXR Runtime</strong>.</li>
+<li>Put the headset on and start Link (cable or Air Link).</li>
+<li>Run <code>RigExecBiped_VR.bat</code> beside the packaged game: it starts
+   <code>RigExecBiped.exe -vr</code>. Or start the game as usual and turn on
+   <strong>Settings &gt; VR headset</strong>.</li>
+</ol>
+<p>From the editor, <strong>Play &gt; VR Preview</strong> works the same way in
+<code>L_RigExecStudio</code>.</p>
+<p>You stand in front of the character. The studio's HUD is on a large panel
+around it, upright through the character, so the lobby, menus, library,
+picker, channel box and timeline are where they are on the desktop. The
+view in the middle is see-through. The marks the HUD draws on the
+character (the manipulator, TouchPose's highlight and dots) line up with it
+as seen from the headset. A HUD pixel maps to the world along the line
+from your eye through that pixel on the panel.</p>
+<table>
+<thead>
+<tr>
+<th>Control</th>
+<th>Does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Trigger</strong></td>
+<td>The mouse's left button, at the laser's point on the panel: click, drag, TouchPose, manipulators, picker, timeline. Either hand; the last trigger pulled points</td>
+</tr>
+<tr>
+<td><strong>Grip</strong></td>
+<td>Holds a control: the one under the laser, or the selection. A control that moves goes where the hand goes, and turns with it if it can. A control that only turns turns as the hand turns; held within 60 cm, it swings to point at the hand and twists with the wrist. Auto Key keys it on release</td>
+</tr>
+<tr>
+<td><strong>A</strong> / <strong>B</strong></td>
+<td>Play and pause / undo</td>
+</tr>
+<tr>
+<td><strong>X</strong> / <strong>Y</strong></td>
+<td>Key the selection / frame it</td>
+</tr>
+<tr>
+<td><strong>Right stick</strong></td>
+<td>Across: a 30° snap turn about the character. Forward and back: nearer and further</td>
+</tr>
+<tr>
+<td><strong>Left stick</strong></td>
+<td>Across: a frame at a time. Forward and back: what you look at moves up and down</td>
+</tr>
+<tr>
+<td><strong>Stick click</strong></td>
+<td>Home</td>
+</tr>
+<tr>
+<td><strong>Menu button</strong></td>
+<td>The pause menu. In menus and the lobby the sticks move the highlight, A takes it, B goes back, and the trigger clicks what it points at</td>
+</tr>
+</tbody>
+</table>
+<p>The world never turns or glides under you: Home and Frame move you at
+once, and the right stick turns you in steps. While a headset is on, the
+game turns off motion blur, depth of field, lens flares, colour fringing
+and virtual shadow maps, and uses TAA instead of TSR (each is put back when
+VR is turned off). The headset's resolution comes from the Link app. Lower it
+there, or use <strong>Settings &gt; Screen percentage</strong>, if the frame rate drops
+below the headset's.</p>
+<p><code>-RigExecVRSim</code> runs the same VR studio on the desktop without a headset,
+for trying it: the camera stands where your head would be and the mouse is
+the right hand's laser. The left button is the trigger and the right button
+the grip. The self-test with it also checks the panel's mapping (a point
+on the character, to its panel pixel and back) and the grip (a move and a
+turn from afar):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>UnrealEditor.exe Examples\RigExecBiped\RigExecBiped.uproject /Game/RigExec/L_RigExecStudio -game -RigExecStudioTest -RigExecCharacter=Biped -RigExecVRSim
+</code></pre></div>
+<p>The VR parts are <code>RigExecVR.h/.cpp</code> (<code>ARigExecVRRig</code>: the headset camera,
+the two lasers, the panel and its canvas texture) and the VR half of
+<code>RigExecMenuHUD.cpp</code>. The panel's material is <code>/Game/RigExec/VR/M_RigExecVRPanel</code>.
+It is premultiplied (alpha composite) and unlit, drawn over everything, with
+the camera's exposure undone so its brightness holds.</p>
+<h2 id="squarebit-eye">Squarebit Eye<a class="headerlink" href="#squarebit-eye" title="Permanent link">&para;</a></h2>
+<p>The biped's eyes have surface projectors: each eye mesh gets the frame its
+iris is projected from (<code>primvars:eyeProjector</code>) and the eye control's
+pupil and iris channels packed into a matrix (<code>primvars:eyeDials</code>). The
+runtime publishes both (<code>URigExecComponent::GetMatrixPrimvar</code>).
+<code>URigExecEyeComponent</code> (<strong>RigExec Squarebit Eye</strong>) puts the Squarebit Eye
+materials on every mesh with a projector, the left and right variants by
+the mesh's name. Every frame after the rig evaluates, it:</p>
+<ul>
+<li>writes the projector into the meshes' Custom Primitive Data, in the Eye's
+  packed layout (origin and right scale, aim and pupil radius, up), on the
+  Dynamic Mesh, the GPU skin and any Squarebit Subdivs surface;</li>
+<li>sends the dials to the material: sizes multiply by <code>1 + dial</code> and offsets
+  add, as the rig's own eye shader does.</li>
+</ul>
+<p>It refers to the Eye only by asset path, so the plugin builds and runs
+without it, and its <strong>Status</strong> then says the materials are missing.
+Install it into the example with:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>install_eye.bat                  <span class="p">&amp;</span> <span class="c1">rem copies ..\SquarebitEye\unreal\SquarebitEye into the example's Plugins</span>
+</code></pre></div>
+<p>The example's build then compiles it for this engine, and the cook takes
+<code>/SquarebitEye</code>. The character binds its eyes before it adds the
+subdivision surface, so the surface picks the Eye materials up.</p>
+<h2 id="the-character-asset">The character asset<a class="headerlink" href="#the-character-asset" title="Permanent link">&para;</a></h2>
+<p><code>URigExecCharacter</code> (Content Browser: <strong>RigExec Character</strong>) holds:</p>
+<ul>
+<li>the <code>.rigexec</code> bytes;</li>
+<li>the controls description, with the Control Rig element names, and the
+  picker layout;</li>
+<li>for every mesh the rig poses: face counts and indices, one UV per face
+  corner, each face's material slot and each slot's preview-surface colour,
+  roughness and metallic;</li>
+<li>the touch regions and their colours.</li>
+</ul>
+<p>Bake one in the editor:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">unreal</span><span class="o">.</span><span class="n">RigExecRuntimeLibrary</span><span class="o">.</span><span class="n">bake_character</span><span class="p">(</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>    <span class="s2">"RigExecData/Biped.rigexec"</span><span class="p">,</span> <span class="s2">"../../../usdRig/examples/biped/Biped_stack.usda"</span><span class="p">,</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>    <span class="s2">"RigExecData/Biped_controls.json"</span><span class="p">,</span> <span class="s2">"/Game/RigExec/RXC_Biped"</span><span class="p">)</span>
+</code></pre></div>
+<p>Relative files are relative to the project. <code>Setup_RigExecBiped.bat</code> bakes
+<code>RXC_Biped</code> after it rebuilds the Control Rig, so the controls carry their
+element names. Bake again whenever the <code>.rigexec</code> or the controls change
+(<code>prepare_biped.bat</code>).</p>
+<p>Set <strong>Character</strong> on a <code>URigExecComponent</code> and it loads from the asset and
+ignores the file paths. The editor works the same with either: the pickers,
+Touch Pose and Sequencer all run from the asset.</p>
+<h2 id="the-retargeter">The retargeter<a class="headerlink" href="#the-retargeter" title="Permanent link">&para;</a></h2>
+<p><code>URigExecRetargetComponent</code> drives a <code>URigExecComponent</code> from an animated
+<code>USkeletalMeshComponent</code>. The source can be hidden; it is made to keep
+animating. Each frame, after the source's animation:</p>
+<ol>
+<li><strong>Facing.</strong> At bind, the source is turned to face the way the rig does,
+   from a pair of bones across the body (<code>L_UpLeg</code>/<code>R_UpLeg</code>) and a pair
+   along it (<code>M_Body</code>/<code>M_Head</code>).</li>
+<li><strong>Rest poses lined up.</strong> Walking down the map, each bone with an aim
+   child is turned so it points the way its control does. This takes the
+   Mannequin's A-pose onto the biped's T-pose, as an IK Retargeter's
+   retarget pose does.</li>
+<li><strong>Rotations.</strong> Each bone's world rotation relative to its lined-up rest
+   is applied to its control's rest frame.</li>
+<li><strong>Movement.</strong> The pelvis's movement is scaled by the two pelvis heights
+   and carried onto <code>M_Body</code>.</li>
+<li><strong>Controls.</strong> Walking the controls root first, each driven control's value
+   is solved from the frame it should have and its parent's. The offset
+   between them is whatever the rig last put there. That is exact for a
+   plain hierarchy, and it keeps up with a constraint that moves it. The rig
+   then evaluates once.</li>
+</ol>
+<p>It hands each IK/FK limb to FK first (<code>bForceFk</code>), and turns the component's
+Control Rig pull off, since the retargeter owns the controls.</p>
+<p><code>SetExtraTurn(Control, Turn)</code> layers a turn, in the rig's asset space, on a
+driven control after the animation. The close-up uses it to turn the head
+and neck while the idle plays.</p>
+<p><code>MannequinToBiped()</code> is the default map: pelvis, spine, neck and head, and
+clavicle, arm, hand, thigh, calf, foot and ball on both sides, 22 controls.
+Fingers are left out. The biped's finger controls hang off nulls that follow
+the hand through constraints, and locomotion barely moves them.</p>
+<p><strong>Status</strong> says what it is driving, <strong>LastMilliseconds</strong> what a frame cost, and
+<strong>LastErrorDegrees</strong> the worst gap between a driven control's frame as the rig
+computed it and as asked: under 1° walking, up to about 5° at a run.</p>
+<h3 id="other-animation">Other animation<a class="headerlink" href="#other-animation" title="Permanent link">&para;</a></h3>
+<p>Anything on the UE5 Mannequin skeleton plays as is: the example's Animation
+Blueprint, a montage, or Epic's Game Animation Sample. To use Fab content,
+add it to the project and set the character's <strong>Source Animation</strong> to its
+Animation Blueprint. For another skeleton, change <strong>Bones</strong> (bone, control,
+the aim child of each, and which one carries the movement).</p>
+<h2 id="cost">Cost<a class="headerlink" href="#cost" title="Permanent link">&para;</a></h2>
+<p>On the biped, a frame takes about 15–20 ms on the game thread. Most of it is
+the rig evaluation and the gathering of frame publications. The retarget
+math is a fraction of a millisecond. Gizmo placement, about 14 ms a pose in
+the editor, is skipped in game worlds, because a game draws no gizmos.</p>
+<h2 id="limits">Limits<a class="headerlink" href="#limits" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Plugin movers.</strong> A mover that usdRig plays through a USD-side library
+  has no kernel in the Unreal runtime, and its points pass through. Today
+  that is <code>RigExecPatchMover</code> (the patch curve and mouth examples). <code>Load()</code>
+  warns when a rig has one, and <code>URigExecRuntimeLibrary::RigExecInspect</code>
+  reports it for any file. It needs the kernel moved into a USD-free usdRig
+  library, which the plugin would then register with <code>SetExternalKernel</code>.</li>
+<li><strong>FK only.</strong> Legs are driven by rotation, so feet can slide a little where
+  the two characters' proportions differ. The Mannequin's foot IK runs on
+  the source, before the retarget.</li>
+<li><strong>Squarebit Subdivs</strong> builds into the game when it is installed. On
+  <code>L_RigExecGame</code> the character adds its Subdivs component at play (level 0
+  until the close-up or a key changes it); elsewhere the game draws the
+  rig's own meshes.</li>
+<li><strong>Eyes.</strong> Without Squarebit Eye, the baked biped's eyes draw plain white:
+  the rig's own eye shader is a glslfx for usdview.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../editor-workflow/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Working in the editor">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Working in the editor
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../troubleshooting/" class="md-footer__link md-footer__link--next" aria-label="Next: Limits and troubleshooting">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Limits and troubleshooting
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; Squarebit Studios
+    </div>
+  
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/usdCharacter/usdRig_unreal" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://www.squarebitstudios.com" target="_blank" rel="noopener" title="www.squarebitstudios.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M16.36 14c.08-.66.14-1.32.14-2s-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2s-.1 1.36-.26 2m-5.15 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95a8.03 8.03 0 0 1-4.33 3.56M14.34 14H9.66c-.1-.66-.16-1.32-.16-2s.06-1.35.16-2h4.68c.09.65.16 1.32.16 2s-.07 1.34-.16 2M12 19.96c-.83-1.2-1.5-2.53-1.91-3.96h3.82c-.41 1.43-1.08 2.76-1.91 3.96M8 8H5.08A7.92 7.92 0 0 1 9.4 4.44C8.8 5.55 8.35 6.75 8 8m-2.92 8H8c.35 1.25.8 2.45 1.4 3.56A8 8 0 0 1 5.08 16m-.82-2C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2s.06 1.34.14 2M12 4.03c.83 1.2 1.5 2.54 1.91 3.97h-3.82c.41-1.43 1.08-2.77 1.91-3.97M18.92 8h-2.95a15.7 15.7 0 0 0-1.38-3.56c1.84.63 3.37 1.9 4.33 3.56M12 2C6.47 2 2 6.5 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "navigation.instant", "navigation.footer", "content.action.edit", "toc.follow", "content.code.copy", "content.code.annotate", "search.highlight", "search.suggest"], "search": "../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.a5f9d56c.min.js"></script>
+      
+    
+  </body>
+</html>
